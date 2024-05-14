@@ -120,6 +120,11 @@ for (int i = 0; i < detections; ++i)
 }*/
 }
 
+void ToolManager::Setserverform(ServerForm* s)
+{
+	m_Serverform = s;
+}
+
 void ToolManager::SetMainHndl(HWND mhd)
 {
 	MainHndle = mhd;

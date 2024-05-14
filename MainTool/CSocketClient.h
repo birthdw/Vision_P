@@ -11,6 +11,8 @@ public:
 	virtual ~CSocketClient();
 	virtual void OnClose(int nErrorCode);
 	virtual void OnReceive(int nErrorCode);
+
+	int Count = 0;
 };
 
 

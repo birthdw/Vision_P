@@ -35,13 +35,19 @@ public:
 	afx_msg void OnBnClickedTcpBut();
 
 	const CString IPAddress() const;	 // IP Address를 호출합니다.
-	void ClientTCP();				 	 // 서버로 정보를 전송할때 사용합니다.
+	void ClientTCP(CString strMessage);				 	 // 서버로 정보를 전송할때 사용합니다.
+	void SetList(CString strMessage);	// 리스트 컨트롤에 로그 추가
 
 	BOOL m_TCPConnect;					 // 연결, 연결끊기 스위치입니다.
 	CButton m_TCP_BUTTON;
 	CSocketClient m_Client;
 	CStatic m_STATIC_TCP;
 	
+	virtual void OnInitialUpdate();
+	afx_msg void OnBnClickedButton1();
+	CListCtrl m_ListTcp;
+
+	int Count;
 };
 
 

@@ -35,6 +35,8 @@
 #define IDC_STATIC_TCP_PORT             1015
 #define IDC_BUTTON11                    1016
 #define IDC_BUTTON12                    1017
+#define IDC_LIST3                       1017
+#define IDC_LIST_TCP                    1017
 #define IDC_BUTTON13                    1018
 #define IDC_BUTTON14                    1019
 
@@ -44,7 +46,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_CONTROL_VALUE         1018
 #define _APS_NEXT_SYMED_VALUE           318
 #endif
 #endif

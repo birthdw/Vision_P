@@ -1,6 +1,7 @@
 #pragma once
 
 class Infernece;
+class ServerForm;
 
 class ToolManager
 {
@@ -28,6 +29,8 @@ public:
 public:
 	void Detect();
 
+public:
+	void Setserverform(ServerForm* s);
 
 public:
 	void SetMainHndl(HWND mhd);
@@ -60,6 +63,7 @@ public:
 	double fpscnt;
 	double dtime;
 
-
+public:
+	ServerForm* m_Serverform;
 
 };
