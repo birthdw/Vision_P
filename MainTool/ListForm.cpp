@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "MainTool.h"
 #include "ListForm.h"
-
+#include "ToolManager.h"
 
 
 // ListForm
@@ -45,7 +45,8 @@ void ListForm::OnInitialUpdate()
 	m_TestTab.MoveWindow(0, 0, rt.Width(), rt.Height());
 	m_TestTab.SetWindowPos(NULL, 5, 25, rt.Width() - 10, rt.Height() - 30, SWP_NOZORDER);
 
-	
+	ToolManager::GetInstance()->m_tab = &m_TabCtrl;
+	ToolManager::GetInstance()->SetTab(&m_Detecttab, &m_TestTab);
 
 }
 
@@ -81,6 +82,7 @@ void ListForm::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 	switch (tabIndex)
 	{
 	case 0:
+		ToolManager::GetInstance()->m_strPickinLst = L"";
 		m_Detecttab.ShowWindow(SW_SHOW);
 		m_TestTab.ShowWindow(SW_HIDE);
 		break;
@@ -92,3 +94,5 @@ void ListForm::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 
 	*pResult = 0;
 }
+
+

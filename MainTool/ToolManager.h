@@ -2,6 +2,8 @@
 
 class Infernece;
 class ServerForm;
+class DetectTab;
+class TestTab;
 
 class ToolManager
 {
@@ -31,20 +33,25 @@ public:
 
 public:
 	void Setserverform(ServerForm* s);
-
 public:
 	void SetMainHndl(HWND mhd);
 	void SetToolviewhdl(HWND tvhd);
 	void SetListFormHndle(HWND tvhd);
+
+	void SetTab(DetectTab* d, TestTab* t);
+
 public:
 	void SetForceQuit(bool set);
 	void SetKillFrm(bool set);
 	void Settest(bool set);
 	void SetRec(bool set);
-
+public:
+	CTabCtrl* GetTabctrl();
 public:
 	bool  GetFramekill();
 
+
+	
 public:
 	HWND MainHndle;
 	HWND Toolviewhandle;
@@ -62,8 +69,12 @@ public:
 	double dfps;
 	double fpscnt;
 	double dtime;
-
+public:
+	CString m_strPickinLst;
+	CString m_strPickinLst2;
 public:
 	ServerForm* m_Serverform;
-
+	CTabCtrl* m_tab;
+	DetectTab* m_detecttab;
+	TestTab* m_Testtab;
 };

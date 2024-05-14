@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "ToolManager.h"
 
+#include "DetectTab.h"
+#include "TestTab.h"
+
 
 ToolManager* ToolManager::m_pInstance = nullptr;
 
@@ -44,7 +47,7 @@ void ToolManager::Initialize()
 {
 	cap.open(0, cv::CAP_DSHOW);
 	//inf = new Inference("C:\\Users\\user\\Desktop\\Project1\\yolov8s.onnx", cv::Size(640, 480), "C:\\Users\\user\\Desktop\\Project1\\classes.txt", true);
-
+	m_strPickinLst = L"";
 }
 
 bool ToolManager::Update()
@@ -125,6 +128,7 @@ void ToolManager::Setserverform(ServerForm* s)
 	m_Serverform = s;
 }
 
+
 void ToolManager::SetMainHndl(HWND mhd)
 {
 	MainHndle = mhd;
@@ -148,6 +152,12 @@ void ToolManager::SetListFormHndle(HWND lhd)
 	ListFormHndle = lhd;
 }
 
+void ToolManager::SetTab(DetectTab* d, TestTab* t)
+{
+	m_detecttab = d;
+	m_Testtab = t;
+}
+
 void ToolManager::SetForceQuit(bool set)
 {
 	ForceQuit = set;
@@ -166,6 +176,11 @@ void ToolManager::Settest(bool set)
 void ToolManager::SetRec(bool set)
 {
 	RecCtrl = set;
+}
+
+CTabCtrl *ToolManager::GetTabctrl()
+{
+	return m_tab;
 }
 
 
