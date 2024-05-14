@@ -105,6 +105,7 @@ void ServerForm::OnBnClickedTcpBut()
 		m_TCPConnect = FALSE;
 	}
 	else if (!m_TCPConnect) {
+		ClientTCP(_T("END"));
 		m_Client.Close();
 		m_TCP_BUTTON.SetWindowText(L"연결");
 		m_STATIC_TCP.SetWindowTextW(L"연결끊김");
@@ -134,7 +135,7 @@ void ServerForm::ClientTCP(CString strMessage) {
 void ServerForm::OnBnClickedButton1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString str = _T("asdf");
+	CString str = _T("TEST");
 	ClientTCP(str);
 	
 }
