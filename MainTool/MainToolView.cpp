@@ -42,8 +42,6 @@ CMainToolView::CMainToolView() noexcept
 
 CMainToolView::~CMainToolView()
 {
-	int test;
-	int a = 0;
 }
 
 BOOL CMainToolView::PreCreateWindow(CREATESTRUCT& cs)
