@@ -13,7 +13,6 @@ IMPLEMENT_DYNCREATE(CntrlForm, CFormView)
 CntrlForm::CntrlForm()
 	: CFormView(IDD_CntrlForm)
 {
-	int a;
 }
 
 CntrlForm::~CntrlForm()
