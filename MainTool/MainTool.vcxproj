@@ -189,6 +189,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AWS.h" />
     <ClInclude Include="CModDlg.h" />
     <ClInclude Include="CntrlForm.h" />
     <ClInclude Include="CSocketClient.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="ToolManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AWS.cpp" />
     <ClCompile Include="CModDlg.cpp" />
     <ClCompile Include="CntrlForm.cpp" />
     <ClCompile Include="CSocketClient.cpp" />

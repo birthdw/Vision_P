@@ -34,6 +34,7 @@ void ServerForm::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(ServerForm, CFormView)
 	ON_BN_CLICKED(IDC_TCP_BUT, &ServerForm::OnBnClickedTcpBut)
 	ON_BN_CLICKED(IDC_BUTTON1, &ServerForm::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &ServerForm::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -86,6 +87,9 @@ void ServerForm::OnInitialUpdate()
 	m_IP.SetAddress(192, 168, 0, 213);
 	m_Port = 6667;
 	UpdateData(FALSE);
+
+	m_aws = nullptr;
+	initaws();
 }
 
 
@@ -141,10 +145,39 @@ void ServerForm::OnBnClickedButton1()
 	
 }
 
+bool ServerForm::initaws()
+{
+	InitAPI(m_options);
+
+	if (m_aws == nullptr) {
+		m_aws = new AWS();
+
+	}
+	else {
+		exit_s3();
+		delete m_aws;
+		m_aws = new AWS();
+	}
+	return true;
+}
+
+void ServerForm::exit_s3()
+{
+	ShutdownAPI(m_options);
+}
+
 
 // 소켓통신 로그
 void ServerForm::SetList(CString strMessage) {
 	m_ListTcp.InsertItem(Count, (CString(std::to_string(Count + 1).c_str())));
 	m_ListTcp.SetItemText(Count, 1, strMessage);
 	Count++;
+}
+
+void ServerForm::OnBnClickedButton2()
+{
+	//m_aws->PutObject("dog.png");
+
+	m_aws->Allinput("color, faulty", "('red', 'True')","dog.png");
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
