@@ -4,7 +4,8 @@
 #include "pch.h"
 #include "MainTool.h"
 #include "CntrlForm.h"
-
+#include "ToolManager.h"
+#include "ServerForm.h"
 
 // CntrlForm
 
@@ -25,6 +26,7 @@ void CntrlForm::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CntrlForm, CFormView)
+	ON_BN_CLICKED(IDC_BUTTON2, &CntrlForm::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -46,3 +48,11 @@ void CntrlForm::Dump(CDumpContext& dc) const
 
 
 // CntrlForm 메시지 처리기
+
+
+void CntrlForm::OnBnClickedButton2()
+{
+	CString str = _T("12312");
+
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+}
