@@ -65,6 +65,9 @@
     <Filter Include="04.Dlg\Mod">
       <UniqueIdentifier>{f0c0bc33-05bf-44d1-b04e-506f3e7c5047}</UniqueIdentifier>
     </Filter>
+    <Filter Include="07.AWS">
+      <UniqueIdentifier>{fe6d6810-14fa-4502-b502-5523fed72cea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrm.h">
@@ -130,6 +133,9 @@
     <ClInclude Include="struct.h">
       <Filter>99.ect</Filter>
     </ClInclude>
+    <ClInclude Include="AWS.h">
+      <Filter>07.AWS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -179,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="CModDlg.cpp">
       <Filter>04.Dlg\Mod</Filter>
+    </ClCompile>
+    <ClCompile Include="AWS.cpp">
+      <Filter>07.AWS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
