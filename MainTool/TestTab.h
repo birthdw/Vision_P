@@ -21,6 +21,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
@@ -28,4 +29,17 @@ public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton5();
+
+
+
+public:
+	void Setcnt(int cnt);
+	int Getcnt();
+
+
+
+
+
+public:
+	int Curcnt = 0;
 };

@@ -25,7 +25,8 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult);
-
+public:
+	void Set_Text(int curidx, int idx, CString cstr);
 public:
 	CListCtrl m_List;
 	CEdit m_TestTxt;

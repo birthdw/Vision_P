@@ -53,6 +53,5 @@ void CntrlForm::Dump(CDumpContext& dc) const
 void CntrlForm::OnBnClickedButton2()
 {
 	CString str = _T("12312");
-
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 }

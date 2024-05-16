@@ -21,7 +21,7 @@ using namespace cv;
 
 
 #include "define.h"
-
+#include "struct.h"
 
 
 

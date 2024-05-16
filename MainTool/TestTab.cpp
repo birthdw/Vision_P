@@ -6,7 +6,7 @@
 #include "afxdialogex.h"
 #include "TestTab.h"
 #include "ToolManager.h"
-
+#include "CModDlg.h"
 // TestTab 대화 상자
 
 IMPLEMENT_DYNAMIC(TestTab, CDialog)
@@ -88,11 +88,26 @@ void TestTab::OnBnClickedButton1()
 
 void TestTab::OnBnClickedButton2()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CModDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
+
 }
 
 
 void TestTab::OnBnClickedButton5()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void TestTab::Setcnt(int cnt)
+{
+	Curcnt = cnt;
+}
+
+int TestTab::Getcnt()
+{
+	return Curcnt;
 }

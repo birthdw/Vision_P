@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(ResultForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON2, &ResultForm::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &ResultForm::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &ResultForm::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &ResultForm::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -78,8 +79,8 @@ void ResultForm::OnBnClickedButton3()
 
 void ResultForm::OnBnClickedButton4()
 {
-	CString str = _T("All files(*.*)|*.*|"); // 모든 파일 표시
-	// _T("Excel 파일 (*.xls, *.xlsx) |*.xls; *.xlsx|"); 와 같이 확장자를 제한하여 표시할 수 있음
+	CString str = _T("pic 파일 (*.png, *.jpg) |*.png; *.jpg|"); // 파일 확장자 제한 
+
 	CFileDialog dlg(TRUE, _T("*.dat"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, str, this);
 
 	if (dlg.DoModal() == IDOK)
@@ -88,4 +89,9 @@ void ResultForm::OnBnClickedButton4()
 		ToolManager::GetInstance()->ShowPic(string(CT2CA(strPathName)));
 
 	}
+}
+
+
+void ResultForm::OnBnClickedButton5()
+{
 }

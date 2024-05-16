@@ -46,7 +46,7 @@ void ToolManager::DestroyInstance()
 void ToolManager::Initialize()
 {
 	cap.open(0, cv::CAP_DSHOW);
-	//inf = new Inference("C:\\Users\\user\\Desktop\\Project1\\yolov8s.onnx", cv::Size(640, 480), "C:\\Users\\user\\Desktop\\Project1\\classes.txt", true);
+	inf = new Inference("C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.txt", true);
 	m_strPickinLst = L"";
 }
 
@@ -60,10 +60,11 @@ bool ToolManager::Update(double t)
 	dtime += t;
 
 
-	if (FrmKilled == false )
+	if (FrmKilled == false)
 	{
 		cap >> frame;
 		resize(frame, frame, Size(600, 450));
+		Detect();
 	}
 	else
 	{
@@ -107,29 +108,25 @@ void ToolManager::Render()
 
 void ToolManager::Detect()
 {
-	/*vector<Detection> output = inf->runInference(frame);
-int detections = output.size();
-std::cout << "Number of detections:" << detections << std::endl;
+	vector<Detection> output = inf->runInference(frame);
+	int detections = output.size();
+	std::cout << "Number of detections:" << detections << std::endl;
 
-for (int i = 0; i < detections; ++i)
-{
-	Detection detection = output[i];
-	if (detection.className != "person")
-		continue;
-	if (detection.confidence <= 0.8)
-		continue;
-	cv::Rect box = detection.box;
-	std::string classString = detection.className + ' ' + std::to_string(detection.confidence).substr(0, 4);
-	if (RecCtrl == true)
+	for (int i = 0; i < detections; ++i)
 	{
-		cv::Scalar color = detection.color;
-		cv::rectangle(frame, box, color, 2);
-		cv::Size textSize = cv::getTextSize(classString, cv::FONT_HERSHEY_DUPLEX, 1, 2, 0);
-		cv::Rect textBox(box.x, box.y - 40, textSize.width + 10, textSize.height + 20);
-		cv::rectangle(frame, textBox, color, cv::FILLED);
-		cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
+		Detection detection = output[i];
+		cv::Rect box = detection.box;
+		std::string classString = detection.className + ' ' + std::to_string(detection.confidence).substr(0, 4);
+		if (RecCtrl == true)
+		{
+			cv::Scalar color = detection.color;
+			cv::rectangle(frame, box, color, 2);
+			cv::Size textSize = cv::getTextSize(classString, cv::FONT_HERSHEY_DUPLEX, 1, 2, 0);
+			cv::Rect textBox(box.x, box.y - 40, textSize.width + 10, textSize.height + 20);
+			cv::rectangle(frame, textBox, color, cv::FILLED);
+			cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
+		}
 	}
-}*/
 }
 
 void ToolManager::Save()
@@ -222,4 +219,24 @@ CTabCtrl* ToolManager::GetTabctrl()
 bool ToolManager::GetFramekill()
 {
 	return FrmKilled;
+}
+
+void ToolManager::Mod_Txt(int cur, int idx, CString cstr)
+{
+	m_detecttab->Set_Text(cur, idx, cstr);
+}
+
+void ToolManager::Set_Mod_Txt(int idx, CString cstr)
+{
+	switch (idx)
+	{
+	case 1:
+		m_strPickinLst = cstr;
+		break;
+	case 2:
+		m_strPickinLst2 = cstr;
+		break;
+	default:
+		break;
+	}
 }

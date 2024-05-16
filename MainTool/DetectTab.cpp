@@ -79,7 +79,7 @@ void DetectTab::OnBnClickedButton1()
 	teststr += L".png";
 	m_List.SetItemText(Count, 1, teststr);
 	m_List.SetItemText(Count, 2, L"This is test Code");
-	++Count;
+		++Count;
 }
 
 
@@ -103,7 +103,16 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 	CString test2 = m_List.GetItemText(clickindex, 2);
 	ToolManager::GetInstance()->m_strPickinLst = test;
 	ToolManager::GetInstance()->m_strPickinLst2 = test2;
-
+	ToolManager::GetInstance()->m_Testtab->Setcnt(clickindex);
 
 	*pResult = 0;
+}
+
+void DetectTab::Set_Text(int curidx,int idx, CString cstr)
+{
+
+	UpdateData(FALSE);
+	m_List.SetItemText(curidx, idx, cstr);
+	UpdateData(TRUE);
+
 }

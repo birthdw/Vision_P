@@ -56,7 +56,9 @@ public:
 public:
 	bool  GetFramekill();
 
-
+public:
+	void Mod_Txt(int cur, int idx, CString cstr);
+	void Set_Mod_Txt(int idx, CString cstr);
 	
 public:
 	HWND MainHndle;
