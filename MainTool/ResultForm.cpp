@@ -28,6 +28,8 @@ void ResultForm::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(ResultForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON1, &ResultForm::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &ResultForm::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &ResultForm::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &ResultForm::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -55,6 +57,7 @@ void ResultForm::OnBnClickedButton1()
 {
 	// cam on
 	ToolManager::GetInstance()->SetKillFrm(false);
+	ToolManager::GetInstance()->SetSpecialOn(false);
 }
 
 
@@ -62,4 +65,27 @@ void ResultForm::OnBnClickedButton2()
 {
 	// cam off
 	ToolManager::GetInstance()->SetKillFrm(true);
+	ToolManager::GetInstance()->SetSpecialOn(false);
+}
+
+
+void ResultForm::OnBnClickedButton3()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	ToolManager::GetInstance()->Save();
+}
+
+
+void ResultForm::OnBnClickedButton4()
+{
+	CString str = _T("All files(*.*)|*.*|"); // 모든 파일 표시
+	// _T("Excel 파일 (*.xls, *.xlsx) |*.xls; *.xlsx|"); 와 같이 확장자를 제한하여 표시할 수 있음
+	CFileDialog dlg(TRUE, _T("*.dat"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, str, this);
+
+	if (dlg.DoModal() == IDOK)
+	{
+		CString strPathName = dlg.GetPathName();
+		ToolManager::GetInstance()->ShowPic(string(CT2CA(strPathName)));
+
+	}
 }

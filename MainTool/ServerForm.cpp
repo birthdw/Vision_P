@@ -95,6 +95,7 @@ void ServerForm::OnBnClickedTcpBut()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (m_TCPConnect) {
 		m_Client.Create();
+		UpdateData(TRUE);
 		if (m_Client.Connect(IPAddress(), m_Port) == FALSE) {
 			AfxMessageBox(_T("ERROR : Failed to connect Server"));
 			m_Client.Close();

@@ -73,7 +73,7 @@ void TestTab::OnPaint()
 	if (res == S_OK)
 	{
 		CPaintDC dc(this);
-		png.StretchBlt(dc, 0, 0, 640, 480);
+		png.StretchBlt(dc, 0, 0, 700, 467);
 		SetDlgItemTextW(IDC_EDIT1,ToolManager::GetInstance()->m_strPickinLst2);
 	}
 	UpdateData(FALSE);
@@ -82,7 +82,7 @@ void TestTab::OnPaint()
 
 void TestTab::OnBnClickedButton1()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
 }
 
 

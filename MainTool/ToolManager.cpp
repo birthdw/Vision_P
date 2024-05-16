@@ -50,33 +50,31 @@ void ToolManager::Initialize()
 	m_strPickinLst = L"";
 }
 
-bool ToolManager::Update()
+bool ToolManager::Update(double t)
 {
+
 	if (ForceQuit == true)
 		return false;
 
-	return true;
-}
-
-void ToolManager::LateUpdate()
-{
-}
-
-void ToolManager::Render(double t)
-{
-	//임시 렌더 코드 
-
 	++fpscnt;
 	dtime += t;
-	
 
-	if (FrmKilled == false)
+
+	if (FrmKilled == false )
 	{
 		cap >> frame;
 		resize(frame, frame, Size(600, 450));
 	}
 	else
-		frame = imread("ns.png");
+	{
+		if (SpecialOn == false)
+			frame = imread("ns.png");
+		else
+			frame = imread(specFileName);
+
+		resize(frame, frame, Size(600, 450));
+	}
+
 
 	if (1.0 <= dtime)
 	{
@@ -85,14 +83,25 @@ void ToolManager::Render(double t)
 		dtime = 0;
 	}
 
+	return true;
+}
+
+void ToolManager::LateUpdate()
+{
+
+
+
+}
+
+void ToolManager::Render()
+{
+	//임시 렌더 코드 
 	putText(frame, "fps: " + to_string(dfps), Point(10, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
 	cv::imshow("TEST", frame);
+
 	int key = cv::waitKey(1);
 	if (key == 27)
 		::PostQuitMessage(WM_QUIT);
-
-
-
 
 }
 
@@ -121,6 +130,27 @@ for (int i = 0; i < detections; ++i)
 		cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
 	}
 }*/
+}
+
+void ToolManager::Save()
+{
+	if (FrmKilled == false)
+	{
+		imwrite(to_string(testcnt) + ".png", frame);
+		++testcnt;
+	}
+}
+
+void ToolManager::ShowPic(string Filename)
+{
+
+
+	specFileName = Filename;
+
+	if (FrmKilled == true)
+	{
+		SpecialOn = true;
+	}
 }
 
 void ToolManager::Setserverform(ServerForm* s)
@@ -178,7 +208,12 @@ void ToolManager::SetRec(bool set)
 	RecCtrl = set;
 }
 
-CTabCtrl *ToolManager::GetTabctrl()
+void ToolManager::SetSpecialOn(bool set)
+{
+	SpecialOn = set;
+}
+
+CTabCtrl* ToolManager::GetTabctrl()
 {
 	return m_tab;
 }

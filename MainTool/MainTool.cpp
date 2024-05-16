@@ -208,9 +208,9 @@ void CMainToolApp::OnAppAbout()
 
 BOOL CMainToolApp::OnIdle(LONG lCount)
 {
-	bool res = m_pManager->Update();
+	bool res = m_pManager->Update(m_pFrmManager->GetTimeDelta());
 	m_pManager->LateUpdate();
-	m_pManager->Render(m_pFrmManager->GetTimeDelta());
+	m_pManager->Render();
 
 	return res;
 }

@@ -24,12 +24,17 @@ public:
 
 public:
 	void Initialize();
-	bool Update();
+	bool Update(double t);
 	void LateUpdate();
-	void Render(double t);
+	void Render();
 
 public:
 	void Detect();
+
+
+	void Save();
+	void ShowPic(string Filename);
+
 
 public:
 	void Setserverform(ServerForm* s);
@@ -45,6 +50,7 @@ public:
 	void SetKillFrm(bool set);
 	void Settest(bool set);
 	void SetRec(bool set);
+	void SetSpecialOn(bool set);
 public:
 	CTabCtrl* GetTabctrl();
 public:
@@ -65,6 +71,7 @@ public:
 	bool ForceQuit = false;
 	bool FrmKilled = false;
 	bool RecCtrl = false;
+	bool SpecialOn = false;
 public:
 	double dfps;
 	double fpscnt;
@@ -77,4 +84,12 @@ public:
 	CTabCtrl* m_tab;
 	DetectTab* m_detecttab;
 	TestTab* m_Testtab;
+
+
+public:
+	string specFileName;
+
+public:
+	int testcnt=0;
+
 };
