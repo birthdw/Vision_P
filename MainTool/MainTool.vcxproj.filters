@@ -62,6 +62,9 @@
     <Filter Include="06.PJH\Socket">
       <UniqueIdentifier>{7aec1641-778b-4022-9696-5c9b599f8680}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Dlg\Mod">
+      <UniqueIdentifier>{f0c0bc33-05bf-44d1-b04e-506f3e7c5047}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrm.h">
@@ -121,6 +124,12 @@
     <ClInclude Include="CSocketClient.h">
       <Filter>06.PJH\Socket</Filter>
     </ClInclude>
+    <ClInclude Include="CModDlg.h">
+      <Filter>04.Dlg\Mod</Filter>
+    </ClInclude>
+    <ClInclude Include="struct.h">
+      <Filter>99.ect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -167,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="CSocketClient.cpp">
       <Filter>06.PJH\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="CModDlg.cpp">
+      <Filter>04.Dlg\Mod</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

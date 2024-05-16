@@ -46,7 +46,7 @@ void ToolManager::DestroyInstance()
 void ToolManager::Initialize()
 {
 	cap.open(0, cv::CAP_DSHOW);
-	inf = new Inference("C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.txt", true);
+	inf = new Inference("C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.txt", false);
 	m_strPickinLst = L"";
 }
 
@@ -115,17 +115,16 @@ void ToolManager::Detect()
 	for (int i = 0; i < detections; ++i)
 	{
 		Detection detection = output[i];
+		if (detection.confidence < 0.8)
+			continue;
 		cv::Rect box = detection.box;
 		std::string classString = detection.className + ' ' + std::to_string(detection.confidence).substr(0, 4);
-		if (RecCtrl == true)
-		{
-			cv::Scalar color = detection.color;
-			cv::rectangle(frame, box, color, 2);
-			cv::Size textSize = cv::getTextSize(classString, cv::FONT_HERSHEY_DUPLEX, 1, 2, 0);
-			cv::Rect textBox(box.x, box.y - 40, textSize.width + 10, textSize.height + 20);
-			cv::rectangle(frame, textBox, color, cv::FILLED);
-			cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
-		}
+		cv::Scalar color = detection.color;
+		cv::rectangle(frame, box, color, 2);
+		cv::Size textSize = cv::getTextSize(classString, cv::FONT_HERSHEY_DUPLEX, 1, 2, 0);
+		cv::Rect textBox(box.x, box.y - 40, textSize.width + 10, textSize.height + 20);
+		cv::rectangle(frame, textBox, color, cv::FILLED);
+		cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
 	}
 }
 

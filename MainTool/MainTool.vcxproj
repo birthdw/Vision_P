@@ -189,6 +189,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CModDlg.h" />
     <ClInclude Include="CntrlForm.h" />
     <ClInclude Include="CSocketClient.h" />
     <ClInclude Include="define.h" />
@@ -205,11 +206,13 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResultForm.h" />
     <ClInclude Include="ServerForm.h" />
+    <ClInclude Include="struct.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestTab.h" />
     <ClInclude Include="ToolManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CModDlg.cpp" />
     <ClCompile Include="CntrlForm.cpp" />
     <ClCompile Include="CSocketClient.cpp" />
     <ClCompile Include="DetectTab.cpp" />
