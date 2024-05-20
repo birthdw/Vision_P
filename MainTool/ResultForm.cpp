@@ -23,6 +23,8 @@ ResultForm::~ResultForm()
 void ResultForm::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_COLOR, m_Color);
+	DDX_Control(pDX, IDC_BUTTON4, m_btempdetect);
 }
 
 BEGIN_MESSAGE_MAP(ResultForm, CFormView)
@@ -31,6 +33,7 @@ BEGIN_MESSAGE_MAP(ResultForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON3, &ResultForm::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &ResultForm::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BUTTON5, &ResultForm::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &ResultForm::OnBnClickedButton6)
 END_MESSAGE_MAP()
 
 
@@ -59,6 +62,8 @@ void ResultForm::OnBnClickedButton1()
 	// cam on
 	ToolManager::GetInstance()->SetKillFrm(false);
 	ToolManager::GetInstance()->SetSpecialOn(false);
+	m_btempdetect.EnableWindow(FALSE);
+
 }
 
 
@@ -67,6 +72,8 @@ void ResultForm::OnBnClickedButton2()
 	// cam off
 	ToolManager::GetInstance()->SetKillFrm(true);
 	ToolManager::GetInstance()->SetSpecialOn(false);
+	m_btempdetect.EnableWindow(TRUE);
+
 }
 
 
@@ -94,4 +101,54 @@ void ResultForm::OnBnClickedButton4()
 
 void ResultForm::OnBnClickedButton5()
 {
+}
+
+
+void ResultForm::OnBnClickedButton6()
+{
+	CImage image;
+
+	if (cnt > 4)
+		cnt = 0;
+
+	switch (cnt)
+	{
+	case 0:
+		image.Load(_T("white.bmp"));//기본
+		break;
+	case 1:
+		image.Load(_T("red.bmp"));//레드
+		break;
+	case 2:
+		image.Load(_T("yellow.bmp"));//노랑
+		break;
+	case 3:
+		image.Load(_T("green.bmp"));//초록
+		break;
+	case 4:
+		image.Load(_T("black.bmp"));//불량 -> 검정
+		break;
+	default:
+		image.Load(_T("white.bmp"));//예외 기본
+		break;
+	}
+
+	++cnt;
+
+	CRect rect;
+	m_Color.GetWindowRect(rect);
+	CDC* dc; 
+	dc = m_Color.GetDC(); 
+	image.StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);
+	ReleaseDC(dc);
+}
+
+
+void ResultForm::OnInitialUpdate()
+{
+	CFormView::OnInitialUpdate();
+
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	m_btempdetect.EnableWindow(FALSE);
 }

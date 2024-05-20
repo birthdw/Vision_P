@@ -33,6 +33,11 @@ public:
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnBnClickedButton5();
+	CStatic m_Color;
+	afx_msg void OnBnClickedButton6();
+	int cnt = 0;
+	CButton m_btempdetect;
+	virtual void OnInitialUpdate();
 };
 
 

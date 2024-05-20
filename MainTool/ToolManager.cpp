@@ -139,14 +139,24 @@ void ToolManager::Save()
 
 void ToolManager::ShowPic(string Filename)
 {
-
-
 	specFileName = Filename;
 
 	if (FrmKilled == true)
 	{
 		SpecialOn = true;
 	}
+}
+
+void ToolManager::RenderImg(CStatic* p,CString filepath)
+{
+	CImage image;
+	image.Load(filepath);//ทนตๅ
+	CRect rect;
+	p->GetWindowRect(rect);
+	CDC* dc;
+	dc = p->GetDC();
+	image.StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);
+	ReleaseDC(p->GetSafeHwnd(), dc->m_hDC);
 }
 
 void ToolManager::Setserverform(ServerForm* s)

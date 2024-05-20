@@ -35,6 +35,7 @@ public:
 	void Save();
 	void ShowPic(string Filename);
 
+	void RenderImg(CStatic* p, CString filepath);
 
 public:
 	void Setserverform(ServerForm* s);

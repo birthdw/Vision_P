@@ -4,7 +4,7 @@
 
 // ServerForm 폼 보기
 #include "CSocketClient.h"
-#include "AWS.h"
+//#include "AWS.h"
 
 
 class ServerForm : public CFormView
@@ -51,13 +51,16 @@ public:
 	int Count;
 
 	//서버용
-	bool initaws();
+	//bool initaws();
 	void exit_s3();
 
-	SDKOptions m_options;
-	AWS* m_aws;
-
+	//SDKOptions m_options;
+	//AWS* m_aws;
+	bool onlyone=true;
 	afx_msg void OnBnClickedButton2();
+	CStatic m_StateColor;
+	afx_msg void OnPaint();
+	
 };
 
 

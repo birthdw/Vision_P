@@ -26,9 +26,6 @@
     <Filter Include="03.View\Main">
       <UniqueIdentifier>{f5032d7e-0703-435d-a3a2-aab04f4ab7be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="99.ect\NewFilter1">
-      <UniqueIdentifier>{866795b3-5784-4ddf-a9d1-1b459a0ecf77}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.Mgr">
       <UniqueIdentifier>{7cbc0e82-d9e4-4f56-993c-54e8dcbecf14}</UniqueIdentifier>
     </Filter>
