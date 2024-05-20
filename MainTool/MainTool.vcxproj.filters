@@ -133,6 +133,9 @@
     <ClInclude Include="AWS.h">
       <Filter>07.AWS</Filter>
     </ClInclude>
+    <ClInclude Include="RobotInfo.h">
+      <Filter>06.PJH</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">

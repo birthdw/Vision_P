@@ -4,7 +4,8 @@
 
 // ServerForm 폼 보기
 #include "CSocketClient.h"
-//#include "AWS.h"
+#include "AWS.h"
+#include "RobotInfo.h"
 
 
 class ServerForm : public CFormView
@@ -31,35 +32,56 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	UINT m_Port;
-	CIPAddressCtrl m_IP;
 	afx_msg void OnBnClickedTcpBut();
+	afx_msg void OnBnClickedButton2();
+	afx_msg void OnPaint();
+	afx_msg void OnBnClickedButton1();
+
+
+	virtual void OnInitialUpdate();
+
 
 	const CString IPAddress() const;	 // IP Address를 호출합니다.
 	void ClientTCP(CString strMessage);				 	 // 서버로 정보를 전송할때 사용합니다.
 	void SetList(CString strMessage);	// 리스트 컨트롤에 로그 추가
 
-	BOOL m_TCPConnect;					 // 연결, 연결끊기 스위치입니다.
+
+	UINT m_Port;
+	CIPAddressCtrl m_IP;
 	CButton m_TCP_BUTTON;
 	CSocketClient m_Client;
 	CStatic m_STATIC_TCP;
-	
-	virtual void OnInitialUpdate();
-	afx_msg void OnBnClickedButton1();
 	CListCtrl m_ListTcp;
-
-	int Count;
-
-	//서버용
-	//bool initaws();
-	void exit_s3();
-
-	//SDKOptions m_options;
-	//AWS* m_aws;
-	bool onlyone=true;
-	afx_msg void OnBnClickedButton2();
 	CStatic m_StateColor;
-	afx_msg void OnPaint();
+	CStatic m_ServerColor;
+
+
+	// 스위치
+	BOOL m_TCPConnect = TRUE;					 // 연결, 연결끊기 스위치입니다.
+	BOOL onlyone = TRUE;
+	BOOL AWSRUN = TRUE;
+	int Count = 0;
+	
+	
+	
+	
+
+	
+
+	//서버 함수
+	SDKOptions m_options;
+	AWS* m_aws = nullptr;
+
+	void exit_s3();
+	void initaws();
+
+	
+	
+
+	
+	
+	
+
 	
 };
 

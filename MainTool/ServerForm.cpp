@@ -10,6 +10,23 @@
 
 IMPLEMENT_DYNCREATE(ServerForm, CFormView)
 
+UINT initawsT(LPVOID pParam);
+UINT initawsT(LPVOID pParam)
+{
+	ServerForm* thisObj;
+	thisObj = (ServerForm*)pParam;
+	
+	while (1) {
+		if (thisObj->AWSRUN == TRUE) {
+			TRACE(_T("Thread Index "));
+			thisObj->initaws();
+		}	
+		thisObj->AWSRUN = FALSE;
+	}
+	
+	return 0;
+}
+
 ServerForm::ServerForm()
 	: CFormView(IDD_ServerForm)
 	, m_Port(0)
@@ -30,11 +47,7 @@ void ServerForm::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_TCP_CON, m_STATIC_TCP);
 	DDX_Control(pDX, IDC_LIST_TCP, m_ListTcp);
 	DDX_Control(pDX, IDC_STATE, m_StateColor);
-
-
-
-
-	
+	DDX_Control(pDX, IDC_SERCOLOR, m_ServerColor);
 }
 
 BEGIN_MESSAGE_MAP(ServerForm, CFormView)
@@ -60,7 +73,6 @@ void ServerForm::Dump(CDumpContext& dc) const
 }
 #endif
 #endif //_DEBUG
-
 
 // ServerForm 메시지 처리기
 
@@ -89,25 +101,12 @@ void ServerForm::OnInitialUpdate()
 		m_ListTcp.InsertColumn(i, &Column);
 	}
 
-	Count = 0;
-	m_TCPConnect = TRUE;
 	m_IP.SetAddress(192, 168, 0, 213);
 	m_Port = 6667;
 
-
-
-
-
-
 	UpdateData(FALSE);
 
-	//m_aws = nullptr;
-	//initaws();
-
-
-	
-	
-
+	AfxBeginThread(initawsT, this);
 
 }
 
@@ -130,7 +129,6 @@ void ServerForm::OnBnClickedTcpBut()
 		m_TCP_BUTTON.SetWindowText(L"연결끊기");
 		m_STATIC_TCP.SetWindowTextW(L"연결됨");
 		m_TCPConnect = FALSE;
-
 		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"green.bmp");
 
 
@@ -147,6 +145,7 @@ void ServerForm::OnBnClickedTcpBut()
 	}
 }
 
+
 // ip 주소 얻어오는 객체
 const CString ServerForm::IPAddress() const {
 	CString strIPAddr;
@@ -157,6 +156,7 @@ const CString ServerForm::IPAddress() const {
 
 	return strIPAddr;
 }
+
 
 // 서버에 정보를 송신하는 객체
 void ServerForm::ClientTCP(CString strMessage) {
@@ -174,21 +174,6 @@ void ServerForm::OnBnClickedButton1()
 
 }
 
-//bool ServerForm::initaws()
-//{
-//	InitAPI(m_options);
-//
-//	if (m_aws == nullptr) {
-//		m_aws = new AWS();
-//
-//	}
-//	else {
-//		exit_s3();
-//		delete m_aws;
-//		m_aws = new AWS();
-//	}
-//	return true;
-//}
 
 void ServerForm::exit_s3()
 {
@@ -203,18 +188,14 @@ void ServerForm::SetList(CString strMessage) {
 	Count++;
 }
 
+
 void ServerForm::OnBnClickedButton2()
 {
-	//m_aws->PutObject("dog.png");
+	m_aws->PutObject("dog.png");
 
-	//m_aws->Allinput("color, faulty", "('red', 'True')","dog.png");
+	m_aws->Allinput("color, faulty", "('red', 'True')","dog.png");
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
-
-
-
-
-
 
 
 void ServerForm::OnPaint()
@@ -225,5 +206,20 @@ void ServerForm::OnPaint()
 		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
 
 
+}
+
+
+void ServerForm::initaws()
+{
+	InitAPI(m_options);
+	if (m_aws == nullptr) {
+		m_aws = new AWS();
+	}
+	else {
+		exit_s3();
+		delete m_aws;
+		m_aws = new AWS();
+	}
+	ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"green.bmp");
 }
 
