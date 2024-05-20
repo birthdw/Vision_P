@@ -63,7 +63,7 @@ public:
 	int Count = 0;
 	
 	
-	
+	bool btest=false;
 	
 
 	

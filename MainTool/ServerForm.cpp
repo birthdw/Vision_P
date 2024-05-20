@@ -192,9 +192,7 @@ void ServerForm::SetList(CString strMessage) {
 void ServerForm::OnBnClickedButton2()
 {
 	m_aws->PutObject("dog.png");
-
 	m_aws->Allinput("color, faulty", "('red', 'True')","dog.png");
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
 
@@ -204,6 +202,8 @@ void ServerForm::OnPaint()
 
 	if (onlyone == true)
 		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
+	if(btest==false)
+		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"red.bmp");
 
 
 }
@@ -220,6 +220,7 @@ void ServerForm::initaws()
 		delete m_aws;
 		m_aws = new AWS();
 	}
+	btest = true;
 	ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"green.bmp");
 }
 

@@ -60,12 +60,16 @@ public:
 public:
 	void Mod_Txt(int cur, int idx, CString cstr);
 	void Set_Mod_Txt(int idx, CString cstr);
+
+	void findMostFrequentColor(const Mat& roi, int& maxR, int& maxG, int& maxB);
+
 	
 public:
 	HWND MainHndle;
 	HWND Toolviewhandle;
 	HWND ListFormHndle;
 	Mat frame;
+	Mat *roi;
 	VideoCapture cap;
 	Inference *inf;
 

@@ -64,7 +64,33 @@ bool ToolManager::Update(double t)
 	{
 		cap >> frame;
 		resize(frame, frame, Size(600, 450));
+
+		roi = new Mat(frame, Rect(200, 200, 100, 100));
+
+
+		int maxR, maxG, maxB;
+		findMostFrequentColor(*roi, maxR, maxG, maxB);
+
+		putText(frame, "R:" + to_string(maxR), Point(50, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+		putText(frame, "G:" + to_string(maxG), Point(50, 70), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+		putText(frame, "B:" + to_string(maxB), Point(50, 110), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+
+
+		if ((maxR >= 150 && maxR <= 255) && (maxG >= 150 && maxG <= 255) && (maxB >= 0 && maxB <= 100))
+			putText(frame, "YELLOW", Point(100, 110), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 0), 2);
+		else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 90) && (maxB >= 0 && maxB <= 90))
+			putText(frame, "RED", Point(100, 110), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 0),2);
+		else if ((maxR >= 0 && maxR <= 120) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
+			putText(frame, "GREEN" , Point(100, 110), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 0), 2);
+		rectangle(frame, Rect(200, 200, 100, 100), Scalar(0, 0, 255), 3);
+		imshow("TEST", frame);
+
+
 		//Detect();
+
+
+
+
 	}
 	else
 	{
@@ -97,12 +123,15 @@ void ToolManager::LateUpdate()
 void ToolManager::Render()
 {
 	//임시 렌더 코드 
-	putText(frame, "fps: " + to_string(dfps), Point(10, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
-	cv::imshow("TEST", frame);
+	//putText(frame, "fps: " + to_string(dfps), Point(10, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+	//cv::imshow("TEST", frame);
 
 	int key = cv::waitKey(1);
 	if (key == 27)
 		::PostQuitMessage(WM_QUIT);
+
+	delete roi;
+	roi = nullptr;
 
 }
 
@@ -147,7 +176,7 @@ void ToolManager::ShowPic(string Filename)
 	}
 }
 
-void ToolManager::RenderImg(CStatic* p,CString filepath)
+void ToolManager::RenderImg(CStatic* p, CString filepath)
 {
 	CImage image;
 	image.Load(filepath);//레드
@@ -247,5 +276,40 @@ void ToolManager::Set_Mod_Txt(int idx, CString cstr)
 		break;
 	default:
 		break;
+	}
+}
+
+
+void ToolManager::findMostFrequentColor(const Mat& roi, int& maxR, int& maxG, int& maxB)
+{
+	int histSize = 256;
+	float range[] = { 0, 256 };
+	const float* histRange = { range };
+	bool uniform = true, accumulate = false;
+
+	Mat b_hist, g_hist, r_hist;
+
+	vector<Mat> bgr_planes;
+	split(roi, bgr_planes);
+
+	calcHist(&bgr_planes[0], 1, 0, Mat(), b_hist, 1, &histSize, &histRange, uniform, accumulate);
+	calcHist(&bgr_planes[1], 1, 0, Mat(), g_hist, 1, &histSize, &histRange, uniform, accumulate);
+	calcHist(&bgr_planes[2], 1, 0, Mat(), r_hist, 1, &histSize, &histRange, uniform, accumulate);
+
+	maxR = maxG = maxB = 0;
+	int maxCountR = 0, maxCountG = 0, maxCountB = 0;
+	for (int i = 0; i < histSize; ++i) {
+		if (b_hist.at<float>(i) > maxCountB) {
+			maxCountB = b_hist.at<float>(i);
+			maxB = i;
+		}
+		if (g_hist.at<float>(i) > maxCountG) {
+			maxCountG = g_hist.at<float>(i);
+			maxG = i;
+		}
+		if (r_hist.at<float>(i) > maxCountR) {
+			maxCountR = r_hist.at<float>(i);
+			maxR = i;
+		}
 	}
 }
