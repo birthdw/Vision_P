@@ -15,7 +15,7 @@ class ServerForm : public CFormView
 protected:
 	ServerForm();           // 동적 만들기에 사용되는 protected 생성자입니다.
 	virtual ~ServerForm();
-
+	AWSINFO m_awsinfo;
 public:
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ServerForm };
@@ -45,6 +45,8 @@ public:
 	void ClientTCP(CString strMessage);				 	 // 서버로 정보를 전송할때 사용합니다.
 	void SetList(CString strMessage);	// 리스트 컨트롤에 로그 추가
 
+	AWSINFO GetAwsInfo();
+	void SetAwsInfo (AWSINFO pAWS);
 
 	UINT m_Port;
 	CIPAddressCtrl m_IP;
@@ -63,7 +65,7 @@ public:
 	int Count = 0;
 	
 	
-	bool btest=false;
+	vector<vector<string>> m_boxlist;
 	
 
 	
@@ -83,6 +85,7 @@ public:
 	
 
 	
+	afx_msg void OnLvnItemchangedListTcp(NMHDR* pNMHDR, LRESULT* pResult);
 };
 
 

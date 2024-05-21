@@ -9,6 +9,7 @@
 #include <aws/s3/S3Client.h>
 #include <aws/s3/model/GetObjectRequest.h>
 #include <aws/s3/model/PutObjectRequest.h>
+#include <aws/s3/model/DeleteObjectsRequest.h>
 
 using namespace std;
 using namespace Aws;
@@ -129,7 +130,7 @@ bool AWS::RDSinserts3Data(const char* dataname)
 
     if (PQresultStatus(res1) == PGRES_TUPLES_OK) {
 
-        string insert_query = "INSERT INTO public.s3data (id,url) VALUES (" + string(PQgetvalue(res1,0,0)) + ",'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(dataname) + "')";
+        string insert_query = "INSERT INTO public.s3data (id, data, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ", LOCALTIMESTAMP(0),'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(dataname) + "')";
         //  string insert_query = "INSERT INTO public.thing (id, username, password) VALUES ('3', 'c', '1234')";
         PGresult* res = PQexec(conn, insert_query.c_str());
         if (PQresultStatus(res) != PGRES_COMMAND_OK) {
@@ -144,10 +145,10 @@ bool AWS::RDSinserts3Data(const char* dataname)
 }
 
 // 데이터 테이블 연동 함수
-bool AWS::RDSjoinData()
+vector<vector<string>> AWS::RDSjoinData()
 {
-
-    string join_query = "SELECT a.id, a.color, a.faulty, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id";
+    vector<vector<string>> listvector;
+    string join_query = "SELECT a.id, a.color, a.faulty, b.data, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id";
 
     PGresult* res = PQexec(conn, join_query.c_str());
 
@@ -155,21 +156,33 @@ bool AWS::RDSjoinData()
         int rows = PQntuples(res);
         int columns = PQnfields(res); // 가져온 열의 수
         for (int i = 0; i < rows; ++i) {
+            vector<string> row; // 각 행을 저장할 벡터
             // 실제 가져온 열의 수만큼만 출력
             for (int j = 0; j < columns; ++j) {
-                cout << PQgetvalue(res, i, j) << "\t";
+                row.push_back(PQgetvalue(res, i, j)); // 행의 각 열을 벡터에 추가
+            }
+            listvector.push_back(row); // 행 벡터를 2차원 벡터에 추가
+            //cout << endl;
+        }
+        PQclear(res);
+        return listvector;
+        // 데이터를 출력해 봅니다.
+        for (const auto& row : listvector) {
+            for (const auto& value : row) {
+                cout << value << " ";
             }
             cout << endl;
         }
     }
     else {
         cerr << "Selection failed: " << PQerrorMessage(conn) << endl;
-        return false;
+
+        PQclear(res);
+
+        return listvector;
     }
 
-    PQclear(res);
-
-    return true;
+    return listvector;
 }
 
 // 연결 확인 함수
@@ -206,45 +219,51 @@ bool AWS::JoinS3()
 bool AWS::PutObject(const String& fileName)
 {
     S3Client s3_client(m_clientConfig);// S3 클라이언트 생성
+    string select_query = "SELECT id FROM (SELECT * FROM thing ORDER BY id DESC LIMIT 1)";
+    //  string select_query = "SELECT * FROM thing";
 
-    // 오브젝트 추가 요청 생성
-    PutObjectRequest request;
-    request.SetBucket(bucketName);
-    request.SetKey(fileName);
+    PGresult* res1 = PQexec(conn, select_query.c_str());
 
-    // 파일 입력 스트림 생성
-    shared_ptr<IOStream> inputData =
-        MakeShared<FStream>("SampleAllocationTag",
-            fileName.c_str(),
-            std::ios_base::in | std::ios_base::binary);
+    if (PQresultStatus(res1) == PGRES_TUPLES_OK) {
 
-    // 파일 읽기 오류 처리
-    if (!*inputData) {
-        cerr << "Error unable to read file " << fileName << endl;
-        AfxMessageBox(_T("ERROR file"));
-        return false;
+        // 오브젝트 추가 요청 생성
+        PutObjectRequest request;
+        request.SetBucket(bucketName);
+        request.SetKey(String(PQgetvalue(res1, 0, 0)) + ".jpg");
+
+        // 파일 입력 스트림 생성
+        shared_ptr<IOStream> inputData =
+            MakeShared<FStream>("SampleAllocationTag",
+                fileName.c_str(),
+                std::ios_base::in | std::ios_base::binary);
+
+        // 파일 읽기 오류 처리
+        if (!*inputData) {
+            cerr << "Error unable to read file " << fileName << endl;
+            return false;
+        }
+
+        // 요청에 파일 데이터 설정
+        request.SetBody(inputData);
+
+        // 오브젝트 추가 요청 전송
+        PutObjectOutcome outcome =
+            s3_client.PutObject(request);
+
+        // 오브젝트 추가 결과 처리
+        if (!outcome.IsSuccess()) {
+            cerr << "Error: PutObject: " <<
+                outcome.GetError().GetMessage() << endl;
+            return false;
+        }
+        else {
+            cout << "Added object '" << fileName << "' to bucket '"
+                << bucketName << "'." << endl;
+        }
+        return outcome.IsSuccess();
+
     }
-
-    // 요청에 파일 데이터 설정
-    request.SetBody(inputData);
-
-    // 오브젝트 추가 요청 전송
-    PutObjectOutcome outcome =
-        s3_client.PutObject(request);
-
-    // 오브젝트 추가 결과 처리
-    if (!outcome.IsSuccess()) {
-        cerr << "Error: PutObject: " <<
-            outcome.GetError().GetMessage() << endl;
-        AfxMessageBox(_T("ERROR PUT"));
-        return false;
-    }
-    else {
-        cout << "Added object '" << fileName << "' to bucket '"
-            << bucketName << "'." << endl;
-    }
-
-    return outcome.IsSuccess();
+    return false;
 }
 
 // 오브젝트 가져오기 함수
@@ -288,6 +307,47 @@ bool AWS::GetObject(const String& objectKey)
 
 }
 
+// 오브젝트 삭제 함수
+bool AWS::DeleteObjects(const vector<String>& objectKey)
+{
+
+    S3Client client(m_clientConfig);
+    DeleteObjectsRequest request;
+
+    Aws::S3::Model::Delete deleteObject;
+    for (const String& ObjectKey : objectKey)
+    {
+        deleteObject.AddObjects(ObjectIdentifier().WithKey(ObjectKey));
+    }
+
+    request.SetDelete(deleteObject);
+    request.SetBucket(bucketName);
+
+    DeleteObjectsOutcome outcome =
+        client.DeleteObjects(request);
+
+    if (!outcome.IsSuccess()) {
+        auto err = outcome.GetError();
+        std::cerr << "Error deleting objects. " <<
+            err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
+    }
+    else {
+        cout << "Successfully deleted the objects.";
+        for (size_t i = 0; i < objectKey.size(); ++i)
+        {
+            cout << objectKey[i];
+            if (i < objectKey.size() - 1)
+            {
+                std::cout << ", ";
+            }
+        }
+
+        cout << " from bucket " << bucketName << "." << std::endl;
+    }
+
+    return outcome.IsSuccess();
+}
+
 //한번에 모든 테이블 데이터 올리기
 void AWS::Allinput(
     const char* columnname,
@@ -298,7 +358,7 @@ void AWS::Allinput(
 {
     RDSinsertData(columnname, inputData, tablename);
     PutObject(fileName.c_str());
-    RDSinserts3Data(fileName.c_str());
+    //RDSinserts3Data(fileName.c_str());
 
 }
 
@@ -307,6 +367,7 @@ void AWS::AlldeleteData(const char* deleteline, const char* columnname, const ch
 {
     RDSdeleteData(columnname, deleteline, tablename);
     RDSdeleteData(columnname, deleteline, tablename2);
+    //truncate table tableName restart identity//tabelName 테이블의 시퀀스를 자동으로 재시작하며 테이블 데이터를 모두 삭제한다
 }
 
 // S3 연결 종료 함수

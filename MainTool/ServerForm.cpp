@@ -17,11 +17,29 @@ UINT initawsT(LPVOID pParam)
 	thisObj = (ServerForm*)pParam;
 	
 	while (1) {
-		if (thisObj->AWSRUN == TRUE) {
+		if (thisObj->GetAwsInfo() == AWSINFO::AWSEXIT) {
+			return 0;
+		}
+		if (thisObj->GetAwsInfo() == AWSINFO::SEVERSTART) {
 			TRACE(_T("Thread Index "));
 			thisObj->initaws();
+			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}	
-		thisObj->AWSRUN = FALSE;
+		else if (thisObj->GetAwsInfo() == AWSINFO::AWSSEND) {
+			thisObj->m_aws->Allinput("color, faulty", "('red', 'True')", "dog.png");
+			thisObj->SetAwsInfo(AWSINFO::STAY);
+
+		}
+		else if (thisObj->GetAwsInfo() == AWSINFO::AWSCHEAK) {
+			thisObj->m_aws->RDSckeckConnection();
+			thisObj->SetAwsInfo(AWSINFO::STAY);
+		}
+		else if (thisObj->GetAwsInfo() == AWSINFO::AWSLIST) {
+			thisObj->m_boxlist = thisObj->m_aws->RDSjoinData();
+			thisObj->SetAwsInfo(AWSINFO::STAY);
+		}
+
+			Sleep(100);
 	}
 	
 	return 0;
@@ -55,6 +73,7 @@ BEGIN_MESSAGE_MAP(ServerForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON1, &ServerForm::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &ServerForm::OnBnClickedButton2)
 	ON_WM_PAINT()
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_TCP, &ServerForm::OnLvnItemchangedListTcp)
 END_MESSAGE_MAP()
 
 
@@ -106,6 +125,7 @@ void ServerForm::OnInitialUpdate()
 
 	UpdateData(FALSE);
 
+	m_awsinfo = AWSINFO::SEVERSTART;
 	AfxBeginThread(initawsT, this);
 
 }
@@ -188,11 +208,14 @@ void ServerForm::SetList(CString strMessage) {
 	Count++;
 }
 
-
 void ServerForm::OnBnClickedButton2()
 {
-	m_aws->PutObject("dog.png");
-	m_aws->Allinput("color, faulty", "('red', 'True')","dog.png");
+	//m_aws->PutObject("dog.png");
+
+	//m_aws->Allinput("color, faulty", "('red', 'True')","dog.png");
+
+	m_awsinfo = AWSINFO::AWSSEND;
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
 
@@ -202,12 +225,9 @@ void ServerForm::OnPaint()
 
 	if (onlyone == true)
 		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
-	if(btest==false)
-		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"red.bmp");
 
 
 }
-
 
 void ServerForm::initaws()
 {
@@ -220,7 +240,23 @@ void ServerForm::initaws()
 		delete m_aws;
 		m_aws = new AWS();
 	}
-	btest = true;
 	ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"green.bmp");
 }
 
+AWSINFO ServerForm::GetAwsInfo()
+{
+	return m_awsinfo;
+}
+
+void ServerForm::SetAwsInfo(AWSINFO pAWS)
+{
+	m_awsinfo = pAWS;
+}
+
+
+void ServerForm::OnLvnItemchangedListTcp(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	*pResult = 0;
+}

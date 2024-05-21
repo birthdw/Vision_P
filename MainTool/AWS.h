@@ -8,6 +8,7 @@
 #include <aws/s3/S3Client.h>
 #include <aws/s3/model/GetObjectRequest.h>
 #include <aws/s3/model/PutObjectRequest.h>
+#include <aws/s3/model/DeleteObjectsRequest.h>
 
 using namespace std;
 using namespace Aws;
@@ -40,7 +41,7 @@ public:
     bool RDSdeleteData(const char* columnname, const char* deleteline, const char* tablename = "thing");// 데이터 삭제 함수
     bool RDScheckDataExists(const char* columnname, const char* findwhat, const char* tablename = "thing");// 데이터 존재 확인 함수
     bool RDSinserts3Data(const char* dataname);// S3 데이터 삽입 함수
-    bool RDSjoinData();// 데이터 테이블 연동 함수
+    vector<vector<string>> AWS::RDSjoinData();// 데이터 테이블 연동 함수
     bool RDSckeckConnection();// 연결 확인 함수
     void RDSconnectionEnd();// 연결 종료 함수
 
@@ -48,6 +49,7 @@ public:
     bool JoinS3();// S3연결 함수
     bool PutObject(const String& fileName);// 오브젝트 추가 함수
     bool GetObject(const String& objectKey);// 오브젝트 가져오기 함수
+    bool DeleteObjects(const std::vector<Aws::String>& objectKey);// 오브젝트 삭제 함수
     void S3connectionEnd();// S3 연결 종료 함수
 
     //한번에 모든 테이블 데이터 올리기
