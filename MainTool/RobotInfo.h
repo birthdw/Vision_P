@@ -11,3 +11,12 @@ enum class AWSINFO :int {
 	AWSEXIT,
 	AWSLIST
 };
+
+typedef struct {
+	string id;
+	string color;
+	string faulty;
+	string data;
+	string url;
+
+}AWSSTRUCT;

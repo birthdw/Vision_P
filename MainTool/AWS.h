@@ -41,7 +41,7 @@ public:
     bool RDSdeleteData(const char* columnname, const char* deleteline, const char* tablename = "thing");// 데이터 삭제 함수
     bool RDScheckDataExists(const char* columnname, const char* findwhat, const char* tablename = "thing");// 데이터 존재 확인 함수
     bool RDSinserts3Data(const char* dataname);// S3 데이터 삽입 함수
-    vector<vector<string>> AWS::RDSjoinData();// 데이터 테이블 연동 함수
+    vector<AWSSTRUCT> AWS::RDSjoinData();// 데이터 테이블 연동 함수
     bool RDSckeckConnection();// 연결 확인 함수
     void RDSconnectionEnd();// 연결 종료 함수
 

@@ -10,6 +10,7 @@
 #include <aws/s3/model/GetObjectRequest.h>
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/s3/model/DeleteObjectsRequest.h>
+#include "RobotInfo.h"
 
 using namespace std;
 using namespace Aws;
@@ -145,9 +146,9 @@ bool AWS::RDSinserts3Data(const char* dataname)
 }
 
 // 데이터 테이블 연동 함수
-vector<vector<string>> AWS::RDSjoinData()
+vector<AWSSTRUCT> AWS::RDSjoinData()
 {
-    vector<vector<string>> listvector;
+    vector<AWSSTRUCT> listvector;
     string join_query = "SELECT a.id, a.color, a.faulty, b.data, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id";
 
     PGresult* res = PQexec(conn, join_query.c_str());
@@ -156,11 +157,14 @@ vector<vector<string>> AWS::RDSjoinData()
         int rows = PQntuples(res);
         int columns = PQnfields(res); // 가져온 열의 수
         for (int i = 0; i < rows; ++i) {
-            vector<string> row; // 각 행을 저장할 벡터
+            AWSSTRUCT row; // 각 행을 저장할 벡터
             // 실제 가져온 열의 수만큼만 출력
-            for (int j = 0; j < columns; ++j) {
-                row.push_back(PQgetvalue(res, i, j)); // 행의 각 열을 벡터에 추가
-            }
+            row.id = PQgetvalue(res, i, 0);
+            row.color = PQgetvalue(res, i, 1);
+            row.faulty = PQgetvalue(res, i, 2);
+            row.data = PQgetvalue(res, i, 3);
+            row.url = PQgetvalue(res, i, 4);
+
             listvector.push_back(row); // 행 벡터를 2차원 벡터에 추가
             //cout << endl;
         }
