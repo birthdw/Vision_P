@@ -36,6 +36,7 @@ public:
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnPaint();
 	afx_msg void OnBnClickedButton1();
+	afx_msg LRESULT OnSocketThreadFinished(WPARAM wParam, LPARAM lParam);
 
 
 	virtual void OnInitialUpdate();
@@ -56,6 +57,8 @@ public:
 	CListCtrl m_ListTcp;
 	CStatic m_StateColor;
 	CStatic m_ServerColor;
+	STATUCOLOR m_ControlColor = STATUCOLOR::STAY;
+	COLORTHREAD m_ThreadColor = COLORTHREAD::THREADRUN;
 
 
 	// 스위치
@@ -63,6 +66,7 @@ public:
 	BOOL onlyone = TRUE;
 	BOOL AWSRUN = TRUE;
 	int Count = 0;
+	BOOL m_SocketThreadSWICHT = TRUE;
 	
 	
 	vector<AWSLIST> m_boxlist;

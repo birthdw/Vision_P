@@ -6,6 +6,8 @@
 #include "ServerForm.h"
 #include "ToolManager.h"
 
+#define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
+
 // ServerForm
 
 IMPLEMENT_DYNCREATE(ServerForm, CFormView)
@@ -15,7 +17,6 @@ UINT initawsT(LPVOID pParam)
 {
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
-	
 	while (1) {
 		if (thisObj->GetAwsInfo() == AWSINFO::AWSEXIT) {
 			return 0;
@@ -36,13 +37,67 @@ UINT initawsT(LPVOID pParam)
 		}
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSLIST) {
 			thisObj->m_boxlist = thisObj->m_aws->RDSjoinData();
+			TRACE("%d\r\n", thisObj->m_boxlist);
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
-
-			Sleep(100);
+		thisObj->InvalidateRect(NULL, FALSE);
+		Sleep(100);
 	}
 	
 	return 0;
+}
+
+UINT ThreadSocket(LPVOID pParam);
+UINT ThreadSocket(LPVOID pParam)
+{
+	ServerForm* thisObj = static_cast<ServerForm*>(pParam);
+
+	CSocketClient hSocket;
+	hSocket.Create();
+	CString strMessage = _T("END");
+	int nLength = strMessage.GetLength() * sizeof(TCHAR);
+	
+
+	BOOL success = FALSE;
+	if (thisObj->m_TCPConnect) {
+		if (hSocket.Connect(thisObj->IPAddress(), thisObj->m_Port) == FALSE)
+		{
+			hSocket.Close();
+			success = FALSE;
+		}
+		else
+		{
+			Sleep(100);
+			hSocket.Send((LPCTSTR)strMessage, nLength);
+			hSocket.Close();
+			success = TRUE;
+		}
+	}
+	else {
+		thisObj->m_ControlColor = STATUCOLOR::SOCKETRED;
+		success = TRUE;
+	}
+	
+	// 메인 스레드에 메시지 보내기
+	::PostMessage(thisObj->GetSafeHwnd(), WM_SOCKET_THREAD_FINISHED, (WPARAM)success, 0);
+
+	return 0;
+}
+
+UINT COLORRODING(LPVOID pParam);
+UINT COLORRODING(LPVOID pParam) {
+	ServerForm* thisObj;
+	thisObj = (ServerForm*)pParam;
+
+	while (1) {
+		if (thisObj->m_ThreadColor == COLORTHREAD::THREADEXIT) {
+			return 0;
+		}	
+		else if (thisObj->m_ThreadColor == COLORTHREAD::THREADRUN) {
+			thisObj->InvalidateRect(NULL, FALSE);
+			Sleep(100);
+		}	
+	}
 }
 
 ServerForm::ServerForm()
@@ -54,6 +109,7 @@ ServerForm::ServerForm()
 
 ServerForm::~ServerForm()
 {
+	m_ThreadColor = COLORTHREAD::THREADEXIT;
 }
 
 void ServerForm::DoDataExchange(CDataExchange* pDX)
@@ -74,6 +130,7 @@ BEGIN_MESSAGE_MAP(ServerForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON2, &ServerForm::OnBnClickedButton2)
 	ON_WM_PAINT()
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_TCP, &ServerForm::OnLvnItemchangedListTcp)
+	ON_MESSAGE(WM_SOCKET_THREAD_FINISHED, &ServerForm::OnSocketThreadFinished)
 END_MESSAGE_MAP()
 
 
@@ -104,7 +161,7 @@ void ServerForm::OnInitialUpdate()
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	LVCOLUMN Column;
-
+	
 	UpdateData();
 
 	Column.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
@@ -122,12 +179,12 @@ void ServerForm::OnInitialUpdate()
 
 	m_IP.SetAddress(192, 168, 0, 213);
 	m_Port = 6667;
-
+	
 	UpdateData(FALSE);
-
 	m_awsinfo = AWSINFO::SEVERSTART;
+	m_ControlColor = STATUCOLOR::ALLSETTING;
+	AfxBeginThread(COLORRODING, this);
 	AfxBeginThread(initawsT, this);
-
 }
 
 
@@ -138,30 +195,11 @@ void ServerForm::OnBnClickedTcpBut()
 
 	// 소켓 통신 연결, 연결끊기를 정의합니다.
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (m_TCPConnect) {
-		m_Client.Create();
+	if (m_SocketThreadSWICHT) {
+		m_ControlColor = STATUCOLOR::SOCKETYELLOW;
+		m_SocketThreadSWICHT = FALSE;
 		UpdateData(TRUE);
-		if (m_Client.Connect(IPAddress(), m_Port) == FALSE) {
-			AfxMessageBox(_T("ERROR : Failed to connect Server"));
-			m_Client.Close();
-			return;
-		}
-		m_TCP_BUTTON.SetWindowText(L"연결끊기");
-		m_STATIC_TCP.SetWindowTextW(L"연결됨");
-		m_TCPConnect = FALSE;
-		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"green.bmp");
-
-
-	}
-	else if (!m_TCPConnect) {
-		ClientTCP(_T("END"));
-		m_Client.Close();
-		m_TCP_BUTTON.SetWindowText(L"연결");
-		m_STATIC_TCP.SetWindowTextW(L"연결끊김");
-		m_TCPConnect = TRUE;
-
-		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
-
+		AfxBeginThread(ThreadSocket, this);
 	}
 }
 
@@ -195,9 +233,51 @@ void ServerForm::OnBnClickedButton1()
 }
 
 
+LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
+{
+	BOOL success = static_cast<BOOL>(wParam);
+
+	if (success)
+	{
+		UpdateData(TRUE);
+
+		if (m_TCPConnect) {
+			m_Client.Create();
+			if (m_Client.Connect(IPAddress(), m_Port) == FALSE) {
+				AfxMessageBox(_T("ERROR : Failed to connect Server"));
+				m_Client.Close();
+				return 0;
+			}
+			m_TCP_BUTTON.SetWindowText(L"연결끊기");
+			m_STATIC_TCP.SetWindowTextW(L"연결됨");
+			m_TCPConnect = FALSE;
+			m_ControlColor = STATUCOLOR::SOCKETGREEN;
+		}
+		else if (!m_TCPConnect) {
+			ClientTCP(_T("END"));
+			m_Client.Close();
+			m_TCP_BUTTON.SetWindowText(L"연결");
+			m_STATIC_TCP.SetWindowTextW(L"연결끊김");
+			m_TCPConnect = TRUE;
+			m_ControlColor = STATUCOLOR::SOCKETRED;
+		}
+	}
+	else
+	{
+		AfxMessageBox(_T("Failed to connect socket."));
+		m_ControlColor = STATUCOLOR::SOCKETRED;
+	}
+
+	// 추가 작업 수행
+	m_SocketThreadSWICHT = TRUE;
+
+	return 0;
+}
+
+
 void ServerForm::exit_s3()
 {
-	//ShutdownAPI(m_options);
+	ShutdownAPI(m_options);
 }
 
 
@@ -223,10 +303,43 @@ void ServerForm::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 
-	if (onlyone == true)
+	switch (m_ControlColor)
+	{
+	case STATUCOLOR::ALLSETTING:
+		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"yellow.bmp");
 		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
-
-
+		m_ControlColor = STATUCOLOR::STAY;
+		break;
+	case STATUCOLOR::ALLEXIT:
+		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"red.bmp");
+		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
+		m_ControlColor = STATUCOLOR::STAY;
+		break;
+	case STATUCOLOR::SERVERRED:
+		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"red.bmp");
+		m_ControlColor = STATUCOLOR::STAY;
+		break;
+	case STATUCOLOR::SERVERYELLOW:
+		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"yellow.bmp");
+		m_ControlColor = STATUCOLOR::STAY;
+		break;
+	case STATUCOLOR::SERVERGREEN:
+		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"green.bmp");
+		m_ControlColor = STATUCOLOR::STAY;
+		break;
+	case STATUCOLOR::SOCKETRED:
+		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
+		m_ControlColor = STATUCOLOR::STAY;
+		break;
+	case STATUCOLOR::SOCKETYELLOW:
+		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"yellow.bmp");
+		m_ControlColor = STATUCOLOR::STAY;
+		break;
+	case STATUCOLOR::SOCKETGREEN:
+		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"green.bmp");
+		m_ControlColor = STATUCOLOR::STAY;
+		break;
+	}
 }
 
 void ServerForm::initaws()
@@ -240,7 +353,7 @@ void ServerForm::initaws()
 		delete m_aws;
 		m_aws = new AWS();
 	}
-	ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"green.bmp");
+	m_ControlColor = STATUCOLOR::SERVERGREEN;
 }
 
 AWSINFO ServerForm::GetAwsInfo()

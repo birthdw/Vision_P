@@ -20,3 +20,22 @@ typedef struct {
 	string url;
 
 }AWSLIST;
+
+enum class STATUCOLOR : int
+{
+	STAY = 0,
+	ALLSETTING,
+	ALLEXIT,
+	SERVERRED,
+	SERVERYELLOW,
+	SERVERGREEN,
+	SOCKETRED,
+	SOCKETYELLOW,
+	SOCKETGREEN,
+};
+
+enum class COLORTHREAD : int
+{
+	THREADRUN = 0,
+	THREADEXIT
+};
