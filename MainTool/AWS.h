@@ -10,6 +10,8 @@
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/s3/model/DeleteObjectsRequest.h>
 
+#include "RobotInfo.h"
+
 using namespace std;
 using namespace Aws;
 using namespace Aws::Client;

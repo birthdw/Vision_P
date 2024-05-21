@@ -170,13 +170,13 @@ vector<AWSSTRUCT> AWS::RDSjoinData()
         }
         PQclear(res);
         return listvector;
-        // 데이터를 출력해 봅니다.
-        for (const auto& row : listvector) {
-            for (const auto& value : row) {
-                cout << value << " ";
-            }
-            cout << endl;
-        }
+        //// 데이터를 출력해 봅니다.
+        //for (const auto& row : listvector) {
+        //    for (const auto& value : row) {
+        //        cout << value << " ";
+        //    }
+        //    cout << endl;
+        //}
     }
     else {
         cerr << "Selection failed: " << PQerrorMessage(conn) << endl;
