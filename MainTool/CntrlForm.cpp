@@ -18,6 +18,7 @@ CntrlForm::CntrlForm()
 
 CntrlForm::~CntrlForm()
 {
+	int a = 0;
 }
 
 void CntrlForm::DoDataExchange(CDataExchange* pDX)
