@@ -10,6 +10,7 @@
 #include <aws/s3/model/GetObjectRequest.h>
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/s3/model/DeleteObjectsRequest.h>
+
 #include "RobotInfo.h"
 
 using namespace std;
@@ -122,7 +123,7 @@ bool AWS::RDScheckDataExists(const char* columnname, const char* findwhat, const
 }
 
 // S3 데이터 삽입 함수
-bool AWS::RDSinserts3Data(const char* dataname)
+bool AWS::RDSinserts3Data()
 {
     string select_query = "SELECT id FROM (SELECT * FROM thing ORDER BY id DESC LIMIT 1)";
     //  string select_query = "SELECT * FROM thing";
@@ -131,7 +132,7 @@ bool AWS::RDSinserts3Data(const char* dataname)
 
     if (PQresultStatus(res1) == PGRES_TUPLES_OK) {
 
-        string insert_query = "INSERT INTO public.s3data (id, data, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ", LOCALTIMESTAMP(0),'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(dataname) + "')";
+        string insert_query = "INSERT INTO public.s3data (id, date, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ", LOCALTIMESTAMP(0),'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(PQgetvalue(res1, 0, 0)) + ".jpg')";
         //  string insert_query = "INSERT INTO public.thing (id, username, password) VALUES ('3', 'c', '1234')";
         PGresult* res = PQexec(conn, insert_query.c_str());
         if (PQresultStatus(res) != PGRES_COMMAND_OK) {
@@ -146,10 +147,10 @@ bool AWS::RDSinserts3Data(const char* dataname)
 }
 
 // 데이터 테이블 연동 함수
-vector<AWSSTRUCT> AWS::RDSjoinData()
+vector<AWSLIST> AWS::RDSjoinData()
 {
-    vector<AWSSTRUCT> listvector;
-    string join_query = "SELECT a.id, a.color, a.faulty, b.data, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id";
+    vector<AWSLIST> listvector;
+    string join_query = "SELECT a.id, a.color, a.faulty, b.date, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id";
 
     PGresult* res = PQexec(conn, join_query.c_str());
 
@@ -157,7 +158,7 @@ vector<AWSSTRUCT> AWS::RDSjoinData()
         int rows = PQntuples(res);
         int columns = PQnfields(res); // 가져온 열의 수
         for (int i = 0; i < rows; ++i) {
-            AWSSTRUCT row; // 각 행을 저장할 벡터
+            AWSLIST row; // 각 행을 저장할 벡터
             // 실제 가져온 열의 수만큼만 출력
             row.id = PQgetvalue(res, i, 0);
             row.color = PQgetvalue(res, i, 1);
@@ -170,13 +171,13 @@ vector<AWSSTRUCT> AWS::RDSjoinData()
         }
         PQclear(res);
         return listvector;
-        // 데이터를 출력해 봅니다.
-        for (const auto& row : listvector) {
-            for (const auto& value : row) {
-                cout << value << " ";
-            }
-            cout << endl;
-        }
+        //// 데이터를 출력해 봅니다.
+        //for (const auto& row : listvector) {
+        //    for (const auto& value : row) {
+        //        cout << value << " ";
+        //    }
+        //    cout << endl;
+        //}
     }
     else {
         cerr << "Selection failed: " << PQerrorMessage(conn) << endl;
@@ -261,6 +262,7 @@ bool AWS::PutObject(const String& fileName)
             return false;
         }
         else {
+            RDSinserts3Data();
             cout << "Added object '" << fileName << "' to bucket '"
                 << bucketName << "'." << endl;
         }
@@ -371,6 +373,7 @@ void AWS::AlldeleteData(const char* deleteline, const char* columnname, const ch
 {
     RDSdeleteData(columnname, deleteline, tablename);
     RDSdeleteData(columnname, deleteline, tablename2);
+    DeleteObjects({ string(deleteline) + ".jpg" });
     //truncate table tableName restart identity//tabelName 테이블의 시퀀스를 자동으로 재시작하며 테이블 데이터를 모두 삭제한다
 }
 

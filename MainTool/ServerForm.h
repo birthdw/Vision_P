@@ -65,7 +65,7 @@ public:
 	int Count = 0;
 	
 	
-	vector<AWSSTRUCT> m_boxlist;
+	vector<AWSLIST> m_boxlist;
 	
 
 	

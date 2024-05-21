@@ -19,4 +19,4 @@ typedef struct {
 	string data;
 	string url;
 
-}AWSSTRUCT;
+}AWSLIST;
