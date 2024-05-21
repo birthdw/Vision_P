@@ -60,23 +60,76 @@ BOOL TestTab::OnInitDialog()
 }
 
 
+
+
+
+
+
+
+
+void TestTab::LoadOnlineImage(LPCTSTR url)
+{
+	CInternetSession session;
+	CHttpFile* pFile = NULL;
+
+	try {
+		pFile = (CHttpFile*)session.OpenURL(url);
+		DWORD dwStatusCode;
+		pFile->QueryInfoStatusCode(dwStatusCode);
+		if (dwStatusCode == HTTP_STATUS_OK) {
+			CFile file;
+			CString tempPath;
+			GetTempPath(MAX_PATH, tempPath.GetBuffer(MAX_PATH));
+			tempPath.ReleaseBuffer();
+
+			CString tempFile = tempPath + GetLast(url);
+			file.Open(tempFile, CFile::modeCreate | CFile::modeWrite);
+			DWORD dwRead;
+			BYTE pBuffer[1024];
+			while ((dwRead = pFile->Read(pBuffer, sizeof(pBuffer))) > 0) {
+				file.Write(pBuffer, dwRead);
+			}
+			file.Close();
+
+
+			CImage image;
+			image.Load(tempFile);//예외 기본
+
+			CPaintDC dc(this);
+			image.StretchBlt(dc, 0, 0, 700, 467);
+		}
+		else {
+			// 오류
+		}
+	}
+	catch (CInternetException* pEx) {
+		pEx->Delete();
+	}
+
+	if (pFile)
+		pFile->Close();
+	session.Close();
+}
+
+
 void TestTab::OnPaint()
 {
 	UpdateData(TRUE);
-	CImage png;
-	HRESULT res;
-	if(ToolManager::GetInstance()->m_strPickinLst !=L"")
-		 res = png.Load(ToolManager::GetInstance()->m_strPickinLst);
-	else
-		 res = png.Load(L"ns.png");
 
-	if (res == S_OK)
+
+	if(ToolManager::GetInstance()->m_strPickinLst !=L"")
+		LoadOnlineImage(ToolManager::GetInstance()->m_strPickinLst);
+	else
 	{
+		CImage png;
 		CPaintDC dc(this);
 		png.StretchBlt(dc, 0, 0, 700, 467);
-		SetDlgItemTextW(IDC_EDIT1,ToolManager::GetInstance()->m_strPickinLst2);
+		png.Load(L"ns.png");
 	}
+
+	SetDlgItemTextW(IDC_EDIT1,ToolManager::GetInstance()->m_strPickinLst2);
 	UpdateData(FALSE);
+
 }
 
 
@@ -100,6 +153,30 @@ void TestTab::OnBnClickedButton2()
 void TestTab::OnBnClickedButton5()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+CString TestTab::GetLast(CString url)
+{
+	vector<CString> vec;
+	CString res=L"";
+	for (int i = 0; i < url.GetLength(); ++i)
+	{
+		if (url[i] != '/')
+			res += url[i];
+		else
+		{
+			vec.emplace_back(res);
+			res = L"";
+		}
+		if (i == url.GetLength() - 1)
+		{
+			vec.emplace_back(res);
+			res = L"";
+		}
+	}
+
+
+	return CString(vec[vec.size()-1]);
 }
 
 void TestTab::Setcnt(int cnt)

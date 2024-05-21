@@ -24,13 +24,14 @@ protected:
 
 public:
 	virtual BOOL OnInitDialog();
+	void LoadOnlineImage(LPCTSTR url);
 	afx_msg void OnPaint();
 	CEdit m_Testtxt;
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton5();
 
-
+	CString GetLast(CString url);
 
 public:
 	void Setcnt(int cnt);
@@ -42,4 +43,5 @@ public:
 
 public:
 	int Curcnt = 0;
+	int imgcnt = 0;
 };

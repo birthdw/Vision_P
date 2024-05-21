@@ -162,8 +162,6 @@ void ResultForm::OnPaint()
 
 	CImage image;
 
-	
-
 	switch (ToolManager::GetInstance()->m_Res)
 	{
 	case RESULT::RES_END:
@@ -192,6 +190,11 @@ void ResultForm::OnPaint()
 	cdc = m_Color.GetDC();
 	image.StretchBlt(cdc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);
 	ReleaseDC(cdc);
+
+
+
+
+	
 }
 
 
