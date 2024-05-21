@@ -28,13 +28,18 @@
 #define IDC_STATIC_TCP_CON              1011
 #define IDC_BUTTON7                     1012
 #define IDC_TCP_BUT                     1012
+#define IDC_b4                          1012
 #define IDC_BUTTON8                     1013
 #define IDC_STATIC_TCP                  1013
+#define IDC_b5                          1013
 #define IDC_BUTTON9                     1014
 #define IDC_STATIC_TCP_IP               1014
+#define IDC_b6                          1014
 #define IDC_BUTTON10                    1015
 #define IDC_STATIC_TCP_PORT             1015
+#define IDC_b7                          1015
 #define IDC_BUTTON11                    1016
+#define IDC_b8                          1016
 #define IDC_BUTTON12                    1017
 #define IDC_LIST3                       1017
 #define IDC_LIST_TCP                    1017
@@ -47,6 +52,9 @@
 #define IDC_STATE                       1023
 #define IDC_STATESER                    1024
 #define IDC_SERCOLOR                    1024
+#define IDC_b1                          1025
+#define IDC_b2                          1026
+#define IDC_b3                          1027
 
 // Next default values for new objects
 // 
@@ -54,7 +62,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1025
+#define _APS_NEXT_CONTROL_VALUE         1028
 #define _APS_NEXT_SYMED_VALUE           318
 #endif
 #endif

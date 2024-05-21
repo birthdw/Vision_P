@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(ResultForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON4, &ResultForm::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BUTTON5, &ResultForm::OnBnClickedButton5)
 	ON_BN_CLICKED(IDC_BUTTON6, &ResultForm::OnBnClickedButton6)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -151,4 +152,50 @@ void ResultForm::OnInitialUpdate()
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
 	m_btempdetect.EnableWindow(FALSE);
+	ToolManager::GetInstance()->m_Resform = this;
 }
+
+
+void ResultForm::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+
+	CImage image;
+
+	
+
+	switch (ToolManager::GetInstance()->m_Res)
+	{
+	case RESULT::RES_END:
+		image.Load(_T("white.bmp"));//기본
+		break;
+	case RESULT::RED:
+		image.Load(_T("red.bmp"));//레드
+		break;
+	case RESULT::YELLOW:
+		image.Load(_T("yellow.bmp"));//노랑
+		break;
+	case RESULT::GREEN:
+		image.Load(_T("green.bmp"));//초록
+		break;
+	case RESULT::FAIL:
+		image.Load(_T("black.bmp"));//불량 -> 검정
+		break;
+	default:
+		image.Load(_T("white.bmp"));//예외 기본
+		break;
+	}
+
+	CRect rect;
+	m_Color.GetWindowRect(rect);
+	CDC* cdc;
+	cdc = m_Color.GetDC();
+	image.StretchBlt(cdc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);
+	ReleaseDC(cdc);
+}
+
+
+
+
+
+

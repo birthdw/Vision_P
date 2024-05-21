@@ -4,6 +4,13 @@ class Infernece;
 class ServerForm;
 class DetectTab;
 class TestTab;
+class ResultForm;
+
+enum RESULT
+{
+	FAIL,RED,YELLOW,GREEN,RES_END
+};
+
 
 class ToolManager
 {
@@ -29,7 +36,7 @@ public:
 	void Render();
 
 public:
-	void Detect();
+	RESULT Detect();
 
 
 	void Save();
@@ -69,7 +76,7 @@ public:
 	HWND Toolviewhandle;
 	HWND ListFormHndle;
 	Mat frame;
-	Mat *roi;
+	Mat roi;
 	VideoCapture cap;
 	Inference *inf;
 
@@ -91,7 +98,13 @@ public:
 	CTabCtrl* m_tab;
 	DetectTab* m_detecttab;
 	TestTab* m_Testtab;
+	ResultForm* m_Resform;
 
+public:
+	int maxR, maxG, maxB;
+
+
+	RESULT m_Res;
 
 public:
 	string specFileName;

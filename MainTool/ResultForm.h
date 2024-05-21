@@ -38,6 +38,7 @@ public:
 	int cnt = 0;
 	CButton m_btempdetect;
 	virtual void OnInitialUpdate();
+	afx_msg void OnPaint();
 };
 
 

@@ -3,7 +3,7 @@
 
 #include "DetectTab.h"
 #include "TestTab.h"
-
+#include "ResultForm.h"
 
 ToolManager* ToolManager::m_pInstance = nullptr;
 
@@ -46,8 +46,9 @@ void ToolManager::DestroyInstance()
 void ToolManager::Initialize()
 {
 	cap.open(0, cv::CAP_DSHOW);
-	//inf = new Inference("C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.txt", false);
+	inf = new Inference("C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\Users\\user\\Desktop\\Vision_P\\MainTool\\block.txt", false);
 	m_strPickinLst = L"";
+	m_Res = RESULT::RES_END;
 }
 
 bool ToolManager::Update(double t)
@@ -59,37 +60,16 @@ bool ToolManager::Update(double t)
 	++fpscnt;
 	dtime += t;
 
-
+	maxR = 0;
+	maxG = 0;
+	maxB = 0;
 	if (FrmKilled == false)
 	{
 		cap >> frame;
 		resize(frame, frame, Size(600, 450));
-
-		roi = new Mat(frame, Rect(200, 200, 100, 100));
-
-
-		int maxR, maxG, maxB;
-		findMostFrequentColor(*roi, maxR, maxG, maxB);
-
-		putText(frame, "R:" + to_string(maxR), Point(50, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
-		putText(frame, "G:" + to_string(maxG), Point(50, 70), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
-		putText(frame, "B:" + to_string(maxB), Point(50, 110), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
-
-
-		if ((maxR >= 150 && maxR <= 255) && (maxG >= 150 && maxG <= 255) && (maxB >= 0 && maxB <= 100))
-			putText(frame, "YELLOW", Point(100, 110), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 0), 2);
-		else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 90) && (maxB >= 0 && maxB <= 90))
-			putText(frame, "RED", Point(100, 110), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 0),2);
-		else if ((maxR >= 0 && maxR <= 120) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
-			putText(frame, "GREEN" , Point(100, 110), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 0), 2);
-		rectangle(frame, Rect(200, 200, 100, 100), Scalar(0, 0, 255), 3);
-		imshow("TEST", frame);
-
-
-		//Detect();
-
-
-
+		m_Res = Detect();
+		if (m_Res != RES_END)
+			m_Resform->RedrawWindow();
 
 	}
 	else
@@ -122,24 +102,29 @@ void ToolManager::LateUpdate()
 
 void ToolManager::Render()
 {
-	//임시 렌더 코드 
-	//putText(frame, "fps: " + to_string(dfps), Point(10, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
-	//cv::imshow("TEST", frame);
+
+
+	putText(frame, "R:" + to_string(maxR), Point(0, 70), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+	putText(frame, "G:" + to_string(maxG), Point(0, 110), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+	putText(frame, "B:" + to_string(maxB), Point(0, 150), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+	putText(frame, "fps: " + to_string(dfps), Point(10, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+	cv::imshow("TEST", frame);
 
 	int key = cv::waitKey(1);
 	if (key == 27)
 		::PostQuitMessage(WM_QUIT);
 
-	delete roi;
-	roi = nullptr;
 
 }
 
-void ToolManager::Detect()
+RESULT ToolManager::Detect()
 {
 	vector<Detection> output = inf->runInference(frame);
 	int detections = output.size();
 	std::cout << "Number of detections:" << detections << std::endl;
+
+	if (detections <= 0)
+		return RESULT::RES_END;
 
 	for (int i = 0; i < detections; ++i)
 	{
@@ -149,12 +134,41 @@ void ToolManager::Detect()
 		cv::Rect box = detection.box;
 		std::string classString = detection.className + ' ' + std::to_string(detection.confidence).substr(0, 4);
 		cv::Scalar color = detection.color;
-		cv::rectangle(frame, box, color, 2);
 		cv::Size textSize = cv::getTextSize(classString, cv::FONT_HERSHEY_DUPLEX, 1, 2, 0);
 		cv::Rect textBox(box.x, box.y - 40, textSize.width + 10, textSize.height + 20);
-		cv::rectangle(frame, textBox, color, cv::FILLED);
-		cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
+
+		if (box.x > 0 && box.y > 0 && box.x + box.width < frame.cols && box.y + box.height < frame.rows)
+		{
+
+			roi = Mat(frame, box);
+			findMostFrequentColor(roi, maxR, maxG, maxB);
+			if (detection.className == "fail")
+			{
+				cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
+				return RESULT::FAIL;
+			}
+			else
+			{
+				if ((maxR >= 150 && maxR <= 255) && (maxG >= 150 && maxG <= 255) && (maxB >= 0 && maxB <= 100))
+				{
+					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					return RESULT::YELLOW;
+				}
+				else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 90) && (maxB >= 0 && maxB <= 90))
+				{
+					putText(frame, "RED" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					return RESULT::RED;
+				}
+				else if ((maxR >= 0 && maxR <= 120) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
+				{
+					putText(frame, "GREEN" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					return RESULT::GREEN;
+				}
+
+			}
+		}
 	}
+	return RESULT::RES_END;
 }
 
 void ToolManager::Save()
@@ -282,6 +296,7 @@ void ToolManager::Set_Mod_Txt(int idx, CString cstr)
 
 void ToolManager::findMostFrequentColor(const Mat& roi, int& maxR, int& maxG, int& maxB)
 {
+
 	int histSize = 256;
 	float range[] = { 0, 256 };
 	const float* histRange = { range };
