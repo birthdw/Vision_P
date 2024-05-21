@@ -182,7 +182,6 @@ void ServerForm::OnInitialUpdate()
 	
 	UpdateData(FALSE);
 	m_awsinfo = AWSINFO::SEVERSTART;
-	m_ControlColor = STATUCOLOR::ALLSETTING;
 	AfxBeginThread(COLORRODING, this);
 	AfxBeginThread(initawsT, this);
 }
@@ -192,10 +191,11 @@ void ServerForm::OnBnClickedTcpBut()
 {
 
 	onlyone = false;
-
+	
 	// 소켓 통신 연결, 연결끊기를 정의합니다.
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (m_SocketThreadSWICHT) {
+		GetDlgItem(IDC_TCP_BUT)->EnableWindow(false);
 		m_ControlColor = STATUCOLOR::SOCKETYELLOW;
 		m_SocketThreadSWICHT = FALSE;
 		UpdateData(TRUE);
@@ -268,8 +268,9 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 		m_ControlColor = STATUCOLOR::SOCKETRED;
 	}
 
-	// 추가 작업 수행
+	
 	m_SocketThreadSWICHT = TRUE;
+	GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
 
 	return 0;
 }
@@ -305,41 +306,34 @@ void ServerForm::OnPaint()
 
 	switch (m_ControlColor)
 	{
-	case STATUCOLOR::ALLSETTING:
-		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"yellow.bmp");
-		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
-		m_ControlColor = STATUCOLOR::STAY;
-		break;
-	case STATUCOLOR::ALLEXIT:
-		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"red.bmp");
-		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
-		m_ControlColor = STATUCOLOR::STAY;
-		break;
 	case STATUCOLOR::SERVERRED:
-		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"red.bmp");
+		m_SColor = L"red";
 		m_ControlColor = STATUCOLOR::STAY;
 		break;
 	case STATUCOLOR::SERVERYELLOW:
-		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"yellow.bmp");
+		m_SColor = L"yellow";
 		m_ControlColor = STATUCOLOR::STAY;
 		break;
 	case STATUCOLOR::SERVERGREEN:
-		ToolManager::GetInstance()->RenderImg(&m_ServerColor, L"green.bmp");
+		m_SColor = L"green";
 		m_ControlColor = STATUCOLOR::STAY;
 		break;
 	case STATUCOLOR::SOCKETRED:
-		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"red.bmp");
-		m_ControlColor = STATUCOLOR::STAY;
+		m_KColor = L"red";
 		break;
 	case STATUCOLOR::SOCKETYELLOW:
-		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"yellow.bmp");
-		m_ControlColor = STATUCOLOR::STAY;
+		m_KColor = L"yellow";
 		break;
 	case STATUCOLOR::SOCKETGREEN:
-		ToolManager::GetInstance()->RenderImg(&m_StateColor, L"green.bmp");
-		m_ControlColor = STATUCOLOR::STAY;
+		m_KColor = L"green";
 		break;
 	}
+
+	CString SERVERCOLOR = m_SColor + L".bmp";
+	CString SOCKETCOLOR = m_KColor + L".bmp";
+
+	ToolManager::GetInstance()->RenderImg(&m_ServerColor, SERVERCOLOR);
+	ToolManager::GetInstance()->RenderImg(&m_StateColor, SOCKETCOLOR);
 }
 
 void ServerForm::initaws()

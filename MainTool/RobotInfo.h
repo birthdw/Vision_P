@@ -24,8 +24,6 @@ typedef struct {
 enum class STATUCOLOR : int
 {
 	STAY = 0,
-	ALLSETTING,
-	ALLEXIT,
 	SERVERRED,
 	SERVERYELLOW,
 	SERVERGREEN,

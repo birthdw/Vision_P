@@ -59,6 +59,8 @@ public:
 	CStatic m_ServerColor;
 	STATUCOLOR m_ControlColor = STATUCOLOR::STAY;
 	COLORTHREAD m_ThreadColor = COLORTHREAD::THREADRUN;
+	CString m_SColor = L"yellow";
+	CString m_KColor = L"red";
 
 
 	// 스위치
