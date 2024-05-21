@@ -16,7 +16,7 @@ typedef struct {
 	string id;
 	string color;
 	string faulty;
-	string data;
+	string date;
 	string url;
 
 }AWSSTRUCT;

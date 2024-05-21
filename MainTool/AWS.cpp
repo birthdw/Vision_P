@@ -122,7 +122,7 @@ bool AWS::RDScheckDataExists(const char* columnname, const char* findwhat, const
 }
 
 // S3 데이터 삽입 함수
-bool AWS::RDSinserts3Data(const char* dataname)
+bool AWS::RDSinserts3Data()
 {
     string select_query = "SELECT id FROM (SELECT * FROM thing ORDER BY id DESC LIMIT 1)";
     //  string select_query = "SELECT * FROM thing";
@@ -131,7 +131,7 @@ bool AWS::RDSinserts3Data(const char* dataname)
 
     if (PQresultStatus(res1) == PGRES_TUPLES_OK) {
 
-        string insert_query = "INSERT INTO public.s3data (id, data, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ", LOCALTIMESTAMP(0),'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(dataname) + "')";
+        string insert_query = "INSERT INTO public.s3data (id, date, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ", LOCALTIMESTAMP(0),'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(PQgetvalue(res1, 0, 0)) + ".jpg')";
         //  string insert_query = "INSERT INTO public.thing (id, username, password) VALUES ('3', 'c', '1234')";
         PGresult* res = PQexec(conn, insert_query.c_str());
         if (PQresultStatus(res) != PGRES_COMMAND_OK) {
@@ -149,7 +149,7 @@ bool AWS::RDSinserts3Data(const char* dataname)
 vector<AWSSTRUCT> AWS::RDSjoinData()
 {
     vector<AWSSTRUCT> listvector;
-    string join_query = "SELECT a.id, a.color, a.faulty, b.data, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id";
+    string join_query = "SELECT a.id, a.color, a.faulty, b.date, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id";
 
     PGresult* res = PQexec(conn, join_query.c_str());
 
@@ -162,7 +162,7 @@ vector<AWSSTRUCT> AWS::RDSjoinData()
             row.id = PQgetvalue(res, i, 0);
             row.color = PQgetvalue(res, i, 1);
             row.faulty = PQgetvalue(res, i, 2);
-            row.data = PQgetvalue(res, i, 3);
+            row.date = PQgetvalue(res, i, 3);
             row.url = PQgetvalue(res, i, 4);
 
             listvector.push_back(row); // 행 벡터를 2차원 벡터에 추가
@@ -261,6 +261,7 @@ bool AWS::PutObject(const String& fileName)
             return false;
         }
         else {
+            RDSinserts3Data();
             cout << "Added object '" << fileName << "' to bucket '"
                 << bucketName << "'." << endl;
         }
@@ -371,6 +372,7 @@ void AWS::AlldeleteData(const char* deleteline, const char* columnname, const ch
 {
     RDSdeleteData(columnname, deleteline, tablename);
     RDSdeleteData(columnname, deleteline, tablename2);
+    DeleteObjects({ string(deleteline)+".jpg"});
     //truncate table tableName restart identity//tabelName 테이블의 시퀀스를 자동으로 재시작하며 테이블 데이터를 모두 삭제한다
 }
 
