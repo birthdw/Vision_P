@@ -63,6 +63,7 @@ bool ToolManager::Update(double t)
 	maxR = 0;
 	maxG = 0;
 	maxB = 0;
+
 	if (FrmKilled == false)
 	{
 		cap >> frame;

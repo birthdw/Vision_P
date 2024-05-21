@@ -7,6 +7,8 @@
 #include "DetectTab.h"
 #include "ToolManager.h"
 #include "TestTab.h"
+#include "ServerForm.h"
+
 
 // DetectTab 대화 상자
 
@@ -53,8 +55,8 @@ BOOL DetectTab::OnInitDialog()
 	Column.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
 	Column.fmt = LVCFMT_LEFT;
 
-	LPWSTR Column_list[4] = { _T("No"), _T("Date") , _T("Result"),_T("File") };
-	int cx[4] = { 50, 200,100,300 };
+	LPWSTR Column_list[5] = { _T("ID"), _T("Url") , _T("Color"),_T("Faulty"),_T("Date") };
+	int cx[5] = { 50,250,100,100,300 };
 
 	int Column_size = sizeof(Column_list) / sizeof(Column_list[0]);
 	for (int i = 0; i < Column_size; i++) {
@@ -73,13 +75,25 @@ BOOL DetectTab::OnInitDialog()
 
 void DetectTab::OnBnClickedButton1()
 {
-	CString teststr;
-	m_TestTxt.GetWindowTextW(teststr);
-	m_List.InsertItem(Count, (CString(std::to_string(Count + 1).c_str())));
-	teststr += L".png";
-	m_List.SetItemText(Count, 1, teststr);
-	m_List.SetItemText(Count, 2, L"This is test Code");
-		++Count;
+
+	ToolManager::GetInstance()->m_Serverform->SetAwsInfo(AWSINFO::AWSLIST);
+	vector<AWSLIST> vecInfo = ToolManager::GetInstance()->m_Serverform->m_boxlist;
+
+
+	for (int i = 0; i < vecInfo.size(); ++i)
+	{
+		m_List.InsertItem(i, (CString(std::to_string(i + 1).c_str())));
+
+		m_List.SetItemText(i, 1, CString(vecInfo[i].url.c_str()));
+		m_List.SetItemText(i, 2, CString(vecInfo[i].color.c_str()));
+		m_List.SetItemText(i, 3, CString(vecInfo[i].faulty.c_str()));
+		m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
+	}
+
+
+
+
+	
 }
 
 
@@ -95,7 +109,6 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 
 	int clickindex = m_List.GetSelectionMark();
 
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	ToolManager::GetInstance()->m_tab->SetCurSel(1);
 	ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_HIDE);
 	ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_SHOW);

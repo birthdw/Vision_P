@@ -30,5 +30,4 @@ public:
 public:
 	CListCtrl m_List;
 	CEdit m_TestTxt;
-	int Count = 0;
 };

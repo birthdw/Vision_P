@@ -163,7 +163,7 @@ vector<AWSLIST> AWS::RDSjoinData()
             row.id = PQgetvalue(res, i, 0);
             row.color = PQgetvalue(res, i, 1);
             row.faulty = PQgetvalue(res, i, 2);
-            row.data = PQgetvalue(res, i, 3);
+            row.date = PQgetvalue(res, i, 3);
             row.url = PQgetvalue(res, i, 4);
 
             listvector.push_back(row); // 행 벡터를 2차원 벡터에 추가
