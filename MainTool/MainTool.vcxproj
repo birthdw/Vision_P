@@ -194,6 +194,7 @@
     </ClInclude>
     <ClInclude Include="CModDlg.h" />
     <ClInclude Include="CntrlForm.h" />
+    <ClInclude Include="ConnectTread.h" />
     <ClInclude Include="CSocketClient.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="DetectTab.h" />
@@ -221,6 +222,7 @@
     </ClCompile>
     <ClCompile Include="CModDlg.cpp" />
     <ClCompile Include="CntrlForm.cpp" />
+    <ClCompile Include="ConnectTread.cpp" />
     <ClCompile Include="CSocketClient.cpp" />
     <ClCompile Include="DetectTab.cpp" />
     <ClCompile Include="FrameMgr.cpp" />

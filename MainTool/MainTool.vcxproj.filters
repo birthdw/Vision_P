@@ -136,6 +136,7 @@
     <ClInclude Include="RobotInfo.h">
       <Filter>06.PJH</Filter>
     </ClInclude>
+    <ClInclude Include="ConnectTread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -189,6 +190,7 @@
     <ClCompile Include="AWS.cpp">
       <Filter>07.AWS</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectTread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MainTool.rc">
