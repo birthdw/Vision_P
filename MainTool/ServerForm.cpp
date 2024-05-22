@@ -77,8 +77,8 @@ void ServerForm::OnInitialUpdate()
 	Column.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
 	Column.fmt = LVCFMT_LEFT;
 
-	LPWSTR Column_list[2] = { _T("번호"), _T("로그") };
-	int cx[2] = { 50, 200 };
+	LPWSTR Column_list[3] = { _T("번호"), _T("로그"), _T("시간")};
+	int cx[3] = { 100, 400, 200 };
 
 	int Column_size = sizeof(Column_list) / sizeof(Column_list[0]);
 	for (int i = 0; i < Column_size; i++) {
@@ -180,8 +180,18 @@ void ServerForm::exit_s3()
 
 // 소켓통신 로그
 void ServerForm::SetList(CString strMessage) {
+	time_t timer;
+	struct tm* t;
+	timer = time(NULL);
+	t = localtime(&timer);
+	CString time_s = CString(std::to_string(t->tm_year + 1900).c_str()) + _T("/") +
+		CString(std::to_string(t->tm_mon + 1).c_str()) + _T("/") +
+		CString(std::to_string(t->tm_hour).c_str()) + _T("/") +
+		CString(std::to_string(t->tm_min).c_str()) + _T("/") +
+		CString(std::to_string(t->tm_sec).c_str());
 	m_ListTcp.InsertItem(Count, (CString(std::to_string(Count + 1).c_str())));
 	m_ListTcp.SetItemText(Count, 1, strMessage);
+	m_ListTcp.SetItemText(Count, 2, static_cast<LPCTSTR>(time_s));
 	Count++;
 }
 
