@@ -29,5 +29,4 @@ public:
 	void Set_Text(int curidx, int idx, CString cstr);
 public:
 	CListCtrl m_List;
-	CEdit m_TestTxt;
 };

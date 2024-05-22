@@ -17,10 +17,15 @@
 #include <vector>
 #include <afxinet.h>
 
+
+
+#pragma warning (disable:6031)
+#pragma warning (disable:4996)
+
+#define _CRT_SECURE_NO_WARNINGS
+
 using namespace std;
 using namespace cv;
-
-
 
 #include "define.h"
 #include "struct.h"

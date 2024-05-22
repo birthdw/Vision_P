@@ -7,6 +7,10 @@
 #include "TestTab.h"
 #include "ToolManager.h"
 #include "CModDlg.h"
+#include "AWS.h"
+#include "ServerForm.h"
+
+
 // TestTab 대화 상자
 
 IMPLEMENT_DYNAMIC(TestTab, CDialog)
@@ -48,11 +52,6 @@ END_MESSAGE_MAP()
 BOOL TestTab::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
-
-
-
-
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -122,9 +121,9 @@ void TestTab::OnPaint()
 	else
 	{
 		CImage png;
+		png.Load(L"ns.png");
 		CPaintDC dc(this);
 		png.StretchBlt(dc, 0, 0, 700, 467);
-		png.Load(L"ns.png");
 	}
 
 	SetDlgItemTextW(IDC_EDIT1,ToolManager::GetInstance()->m_strPickinLst2);
@@ -152,7 +151,11 @@ void TestTab::OnBnClickedButton2()
 
 void TestTab::OnBnClickedButton5()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//삭제
+	ToolManager::GetInstance()->m_Serverform->m_aws->AlldeleteData(CurId.c_str());
+
+
+
 }
 
 CString TestTab::GetLast(CString url)

@@ -44,4 +44,5 @@ public:
 public:
 	int Curcnt = 0;
 	int imgcnt = 0;
+	string CurId;
 };

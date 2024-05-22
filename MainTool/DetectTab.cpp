@@ -29,7 +29,6 @@ void DetectTab::DoDataExchange(CDataExchange* pDX)
 
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_List);
-	DDX_Control(pDX, IDC_EDIT1, m_TestTxt);
 }
 
 
@@ -82,23 +81,14 @@ void DetectTab::OnBnClickedButton1()
 
 	for (int i = 0; i < vecInfo.size(); ++i)
 	{
-		m_List.InsertItem(i, (CString(std::to_string(i + 1).c_str())));
-
+		m_List.InsertItem(i, CString(vecInfo[i].id.c_str()));
 		m_List.SetItemText(i, 1, CString(vecInfo[i].url.c_str()));
 		m_List.SetItemText(i, 2, CString(vecInfo[i].color.c_str()));
 		m_List.SetItemText(i, 3, CString(vecInfo[i].faulty.c_str()));
 		m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
 	}
-
-
-
-
 	
 }
-
-
-
-
 
 
 
@@ -112,12 +102,16 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 	ToolManager::GetInstance()->m_tab->SetCurSel(1);
 	ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_HIDE);
 	ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_SHOW);
+	CString id = m_List.GetItemText(clickindex, 0);
 	CString test = m_List.GetItemText(clickindex, 1);
 	CString test2 = m_List.GetItemText(clickindex, 2);
 	ToolManager::GetInstance()->m_strPickinLst = test;
 	ToolManager::GetInstance()->m_strPickinLst2 = test2;
 	ToolManager::GetInstance()->m_Testtab->Setcnt(clickindex);
 
+	ToolManager::GetInstance()->m_Testtab->CurId = CT2CA(id);
+		
+		
 	*pResult = 0;
 }
 
