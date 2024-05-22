@@ -95,7 +95,7 @@ UINT COLORRODING(LPVOID pParam) {
 		}	
 		else if (thisObj->m_ThreadColor == COLORTHREAD::THREADRUN) {
 			thisObj->InvalidateRect(NULL, FALSE);
-			Sleep(100);
+			Sleep(200);
 		}	
 	}
 }
@@ -189,9 +189,6 @@ void ServerForm::OnInitialUpdate()
 
 void ServerForm::OnBnClickedTcpBut()
 {
-
-	onlyone = false;
-	
 	// 소켓 통신 연결, 연결끊기를 정의합니다.
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (m_SocketThreadSWICHT) {
