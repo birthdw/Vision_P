@@ -45,7 +45,7 @@ void ToolManager::DestroyInstance()
 
 void ToolManager::Initialize()
 {
-	cap.open(0, cv::CAP_DSHOW);
+	cap.open(1, cv::CAP_DSHOW);
 	inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
 	m_strPickinLst = L"";
 	m_Res = RESULT::RES_END;

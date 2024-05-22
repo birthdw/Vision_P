@@ -37,6 +37,8 @@ BEGIN_MESSAGE_MAP(CntrlForm, CFormView)
 	ON_BN_CLICKED(IDC_b8, &CntrlForm::OnBnClickedb8)
 	ON_BN_CLICKED(IDC_b7, &CntrlForm::OnBnClickedb7)
 	ON_BN_CLICKED(IDC_BUTTON1, &CntrlForm::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON3, &CntrlForm::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CntrlForm::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -169,4 +171,20 @@ void CntrlForm::OnBnClickedButton1()
 
 	}
 
+}
+
+
+void CntrlForm::OnBnClickedButton3()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString str = _T("START");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+}
+
+
+void CntrlForm::OnBnClickedButton4()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString str = _T("STOP");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 }

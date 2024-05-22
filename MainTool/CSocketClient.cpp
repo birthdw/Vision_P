@@ -57,6 +57,7 @@ void CSocketClient::socketend()
 	ToolManager::GetInstance()->m_Serverform->m_TCP_BUTTON.SetWindowText(L"연결");
 	ToolManager::GetInstance()->m_Serverform->m_STATIC_TCP.SetWindowTextW(L"연결끊김");
 	ToolManager::GetInstance()->m_Serverform->m_TCPConnect = TRUE;
+    ToolManager::GetInstance()->m_Serverform->m_ControlColor = STATUCOLOR::SOCKETRED;
 }
 
 void CSocketClient::recvinfo(CString strMessage)

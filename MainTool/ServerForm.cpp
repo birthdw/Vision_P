@@ -90,7 +90,7 @@ void ServerForm::OnInitialUpdate()
 		m_ListTcp.InsertColumn(i, &Column);
 	}
 
-	m_IP.SetAddress(192, 168, 0, 213);
+	m_IP.SetAddress(192, 168, 0, 215);
 	m_Port = 6667;
 	
 	UpdateData(FALSE);
