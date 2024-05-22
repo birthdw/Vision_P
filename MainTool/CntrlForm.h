@@ -1,7 +1,8 @@
 ﻿#pragma once
 
 
-
+//GOD DO WON
+//GOD GOD GOD
 // CntrlForm 폼 보기
 
 class CntrlForm : public CFormView
