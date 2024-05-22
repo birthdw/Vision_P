@@ -89,6 +89,11 @@ void ListForm::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 	case 1:
 		m_Detecttab.ShowWindow(SW_HIDE);
 		m_TestTab.ShowWindow(SW_SHOW);
+
+		m_Detecttab.m_List.DeleteAllItems();
+		m_Detecttab.Update();
+
+
 		break;
 	}
 

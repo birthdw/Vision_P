@@ -47,8 +47,13 @@ public:
 	CEdit m_FaultyEdit;
 	CEdit m_ColorEdit;
 
+	CString Url;
 	CString Color;
 	CString Faulty;
+	CString Date;
 
 
+	CEdit UrlEdit;
+	CEdit DateEdit;
+	CStatic idinsert;
 };

@@ -9,6 +9,7 @@
 #include "CModDlg.h"
 #include "AWS.h"
 #include "ServerForm.h"
+#include "DetectTab.h"
 
 
 // TestTab 대화 상자
@@ -33,6 +34,9 @@ void TestTab::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Control(pDX, IDC_ColorEdit, m_ColorEdit);
 	DDX_Control(pDX, IDC_FaultyEdit, m_FaultyEdit);
+	DDX_Control(pDX, IDC_UrlEdit, UrlEdit);
+	DDX_Control(pDX, IDC_DateEdit, DateEdit);
+	DDX_Control(pDX, IDC_ForID, idinsert);
 }
 
 
@@ -126,8 +130,13 @@ void TestTab::OnPaint()
 		png.StretchBlt(dc, 0, 0, 700, 467);
 	}
 
+	CString ID = L"ID:" + CString(CurId.c_str());
+
+	SetDlgItemTextW(IDC_ForID, ID);
+	SetDlgItemTextW(IDC_UrlEdit, Url);
 	SetDlgItemTextW(IDC_ColorEdit, Color);
 	SetDlgItemTextW(IDC_FaultyEdit, Faulty);
+	SetDlgItemTextW(IDC_DateEdit, Date);
 	UpdateData(FALSE);
 
 }
@@ -152,6 +161,9 @@ void TestTab::OnBnClickedButton2()
 	ToolManager::GetInstance()->m_Serverform->m_aws->RDSupdateData("color", co.c_str(), CurId.c_str());
 	ToolManager::GetInstance()->m_Serverform->m_aws->RDSupdateData("faulty", fa.c_str(), CurId.c_str());
 
+
+	ToolManager::GetInstance()->m_detecttab->m_List.DeleteAllItems();
+	ToolManager::GetInstance()->m_detecttab->Update();
 
 	UpdateData(TRUE);
 }
