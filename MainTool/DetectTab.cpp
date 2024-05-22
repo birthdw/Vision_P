@@ -88,6 +88,7 @@ void DetectTab::OnBnClickedButton1()
 		m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
 	}
 	
+
 }
 
 
@@ -103,15 +104,20 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 	ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_HIDE);
 	ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_SHOW);
 	CString id = m_List.GetItemText(clickindex, 0);
-	CString test = m_List.GetItemText(clickindex, 1);
-	CString test2 = m_List.GetItemText(clickindex, 2);
-	ToolManager::GetInstance()->m_strPickinLst = test;
-	ToolManager::GetInstance()->m_strPickinLst2 = test2;
+	CString url = m_List.GetItemText(clickindex, 1);
+	CString Color = m_List.GetItemText(clickindex, 2);
+	CString Faulty = m_List.GetItemText(clickindex, 3);
+
+	ToolManager::GetInstance()->m_strPickinLst = url;
 	ToolManager::GetInstance()->m_Testtab->Setcnt(clickindex);
 
 	ToolManager::GetInstance()->m_Testtab->CurId = CT2CA(id);
 		
-		
+	ToolManager::GetInstance()->m_Testtab->Color = Color;
+	ToolManager::GetInstance()->m_Testtab->Faulty = Faulty;
+
+
+
 	*pResult = 0;
 }
 

@@ -150,7 +150,7 @@ bool AWS::RDSinserts3Data()
 vector<AWSLIST> AWS::RDSjoinData()
 {
     vector<AWSLIST> listvector;
-    string join_query = "SELECT a.id, a.color, a.faulty, b.date, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id";
+    string join_query = "SELECT a.id, a.color, a.faulty, b.date, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id\n ORDER BY id DESC";
 
     PGresult* res = PQexec(conn, join_query.c_str());
 

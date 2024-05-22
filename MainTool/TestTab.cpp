@@ -31,8 +31,8 @@ void TestTab::DoDataExchange(CDataExchange* pDX)
 
 
 
-
-	DDX_Control(pDX, IDC_EDIT1, m_Testtxt);
+	DDX_Control(pDX, IDC_ColorEdit, m_ColorEdit);
+	DDX_Control(pDX, IDC_FaultyEdit, m_FaultyEdit);
 }
 
 
@@ -116,7 +116,7 @@ void TestTab::OnPaint()
 	UpdateData(TRUE);
 
 
-	if(ToolManager::GetInstance()->m_strPickinLst !=L"")
+	if (ToolManager::GetInstance()->m_strPickinLst != L"")
 		LoadOnlineImage(ToolManager::GetInstance()->m_strPickinLst);
 	else
 	{
@@ -126,7 +126,8 @@ void TestTab::OnPaint()
 		png.StretchBlt(dc, 0, 0, 700, 467);
 	}
 
-	SetDlgItemTextW(IDC_EDIT1,ToolManager::GetInstance()->m_strPickinLst2);
+	SetDlgItemTextW(IDC_ColorEdit, Color);
+	SetDlgItemTextW(IDC_FaultyEdit, Faulty);
 	UpdateData(FALSE);
 
 }
@@ -134,18 +135,25 @@ void TestTab::OnPaint()
 
 void TestTab::OnBnClickedButton1()
 {
-	
+
 }
 
 
 void TestTab::OnBnClickedButton2()
 {
-	CModDlg dlg;
-	if (dlg.DoModal() == IDOK)
-	{
+	UpdateData(FALSE);
+	//수정
+	CString c;
+	CString f;
+	GetDlgItemText(IDC_ColorEdit, c);
+	GetDlgItemText(IDC_FaultyEdit, f);
+	string co = CT2CA(c);
+	string fa = CT2CA(f);
+	ToolManager::GetInstance()->m_Serverform->m_aws->RDSupdateData("color", co.c_str(), CurId.c_str());
+	ToolManager::GetInstance()->m_Serverform->m_aws->RDSupdateData("faulty", fa.c_str(), CurId.c_str());
 
-	}
 
+	UpdateData(TRUE);
 }
 
 
@@ -161,7 +169,7 @@ void TestTab::OnBnClickedButton5()
 CString TestTab::GetLast(CString url)
 {
 	vector<CString> vec;
-	CString res=L"";
+	CString res = L"";
 	for (int i = 0; i < url.GetLength(); ++i)
 	{
 		if (url[i] != '/')
@@ -179,7 +187,7 @@ CString TestTab::GetLast(CString url)
 	}
 
 
-	return CString(vec[vec.size()-1]);
+	return CString(vec[vec.size() - 1]);
 }
 
 void TestTab::Setcnt(int cnt)

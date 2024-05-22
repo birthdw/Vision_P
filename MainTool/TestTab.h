@@ -26,7 +26,6 @@ public:
 	virtual BOOL OnInitDialog();
 	void LoadOnlineImage(LPCTSTR url);
 	afx_msg void OnPaint();
-	CEdit m_Testtxt;
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton5();
@@ -45,4 +44,11 @@ public:
 	int Curcnt = 0;
 	int imgcnt = 0;
 	string CurId;
+	CEdit m_FaultyEdit;
+	CEdit m_ColorEdit;
+
+	CString Color;
+	CString Faulty;
+
+
 };
