@@ -4,6 +4,7 @@
 #include "DetectTab.h"
 #include "TestTab.h"
 #include "ResultForm.h"
+#include "ServerForm.h"
 
 ToolManager* ToolManager::m_pInstance = nullptr;
 
@@ -69,8 +70,19 @@ bool ToolManager::Update(double t)
 		cap >> frame;
 		resize(frame, frame, Size(600, 450));
 		m_Res = Detect();
-		if (m_Res != RES_END)
-			m_Resform->RedrawWindow();
+		
+		if (bGrab == true)
+		{
+			bGrab = false;
+			//m_Res = Detect();
+			//if (m_Res != RES_END)
+				//m_Resform->RedrawWindow();
+			if (m_Res != RES_END)
+				m_Resform->RedrawWindow();
+			imwrite("BOX.jpg", frame);
+			m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
+			m_Serverform->ClientTCP(_T("ST/PROC:BEGIN1/END"));
+		}
 
 	}
 	else
@@ -146,23 +158,29 @@ RESULT ToolManager::Detect()
 			if (detection.className == "fail")
 			{
 				cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
+				m_Serverform->m_awscolor = "fail";
+				m_Serverform->m_awsfaulty = "true";
 				return RESULT::FAIL;
 			}
 			else
 			{
+				m_Serverform->m_awsfaulty = "false";
 				if ((maxR >= 150 && maxR <= 255) && (maxG >= 150 && maxG <= 255) && (maxB >= 0 && maxB <= 100))
 				{
 					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					m_Serverform->m_awscolor = "yellow";
 					return RESULT::YELLOW;
 				}
 				else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 90) && (maxB >= 0 && maxB <= 90))
 				{
 					putText(frame, "RED" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					m_Serverform->m_awscolor = "red";
 					return RESULT::RED;
 				}
 				else if ((maxR >= 0 && maxR <= 120) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
 				{
 					putText(frame, "GREEN" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					m_Serverform->m_awscolor = "green";
 					return RESULT::GREEN;
 				}
 

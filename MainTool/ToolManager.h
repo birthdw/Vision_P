@@ -86,6 +86,7 @@ public:
 	bool FrmKilled = false;
 	bool RecCtrl = false;
 	bool SpecialOn = false;
+	bool bGrab = false;
 public:
 	double dfps;
 	double fpscnt;

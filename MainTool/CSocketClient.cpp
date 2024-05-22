@@ -55,7 +55,6 @@ void CSocketClient::socketend()
 {
 	ToolManager::GetInstance()->m_Serverform->m_Client.Close();
 	ToolManager::GetInstance()->m_Serverform->m_TCP_BUTTON.SetWindowText(L"연결");
-	ToolManager::GetInstance()->m_Serverform->m_STATIC_TCP.SetWindowTextW(L"연결끊김");
 	ToolManager::GetInstance()->m_Serverform->m_TCPConnect = TRUE;
     ToolManager::GetInstance()->m_Serverform->m_ControlColor = STATUCOLOR::SOCKETRED;
 }
@@ -119,6 +118,7 @@ void CSocketClient::ProcessString(const CString& str)
                 if (betweenColonAndSlash.Find(_T("GRAP")) != -1)
                 {
                     // "GRAP" 포함하면 전달
+                    ToolManager::GetInstance()->bGrab = true;
                     ToolManager::GetInstance()->m_Serverform->ClientTCP(betweenColonAndSlash); 
                 }
 

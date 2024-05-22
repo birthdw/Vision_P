@@ -34,9 +34,7 @@ protected:
 public:
 	// 이벤트 함수
 	afx_msg void OnBnClickedTcpBut();
-	afx_msg void OnBnClickedButton2();
 	afx_msg void OnPaint();
-	afx_msg void OnBnClickedButton1();
 	afx_msg void OnLvnItemchangedListTcp(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg LRESULT OnSocketThreadFinished(WPARAM wParam, LPARAM lParam);
 
@@ -50,7 +48,6 @@ public:
 	CIPAddressCtrl m_IP;				// IP를 가져옴
 	CButton m_TCP_BUTTON;				// 소켓 통신 연결 버튼
 	CListCtrl m_ListTcp;				// 소켓 통신 로그 표시
-	CStatic m_STATIC_TCP;
 	CStatic m_StateColor;				// 소켓 통신상태 픽쳐 컨트롤
 	CStatic m_ServerColor;				// 서버 통신상태 픽쳐 컨트롤
 
@@ -93,6 +90,10 @@ public:
 	//서버 기동 자료형
 	SDKOptions m_options;
 	AWS* m_aws = nullptr;
+
+	// 서버 저장 자료형
+	string m_awscolor = "";
+	string m_awsfaulty = "";
 };
 
 

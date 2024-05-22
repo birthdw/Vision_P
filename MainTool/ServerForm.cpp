@@ -31,7 +31,6 @@ void ServerForm::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_TCP_PORT, m_Port);
 	DDX_Control(pDX, IDC_TCP_IP, m_IP);
 	DDX_Control(pDX, IDC_TCP_BUT, m_TCP_BUTTON);
-	DDX_Control(pDX, IDC_STATIC_TCP_CON, m_STATIC_TCP);
 	DDX_Control(pDX, IDC_LIST_TCP, m_ListTcp);
 	DDX_Control(pDX, IDC_STATE, m_StateColor);
 	DDX_Control(pDX, IDC_SERCOLOR, m_ServerColor);
@@ -39,8 +38,6 @@ void ServerForm::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(ServerForm, CFormView)
 	ON_BN_CLICKED(IDC_TCP_BUT, &ServerForm::OnBnClickedTcpBut)
-	ON_BN_CLICKED(IDC_BUTTON1, &ServerForm::OnBnClickedButton1)
-	ON_BN_CLICKED(IDC_BUTTON2, &ServerForm::OnBnClickedButton2)
 	ON_WM_PAINT()
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_TCP, &ServerForm::OnLvnItemchangedListTcp)
 	ON_MESSAGE(WM_SOCKET_THREAD_FINISHED, &ServerForm::OnSocketThreadFinished)
@@ -134,15 +131,6 @@ void ServerForm::ClientTCP(CString strMessage) {
 }
 
 
-void ServerForm::OnBnClickedButton1()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString str = _T("TEST");
-	ClientTCP(str);
-
-}
-
-
 LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 {
 	BOOL success = static_cast<BOOL>(wParam);
@@ -159,7 +147,6 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 				return 0;
 			}
 			m_TCP_BUTTON.SetWindowText(L"연결끊기");
-			m_STATIC_TCP.SetWindowTextW(L"연결됨");
 			m_TCPConnect = FALSE;
 			m_ControlColor = STATUCOLOR::SOCKETGREEN;
 		}
@@ -167,7 +154,6 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 			ClientTCP(_T("END"));
 			m_Client.Close();
 			m_TCP_BUTTON.SetWindowText(L"연결");
-			m_STATIC_TCP.SetWindowTextW(L"연결끊김");
 			m_TCPConnect = TRUE;
 			m_ControlColor = STATUCOLOR::SOCKETRED;
 		}
@@ -197,16 +183,6 @@ void ServerForm::SetList(CString strMessage) {
 	m_ListTcp.InsertItem(Count, (CString(std::to_string(Count + 1).c_str())));
 	m_ListTcp.SetItemText(Count, 1, strMessage);
 	Count++;
-}
-
-void ServerForm::OnBnClickedButton2()
-{
-	//m_aws->PutObject("dog.png");
-
-	//m_aws->Allinput("color, faulty", "('red', 'True')","dog.png");
-
-	m_awsinfo = AWSINFO::AWSSEND;
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
 

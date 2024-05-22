@@ -19,7 +19,11 @@ UINT initawsT(LPVOID pParam)//¼­¹ö
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSSEND) {
-			thisObj->m_aws->Allinput("color, faulty", "('red', 'True')", "dog.png");
+			string info = "('" + thisObj->m_awscolor + "', '" + thisObj->m_awsfaulty + "')";
+			thisObj->m_awscolor = "";
+			thisObj->m_awsfaulty = "";
+
+			thisObj->m_aws->Allinput(info.c_str(), "BOX.jpg");
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 
 		}

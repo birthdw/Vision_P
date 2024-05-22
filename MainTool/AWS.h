@@ -55,7 +55,7 @@ public:
     void S3connectionEnd();// S3 연결 종료 함수
 
     //한번에 모든 테이블 데이터 올리기
-    void Allinput(const char* columnname, const char* inputData, const String & fileName, const char* tablename = "thing");
+    void Allinput(const char* inputData, const String & fileName, const char* columnname = "color, faulty", const char* tablename = "thing");
     
     //한번에 모든 테이블의 원하는 행 데이터 지우기
     void AlldeleteData(const char* deleteline, const char* columnname="id", const char* tablename = "thing", const char* tablename2 = "s3data");

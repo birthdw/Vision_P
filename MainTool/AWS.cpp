@@ -356,9 +356,9 @@ bool AWS::DeleteObjects(const vector<String>& objectKey)
 
 //한번에 모든 테이블 데이터 올리기
 void AWS::Allinput(
-    const char* columnname,
     const char* inputData,
     const String& fileName,
+    const char* columnname,
     const char* tablename
 )
 {

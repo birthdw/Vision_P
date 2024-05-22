@@ -40,6 +40,7 @@
 #define IDC_b7                          1015
 #define IDC_BUTTON11                    1016
 #define IDC_b8                          1016
+#define IDC_STATIC_TCP2                 1016
 #define IDC_BUTTON12                    1017
 #define IDC_LIST3                       1017
 #define IDC_LIST_TCP                    1017
