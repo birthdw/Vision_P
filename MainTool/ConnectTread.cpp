@@ -5,7 +5,7 @@
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
 
-UINT initawsT(LPVOID pParam)
+UINT initawsT(LPVOID pParam)//서버
 {
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
@@ -32,7 +32,6 @@ UINT initawsT(LPVOID pParam)
 			TRACE("%d\r\n", thisObj->m_boxlist);
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
-		thisObj->InvalidateRect(NULL, FALSE);
 		Sleep(100);
 	}
 
@@ -40,7 +39,7 @@ UINT initawsT(LPVOID pParam)
 }
 
 
-UINT ThreadSocket(LPVOID pParam)
+UINT ThreadSocket(LPVOID pParam)//통신
 {
 	ServerForm* thisObj = static_cast<ServerForm*>(pParam);
 
@@ -77,11 +76,13 @@ UINT ThreadSocket(LPVOID pParam)
 }
 
 
-UINT COLORRODING(LPVOID pParam) {
+UINT COLORRODING(LPVOID pParam) //MFC 연결 상태 그리는 스레드
+{
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
 
-	while (1) {
+	while (1) 
+	{
 		if (thisObj->m_ThreadColor == COLORTHREAD::THREADEXIT) {
 			return 0;
 		}
