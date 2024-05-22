@@ -35,6 +35,8 @@ BEGIN_MESSAGE_MAP(CntrlForm, CFormView)
 	ON_BN_CLICKED(IDC_b5, &CntrlForm::OnBnClickedb5)
 	ON_BN_CLICKED(IDC_b6, &CntrlForm::OnBnClickedb6)
 	ON_BN_CLICKED(IDC_b8, &CntrlForm::OnBnClickedb8)
+	ON_BN_CLICKED(IDC_b7, &CntrlForm::OnBnClickedb7)
+	ON_BN_CLICKED(IDC_BUTTON1, &CntrlForm::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -61,7 +63,7 @@ void CntrlForm::Dump(CDumpContext& dc) const
 void CntrlForm::OnBnClickedButton2()
 {
 	//home
-	CString str = _T("12312");
+	CString str = _T("RBT:HOME");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 }
 
@@ -71,41 +73,100 @@ void CntrlForm::OnBnClickedButton2()
 
 void CntrlForm::OnBnClickedb1()
 {
+	//모터1 +
 	//앞+
+	CString str = _T("RBT:M1_P10");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 }
 
 
 void CntrlForm::OnBnClickedb2()
 {
+	//모터 1
 	//앞- 
+	CString str = _T("RBT:M1_M10");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 }
 
 
 void CntrlForm::OnBnClickedb3()
 {
+	//모터 2 +
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString str = _T("RBT:M2_P10");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 }
 
 
 void CntrlForm::OnBnClickedb4()
 {
+	//모터2 -
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString str = _T("RBT:M2_M10");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 }
 
 
 void CntrlForm::OnBnClickedb5()
 {
+	//모터3 +
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString str = _T("RBT:M3_P10");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 }
 
 
 void CntrlForm::OnBnClickedb6()
 {
+	//모터3 -
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString str = _T("RBT:M3_M10");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 }
 
 
 void CntrlForm::OnBnClickedb8()
 {
+	//모터4 -
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	CString str = _T("RBT:M4_M10");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+}
+
+
+void CntrlForm::OnBnClickedb7()
+{
+	//모터4 +
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString str = _T("RBT:M4_P10");
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+}
+
+
+void CntrlForm::OnBnClickedButton1()
+{
+	//레일 ON OFF 버튼
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// 버튼 상태를 토글
+	m_isRailOn = !m_isRailOn;
+
+	// 버튼 텍스트 변경
+	CButton* pButton = (CButton*)GetDlgItem(IDC_BUTTON1);
+	if (m_isRailOn)
+	{
+		pButton->SetWindowText(_T("Rail_ON"));
+		CString str = _T("RBT:RAIL_ON");
+		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	}
+	else
+	{
+		pButton->SetWindowText(_T("Rail_OFF"));
+		CString str = _T("RBT:RAIL_OFF");
+		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	}
+
 }

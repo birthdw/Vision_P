@@ -36,6 +36,10 @@ public:
 	afx_msg void OnBnClickedb5();
 	afx_msg void OnBnClickedb6();
 	afx_msg void OnBnClickedb8();
+	afx_msg void OnBnClickedb7();
+	afx_msg void OnBnClickedButton1();
+
+	bool m_isRailOn;
 };
 
 
