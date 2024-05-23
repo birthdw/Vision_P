@@ -28,10 +28,12 @@ public:
 
 
 public:
-	void Update();
+	CString Update(bool set = false);
 
 public:
 	void Set_Text(int curidx, int idx, CString cstr);
 public:
 	CListCtrl m_List;
+	bool Threadupdate = false;
+	bool Toolupdate = false;
 };

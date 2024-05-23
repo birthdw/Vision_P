@@ -93,6 +93,7 @@ public:
 	double dfps;
 	double fpscnt;
 	double dtime;
+	double updatetime;
 public:
 	CString m_strPickinLst;
 	CString m_strPickinLst2;

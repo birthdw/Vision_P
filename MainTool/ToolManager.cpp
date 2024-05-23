@@ -19,6 +19,7 @@ ToolManager::ToolManager()
 	btest = false;
 	fpscnt = 0;
 	dfps = 0;
+	updatetime = 0;
 }
 
 ToolManager::~ToolManager()
@@ -64,7 +65,7 @@ bool ToolManager::Update(double t)
 
 	++fpscnt;
 	dtime += t;
-
+	updatetime += t;
 	maxR = 0;
 	maxG = 0;
 	maxB = 0;
@@ -74,8 +75,7 @@ bool ToolManager::Update(double t)
 		cap >> frame;
 		resize(frame, frame, Size(600, 450));
 		m_Res = Detect();
-		m_detecttab->Update();
-
+		//m_detecttab->Update();
 
 		if (bGrab == true)
 		{

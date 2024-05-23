@@ -8,6 +8,7 @@
 #include "ToolManager.h"
 #include "TestTab.h"
 #include "ServerForm.h"
+#include "ConnectTread.h"
 
 
 // DetectTab 대화 상자
@@ -64,6 +65,7 @@ BOOL DetectTab::OnInitDialog()
 		m_List.InsertColumn(i, &Column);
 	}
 
+	AfxBeginThread(ThreadUpdate, this);
 	UpdateData(FALSE);
 
 
@@ -124,21 +126,30 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void DetectTab::Update()
+CString DetectTab::Update(bool set)
 {
-	m_List.DeleteAllItems();
-
 	ToolManager::GetInstance()->m_Serverform->SetAwsInfo(AWSINFO::AWSLIST);
 	vector<AWSLIST> vecInfo = ToolManager::GetInstance()->m_Serverform->m_boxlist;
 
-	for (int i = 0; i < vecInfo.size(); ++i)
-	{
-		m_List.InsertItem(i, CString(vecInfo[i].id.c_str()));
-		m_List.SetItemText(i, 1, CString(vecInfo[i].url.c_str()));
-		m_List.SetItemText(i, 2, CString(vecInfo[i].color.c_str()));
-		m_List.SetItemText(i, 3, CString(vecInfo[i].faulty.c_str()));
-		m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
+	if (set) {
+		m_List.DeleteAllItems();
+
+		for (int i = 0; i < vecInfo.size(); ++i)
+		{
+			m_List.InsertItem(i, CString(vecInfo[i].id.c_str()));
+			m_List.SetItemText(i, 1, CString(vecInfo[i].url.c_str()));
+			m_List.SetItemText(i, 2, CString(vecInfo[i].color.c_str()));
+			m_List.SetItemText(i, 3, CString(vecInfo[i].faulty.c_str()));
+			m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
+		}
 	}
+
+	CString oldid = _T("");
+	if (!vecInfo.empty()) {
+		oldid = CString(vecInfo[0].id.c_str());
+	}
+	
+	return oldid;
 }
 
 void DetectTab::Set_Text(int curidx,int idx, CString cstr)

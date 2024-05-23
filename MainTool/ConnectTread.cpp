@@ -3,6 +3,7 @@
 #include "ServerForm.h"
 #include "ToolManager.h"
 #include "ResultForm.h"
+#include "DetectTab.h"
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
@@ -135,6 +136,28 @@ UINT ThreadCameraButton(LPVOID pParam) {
 			thisObj->GetDlgItem(IDC_BUTTON2)->EnableWindow(true);
 			return 0;
 		}
+	}
+	return 0;
+}
+
+UINT ThreadUpdate(LPVOID pParam) {
+	DetectTab* thisObj;
+	thisObj = (DetectTab*)pParam;
+	CString youngID;
+
+	while (1) {
+		if (thisObj->Threadupdate) return 0;
+
+		else {
+			CString oldID = thisObj->Update(false);
+			if (oldID != _T("")) {
+				if (oldID != youngID) {
+					youngID = oldID;
+					thisObj->Update(true);
+				}
+			}	
+		}
+		Sleep(100);
 	}
 	return 0;
 }
