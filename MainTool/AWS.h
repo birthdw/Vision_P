@@ -45,10 +45,10 @@ public:
     bool RDSinserts3Data();// S3 데이터 삽입 함수
     vector<AWSLIST> AWS::RDSjoinData();// 데이터 테이블 연동 함수
     bool RDSckeckConnection();// 연결 확인 함수
-    void RDSconnectionEnd();// 연결 종료 함수
+    //void RDSconnectionEnd();// 연결 종료 함수
 
     //s3
-    bool JoinS3();// S3연결 함수
+    //bool JoinS3();// S3연결 함수
     bool PutObject(const String& fileName);// 오브젝트 추가 함수
     bool GetObject(const String& objectKey);// 오브젝트 가져오기 함수
     bool DeleteObjects(const std::vector<Aws::String>& objectKey);// 오브젝트 삭제 함수

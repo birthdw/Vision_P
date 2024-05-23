@@ -39,6 +39,8 @@ public:
 	CButton m_btempdetect;
 	virtual void OnInitialUpdate();
 	afx_msg void OnPaint();
+	afx_msg void OnBnClickedBstart();
+	afx_msg void OnBnClickedBstop();
 };
 
 

@@ -5,6 +5,7 @@
 #include "MainTool.h"
 #include "ResultForm.h"
 #include "ToolManager.h"
+#include "ServerForm.h"
 
 // ResultForm
 
@@ -33,6 +34,8 @@ BEGIN_MESSAGE_MAP(ResultForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON3, &ResultForm::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &ResultForm::OnBnClickedButton4)
 	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_BStart, &ResultForm::OnBnClickedBstart)
+	ON_BN_CLICKED(IDC_BStop, &ResultForm::OnBnClickedBstop)
 END_MESSAGE_MAP()
 
 
@@ -148,11 +151,39 @@ void ResultForm::OnPaint()
 	cdc = m_Color.GetDC();
 	image.StretchBlt(cdc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);
 	ReleaseDC(cdc);
-	
+
+
+
+	CImage Logo;
+	Logo.Load(_T("title.png"));
+	Logo.StretchBlt(dc, 47, 40, 483, 69);
+
+
 }
 
 
 
 
 
+void ResultForm::OnBnClickedBstart()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (ToolManager::GetInstance()->m_Serverform->m_TCPConnect == false)
+	{
+		CString str = _T("START");
+		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	}
 
+}
+
+
+void ResultForm::OnBnClickedBstop()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (ToolManager::GetInstance()->m_Serverform->m_TCPConnect == false)
+	{
+		CString str = _T("STOP");
+		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	}
+
+}

@@ -32,6 +32,7 @@
 #define IDC_BUTTON8                     1013
 #define IDC_STATIC_TCP                  1013
 #define IDC_b5                          1013
+#define IDC_BStop                       1013
 #define IDC_BUTTON9                     1014
 #define IDC_STATIC_TCP_IP               1014
 #define IDC_b6                          1014
@@ -63,6 +64,7 @@
 #define IDC_FaultyEdit                  1029
 #define IDC_DateEdit                    1030
 #define IDC_ForID                       1031
+#define IDC_BStart                      1032
 
 // Next default values for new objects
 // 
@@ -70,7 +72,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1032
+#define _APS_NEXT_CONTROL_VALUE         1033
 #define _APS_NEXT_SYMED_VALUE           318
 #endif
 #endif

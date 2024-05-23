@@ -24,37 +24,52 @@ AWS::AWS() : m_clientConfig(ClientConfiguration())
     m_clientConfig.region = "ap-northeast-2";
 }
 
-//AWS::AWS(const String& region) : m_clientConfig(ClientConfiguration()), m_region(region) {
-//    m_clientConfig.region = m_region;
-//}
-
 AWS::~AWS()
 {
 }
 
+////////////////////////////////////////////////////////////
+////////////////////RDS/////////////////////////////////////
+////////////////////////////////////////////////////////////
+
 // 데이터 삽입 함수
 bool AWS::RDSinsertData(const char* columnname, const char* inputData, const char* tablename)
 {
+    // 삽입할 데이터를 포함한 SQL 쿼리 생성
     string insert_query = "INSERT INTO public." + string(tablename) + " (" + string(columnname) + ") VALUES " + string(inputData);
-    //  string insert_query = "INSERT INTO public.thing (id, username, password) VALUES ('3', 'c', '1234')";
+    //string insert_query = "INSERT INTO public.thing (id, color, faulty) VALUES ('3', 'red', 'false')";
+    
+    // 쿼리 실행
     PGresult* res = PQexec(conn, insert_query.c_str());
+    
+    // 쿼리 실행 결과 확인
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        // 실패 시 에러 메시지 출력
         cerr << "Insertion failed: " << PQerrorMessage(conn) << endl;
         return false;
     }
-    PQclear(res);
-    return true;
+
+    PQclear(res);// 결과 클리어
+
+    return true;// 성공 여부 반환
 }
+
 // 데이터 출력 함수
 bool AWS::RDSselectData(const char* whatGet, const char* whereData)
 {
+    // 선택할 데이터를 포함한 SQL 쿼리 생성
     string select_query = "SELECT " + string(whatGet) + " FROM " + string(whereData);
     //  string select_query = "SELECT * FROM thing";
 
+    // 쿼리 실행
     PGresult* res = PQexec(conn, select_query.c_str());
+    
+    // 쿼리 실행 결과 확인
     if (PQresultStatus(res) == PGRES_TUPLES_OK) {
-        int rows = PQntuples(res);
+        int rows = PQntuples(res);// 쿼리 결과로부터 행
         int columns = PQnfields(res); // 가져온 열의 수
+        
+        // 결과 출력
         for (int i = 0; i < rows; ++i) {
             // 실제 가져온 열의 수만큼만 출력
             for (int j = 0; j < columns; ++j) {
@@ -64,102 +79,126 @@ bool AWS::RDSselectData(const char* whatGet, const char* whereData)
         }
     }
     else {
+        // 실패 시 에러 메시지 출력
         cerr << "Selection failed: " << PQerrorMessage(conn) << endl;
         return false;
     }
-    PQclear(res);
-    return true;
+    PQclear(res);// 결과 클리어
+    return true;// 성공 여부 반환
 }
 
 // 데이터 수정 함수
 bool AWS::RDSupdateData(const char* columnname, const char* reviseData, const char* id, const char* standard_columnname, const char* tablename)
 {
+    // 수정할 데이터를 포함한 SQL 쿼리 생성
     string update_query = "UPDATE public." + string(tablename) + " SET " + string(columnname) + " = \'" + string(reviseData) + "\' WHERE " + string(standard_columnname) + " = \'" + string(id) + "\'";
-    //  string update_query = "UPDATE public.thing SET color = 'r' WHERE id = '1'";
+    //string update_query = "UPDATE public.thing SET color = 'red' WHERE id = '1'";
 
+    // 쿼리 실행
     PGresult* res = PQexec(conn, update_query.c_str());
 
+    // 쿼리 실행 결과 확인
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        // 실패 시 에러 메시지 출력
         cerr << "Update failed: " << PQerrorMessage(conn) << endl;
         return false;
     }
-    PQclear(res);
+    PQclear(res);// 결과 클리어
 
-    return true;
+    return true;// 성공 여부 반환
 }
 
 // 데이터 삭제 함수
 bool AWS::RDSdeleteData(const char* columnname, const char* deleteline, const char* tablename)
 {
+    // 삭제할 데이터를 포함한 SQL 쿼리 생성
     string delete_query = "DELETE FROM public." + string(tablename) + " WHERE " + string(columnname) + " = " + string(deleteline);
     //  string delete_query = "DELETE FROM public.thing WHERE id = '1'";
 
+    // 쿼리 실행
     PGresult* res = PQexec(conn, delete_query.c_str());
+    
+    // 쿼리 실행 결과 확인
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        // 실패 시 에러 메시지 출력
         cerr << "Deletion failed: " << PQerrorMessage(conn) << endl;
         return false;
     }
-    PQclear(res);
-    return true;
+    PQclear(res);// 결과 클리어
+    return true;// 성공 여부 반환
 }
 
 // 데이터 존재 확인 함수
 bool AWS::RDScheckDataExists(const char* columnname, const char* findwhat, const char* tablename)
 {
+    // 데이터 존재 여부를 확인하는 SQL 쿼리 생성
     string select_query = "SELECT EXISTS (SELECT 1 FROM " + string(tablename) + " WHERE " + string(columnname) + " = \'" + string(findwhat) + "\')";
     //  string select_query = "SELECT EXISTS (SELECT 1 FROM thing WHERE color = 'a')";
 
-    PGresult* res = PQexec(conn, select_query.c_str());
+    PGresult* res = PQexec(conn, select_query.c_str());// 쿼리 실행
+    
+    // 쿼리 실행 결과 확인
     if (PQresultStatus(res) == PGRES_TUPLES_OK) {
         if (PQntuples(res) == 1) {
             // 첫 번째 행의 첫 번째 열의 값을 가져옴 (결과는 boolean 형태)
             bool exists = (PQgetvalue(res, 0, 0)[0] == 't'); // 't'는 true, 'f'는 false
-            PQclear(res);
+            PQclear(res);// 결과 클리어
             return exists;
         }
     }
-    PQclear(res);
-    return false;
+    PQclear(res);// 결과 클리어
+    return false;// 데이터가 존재하지 않거나 쿼리가 실패한 경우 false 반환
 }
 
 // S3 데이터 삽입 함수
 bool AWS::RDSinserts3Data()
 {
+    // 최근 항목의 id를 가져오는 SQL 쿼리 생성
     string select_query = "SELECT id FROM (SELECT * FROM thing ORDER BY id DESC LIMIT 1)";
     //  string select_query = "SELECT * FROM thing";
 
-    PGresult* res1 = PQexec(conn, select_query.c_str());
+    PGresult* res1 = PQexec(conn, select_query.c_str());// 쿼리 실행
 
+    // 쿼리 실행 결과 확인
     if (PQresultStatus(res1) == PGRES_TUPLES_OK) {
-
+        // 가져온 id를 사용하여 S3 데이터 삽입 쿼리 생성
         string insert_query = "INSERT INTO public.s3data (id, date, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ", LOCALTIMESTAMP(0),'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(PQgetvalue(res1, 0, 0)) + ".jpg')";
-        //  string insert_query = "INSERT INTO public.thing (id, username, password) VALUES ('3', 'c', '1234')";
-        PGresult* res = PQexec(conn, insert_query.c_str());
+        //string insert_query = "INSERT INTO public.thing (id, date, url) VALUES ('3', '2024-05-22 17:55:52', '1234.jpg')";
+        
+        PGresult* res = PQexec(conn, insert_query.c_str());// 삽입 쿼리 실행
+        
+        // 쿼리 실행 결과 확인
         if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+            // 실패 시 에러 메시지 출력
             cerr << "Insertion failed: " << PQerrorMessage(conn) << endl;
             return false;
         }
-        PQclear(res);
+        PQclear(res);// 결과 클리어
     }
-    PQclear(res1);
+    PQclear(res1);// 첫 번째 쿼리 결과 클리어
 
-    return true;
+    return true;// 성공 여부 반환
 }
 
 // 데이터 테이블 연동 함수
 vector<AWSLIST> AWS::RDSjoinData()
 {
     vector<AWSLIST> listvector;
-    string join_query = "SELECT a.id, a.color, a.faulty, b.date, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id\n ORDER BY id DESC";
 
+    // JOIN 쿼리 생성
+    string join_query = "SELECT a.id, a.color, a.faulty, b.date, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id ORDER BY id DESC";
+
+    // 쿼리 실행
     PGresult* res = PQexec(conn, join_query.c_str());
 
+    // 쿼리 실행 결과 확인
     if (PQresultStatus(res) == PGRES_TUPLES_OK) {
-        int rows = PQntuples(res);
+        int rows = PQntuples(res);// 가져온 행의 수
         int columns = PQnfields(res); // 가져온 열의 수
         for (int i = 0; i < rows; ++i) {
             AWSLIST row; // 각 행을 저장할 벡터
-            // 실제 가져온 열의 수만큼만 출력
+
+            // 실제 가져온 각각의 열을 저장
             row.id = PQgetvalue(res, i, 0);
             row.color = PQgetvalue(res, i, 1);
             row.faulty = PQgetvalue(res, i, 2);
@@ -167,10 +206,12 @@ vector<AWSLIST> AWS::RDSjoinData()
             row.url = PQgetvalue(res, i, 4);
 
             listvector.push_back(row); // 행 벡터를 2차원 벡터에 추가
-            //cout << endl;
         }
-        PQclear(res);
+        
+        PQclear(res);// 결과 클리어
+        
         return listvector;
+
         //// 데이터를 출력해 봅니다.
         //for (const auto& row : listvector) {
         //    for (const auto& value : row) {
@@ -180,9 +221,10 @@ vector<AWSLIST> AWS::RDSjoinData()
         //}
     }
     else {
+        // 실패 시 에러 메시지 출력
         cerr << "Selection failed: " << PQerrorMessage(conn) << endl;
 
-        PQclear(res);
+        PQclear(res);// 결과 클리어
 
         return listvector;
     }
@@ -195,30 +237,21 @@ bool AWS::RDSckeckConnection()
 {
     // 연결 성공 여부 확인
     if (PQstatus(conn) != CONNECTION_OK) {
+        // 연결 실패 시 에러 메시지 출력
         cerr << "Connection to database failed: " << PQerrorMessage(conn) << endl;
         PQfinish(conn); // 연결 종료
         return false;
     }
     else {
+        // 연결 성공 시 메시지 출력
         cout << "Connected to database" << endl;
         return true;
     }
 }
 
-// 연결 종료 함수
-void AWS::RDSconnectionEnd()
-{
-    // 연결 종료
-    PQfinish(conn);
-}
-
-// S3연결 함수
-bool AWS::JoinS3()
-{
-    m_clientConfig.region = "ap-northeast-2";
-
-    return true;
-}
+////////////////////////////////////////////////////////////
+////////////////////S3//////////////////////////////////////
+////////////////////////////////////////////////////////////
 
 // 오브젝트 추가 함수
 bool AWS::PutObject(const String& fileName)
@@ -316,28 +349,34 @@ bool AWS::GetObject(const String& objectKey)
 // 오브젝트 삭제 함수
 bool AWS::DeleteObjects(const vector<String>& objectKey)
 {
-
+    // S3 클라이언트 생성
     S3Client client(m_clientConfig);
     DeleteObjectsRequest request;
 
+    // 삭제할 오브젝트 설정
     Aws::S3::Model::Delete deleteObject;
     for (const String& ObjectKey : objectKey)
     {
         deleteObject.AddObjects(ObjectIdentifier().WithKey(ObjectKey));
     }
 
+    // 요청에 삭제할 오브젝트와 버킷 설정
     request.SetDelete(deleteObject);
     request.SetBucket(bucketName);
 
+    // 삭제 요청 수행
     DeleteObjectsOutcome outcome =
         client.DeleteObjects(request);
 
+    // 결과 처리
     if (!outcome.IsSuccess()) {
+        // 실패 시 에러 메시지 출력
         auto err = outcome.GetError();
         std::cerr << "Error deleting objects. " <<
             err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
     }
     else {
+        // 성공 시 성공 메시지 출력
         cout << "Successfully deleted the objects.";
         for (size_t i = 0; i < objectKey.size(); ++i)
         {
@@ -350,9 +389,13 @@ bool AWS::DeleteObjects(const vector<String>& objectKey)
 
         cout << " from bucket " << bucketName << "." << std::endl;
     }
-
+    // 성공 여부 반환
     return outcome.IsSuccess();
 }
+
+////////////////////////////////////////////////////////////
+////////////////////ALL/////////////////////////////////////
+////////////////////////////////////////////////////////////
 
 //한번에 모든 테이블 데이터 올리기
 void AWS::Allinput(
@@ -364,7 +407,6 @@ void AWS::Allinput(
 {
     RDSinsertData(columnname, inputData, tablename);
     PutObject(fileName.c_str());
-    //RDSinserts3Data(fileName.c_str());
 
 }
 
@@ -381,3 +423,18 @@ void AWS::AlldeleteData(const char* deleteline, const char* columnname, const ch
 void AWS::S3connectionEnd() {
     ShutdownAPI(options);
 }
+
+//// 연결 종료 함수
+//void AWS::RDSconnectionEnd()
+//{
+//    // 연결 종료
+//    PQfinish(conn);
+//}
+//
+//// S3연결 함수
+//bool AWS::JoinS3()
+//{
+//    m_clientConfig.region = "ap-northeast-2";
+//
+//    return true;
+//}

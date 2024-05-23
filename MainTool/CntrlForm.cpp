@@ -177,15 +177,11 @@ void CntrlForm::OnBnClickedButton1()
 
 void CntrlForm::OnBnClickedButton3()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString str = _T("START");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	
 }
 
 
 void CntrlForm::OnBnClickedButton4()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString str = _T("STOP");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	
 }
