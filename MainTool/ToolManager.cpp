@@ -46,7 +46,7 @@ void ToolManager::DestroyInstance()
 
 void ToolManager::Initialize()
 {
-	cap.open(1, cv::CAP_DSHOW);
+	cap.open(0, cv::CAP_DSHOW);
 	inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
 	m_strPickinLst = L"";
 	m_Res = RESULT::RES_END;
@@ -71,12 +71,11 @@ bool ToolManager::Update(double t)
 		resize(frame, frame, Size(600, 450));
 		m_Res = Detect();
 		
+
 		if (bGrab == true)
 		{
 			bGrab = false;
-			//m_Res = Detect();
-			//if (m_Res != RES_END)
-				//m_Resform->RedrawWindow();
+			m_detecttab->Update();
 			if (m_Res != RES_END)
 				m_Resform->RedrawWindow();
 			imwrite("BOX.jpg", frame);

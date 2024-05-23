@@ -55,7 +55,7 @@ BOOL DetectTab::OnInitDialog()
 	Column.fmt = LVCFMT_LEFT;
 
 	LPWSTR Column_list[5] = { _T("ID"), _T("Url") , _T("Color"),_T("Faulty"),_T("Date") };
-	int cx[5] = { 50,250,100,100,300 };
+	int cx[5] = { 50,600,100,100,350 };
 
 	int Column_size = sizeof(Column_list) / sizeof(Column_list[0]);
 	for (int i = 0; i < Column_size; i++) {
@@ -126,6 +126,7 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 
 void DetectTab::Update()
 {
+	m_List.DeleteAllItems();
 
 	ToolManager::GetInstance()->m_Serverform->SetAwsInfo(AWSINFO::AWSLIST);
 	vector<AWSLIST> vecInfo = ToolManager::GetInstance()->m_Serverform->m_boxlist;
