@@ -23,6 +23,7 @@ DetectTab::DetectTab(CWnd* pParent /*=nullptr*/)
 
 DetectTab::~DetectTab()
 {
+	Threadupdate = true;
 }
 
 void DetectTab::DoDataExchange(CDataExchange* pDX)

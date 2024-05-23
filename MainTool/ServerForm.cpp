@@ -22,7 +22,8 @@ ServerForm::ServerForm()
 
 ServerForm::~ServerForm()
 {
-	m_ThreadColor = COLORTHREAD::THREADEXIT;
+	m_awsinfo = AWSINFO::AWSEXIT;
+	m_ThreadColor = COLORTHREAD::THREADEXIT;	
 }
 
 void ServerForm::DoDataExchange(CDataExchange* pDX)

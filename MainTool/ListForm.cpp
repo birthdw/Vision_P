@@ -85,13 +85,14 @@ void ListForm::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
 		ToolManager::GetInstance()->m_strPickinLst = L"";
 		m_Detecttab.ShowWindow(SW_SHOW);
 		m_TestTab.ShowWindow(SW_HIDE);
+		m_Detecttab.Update(true);
 		break;
 	case 1:
 		m_Detecttab.ShowWindow(SW_HIDE);
 		m_TestTab.ShowWindow(SW_SHOW);
 
 		m_Detecttab.m_List.DeleteAllItems();
-		m_Detecttab.Update();
+		m_Detecttab.Update(true);
 
 
 		break;
