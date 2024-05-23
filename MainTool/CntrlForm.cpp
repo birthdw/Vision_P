@@ -37,8 +37,6 @@ BEGIN_MESSAGE_MAP(CntrlForm, CFormView)
 	ON_BN_CLICKED(IDC_b8, &CntrlForm::OnBnClickedb8)
 	ON_BN_CLICKED(IDC_b7, &CntrlForm::OnBnClickedb7)
 	ON_BN_CLICKED(IDC_BUTTON1, &CntrlForm::OnBnClickedButton1)
-	ON_BN_CLICKED(IDC_BUTTON3, &CntrlForm::OnBnClickedButton3)
-	ON_BN_CLICKED(IDC_BUTTON4, &CntrlForm::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -65,8 +63,12 @@ void CntrlForm::Dump(CDumpContext& dc) const
 void CntrlForm::OnBnClickedButton2()
 {
 	//home
+
 	CString str = _T("RBT:HOME");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	
+	
 }
 
 
@@ -154,7 +156,8 @@ void CntrlForm::OnBnClickedButton1()
 	// 버튼 상태를 토글
 
 	// 버튼 텍스트 변경
-	if (!ToolManager::GetInstance()->m_Serverform->m_TCPConnect) {
+	if (!ToolManager::GetInstance()->m_Serverform->m_TCPConnect)
+	{
 		CButton* pButton = (CButton*)GetDlgItem(IDC_BUTTON1);
 		m_isRailOn = !m_isRailOn;
 		if (m_isRailOn)
@@ -172,16 +175,14 @@ void CntrlForm::OnBnClickedButton1()
 
 		}
 	}
-}
-
-
-void CntrlForm::OnBnClickedButton3()
-{
 	
 }
 
 
-void CntrlForm::OnBnClickedButton4()
+void CntrlForm::OnInitialUpdate()
 {
-	
+	CFormView::OnInitialUpdate();
+
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	ToolManager::GetInstance()->SetCntrlForm(this);
 }

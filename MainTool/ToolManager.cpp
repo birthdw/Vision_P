@@ -5,6 +5,7 @@
 #include "TestTab.h"
 #include "ResultForm.h"
 #include "ServerForm.h"
+#include "CntrlForm.h"
 
 ToolManager* ToolManager::m_pInstance = nullptr;
 
@@ -46,7 +47,7 @@ void ToolManager::DestroyInstance()
 
 void ToolManager::Initialize()
 {
-	cap.open(0, cv::CAP_DSHOW);
+	cap.open(1, cv::CAP_DSHOW);
 	inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
 	m_strPickinLst = L"";
 	m_Res = RESULT::RES_END;
@@ -75,12 +76,26 @@ bool ToolManager::Update(double t)
 
 		if (bGrab == true)
 		{
-			bGrab = false;
 			if (m_Res != RES_END)
+			{
+				bGrab = false;
 				m_Resform->RedrawWindow();
-			imwrite("BOX.jpg", frame);
-			m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
-			m_Serverform->ClientTCP(_T("ST/PROC:BEGIN1/END"));
+				imwrite("BOX.jpg", frame);
+				m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
+				if (m_Serverform->m_awscolor == "fail") {
+					m_Serverform->ClientTCP(_T("ST/PROC:BEGIN1/END"));
+				}
+				else if (m_Serverform->m_awscolor == "green") {
+					m_Serverform->ClientTCP(_T("ST/PROC:BEGIN2/END"));
+				}
+				else if (m_Serverform->m_awscolor == "yellow") {
+					m_Serverform->ClientTCP(_T("ST/PROC:BEGIN3/END"));
+				}
+				else if (m_Serverform->m_awscolor == "red") {
+					m_Serverform->ClientTCP(_T("ST/PROC:BEGIN4/END"));
+				}
+				
+			}
 		}
 
 	}
@@ -223,6 +238,11 @@ void ToolManager::RenderImg(CStatic* p, CString filepath)
 void ToolManager::Setserverform(ServerForm* s)
 {
 	m_Serverform = s;
+}
+
+void ToolManager::SetCntrlForm(CntrlForm* c)
+{
+	m_CntrlForm = c;
 }
 
 

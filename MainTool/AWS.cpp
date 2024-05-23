@@ -414,8 +414,8 @@ void AWS::Allinput(
 void AWS::AlldeleteData(const char* deleteline, const char* columnname, const char* tablename, const char* tablename2)
 {
     RDSdeleteData(columnname, deleteline, tablename);
-    RDSdeleteData(columnname, deleteline, tablename2);
     DeleteObjects({ string(deleteline) + ".jpg" });
+    RDSdeleteData(columnname, deleteline, tablename2);
     //truncate table tableName restart identity//tabelName 테이블의 시퀀스를 자동으로 재시작하며 테이블 데이터를 모두 삭제한다
 }
 

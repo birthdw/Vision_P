@@ -41,6 +41,8 @@ public:
 	afx_msg void OnPaint();
 	afx_msg void OnBnClickedBstart();
 	afx_msg void OnBnClickedBstop();
+
+	void Setbutton(bool n);
 };
 
 

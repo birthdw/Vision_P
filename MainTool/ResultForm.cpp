@@ -6,6 +6,7 @@
 #include "ResultForm.h"
 #include "ToolManager.h"
 #include "ServerForm.h"
+#include "CntrlForm.h"
 
 // ResultForm
 
@@ -170,6 +171,10 @@ void ResultForm::OnBnClickedBstart()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (ToolManager::GetInstance()->m_Serverform->m_TCPConnect == false)
 	{
+		Setbutton(false);
+		ToolManager::GetInstance()->SetKillFrm(false);
+		ToolManager::GetInstance()->SetSpecialOn(false);
+		m_btempdetect.EnableWindow(FALSE);
 		CString str = _T("START");
 		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 	}
@@ -182,8 +187,26 @@ void ResultForm::OnBnClickedBstop()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (ToolManager::GetInstance()->m_Serverform->m_TCPConnect == false)
 	{
+		Setbutton(true);
 		CString str = _T("STOP");
 		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+		ToolManager::GetInstance()->SetKillFrm(true);
+		ToolManager::GetInstance()->SetSpecialOn(false);
+		m_btempdetect.EnableWindow(TRUE);
 	}
 
+}
+
+void ResultForm::Setbutton(bool n)
+{
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_BUTTON2)->EnableWindow(n);
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_BUTTON1)->EnableWindow(n);
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b2)->EnableWindow(n);
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b1)->EnableWindow(n);
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b4)->EnableWindow(n);
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b3)->EnableWindow(n);
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b5)->EnableWindow(n);
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b6)->EnableWindow(n);
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b7)->EnableWindow(n);
+	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b8)->EnableWindow(n);
 }

@@ -5,6 +5,7 @@ class ServerForm;
 class DetectTab;
 class TestTab;
 class ResultForm;
+class CntrlForm;
 
 enum RESULT
 {
@@ -46,6 +47,7 @@ public:
 
 public:
 	void Setserverform(ServerForm* s);
+	void SetCntrlForm(CntrlForm* c);
 public:
 	void SetMainHndl(HWND mhd);
 	void SetToolviewhdl(HWND tvhd);
@@ -100,6 +102,7 @@ public:
 	DetectTab* m_detecttab;
 	TestTab* m_Testtab;
 	ResultForm* m_Resform;
+	CntrlForm* m_CntrlForm;
 
 public:
 	int maxR, maxG, maxB;

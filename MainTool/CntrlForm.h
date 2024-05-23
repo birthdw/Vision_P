@@ -41,8 +41,7 @@ public:
 	afx_msg void OnBnClickedButton1();
 
 	bool m_isRailOn;
-	afx_msg void OnBnClickedButton3();
-	afx_msg void OnBnClickedButton4();
+	virtual void OnInitialUpdate();
 };
 
 

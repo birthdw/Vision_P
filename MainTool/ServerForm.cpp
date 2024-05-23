@@ -78,8 +78,8 @@ void ServerForm::OnInitialUpdate()
 	Column.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
 	Column.fmt = LVCFMT_LEFT;
 
-	LPWSTR Column_list[3] = { _T("번호"), _T("로그"), _T("시간")};
-	int cx[3] = { 100, 400, 200 };
+	LPWSTR Column_list[4] = { _T("번호"),_T("송수신"), _T("로그"), _T("시간")};
+	int cx[4] = { 100, 100, 400, 200 };
 
 	int Column_size = sizeof(Column_list) / sizeof(Column_list[0]);
 	for (int i = 0; i < Column_size; i++) {
@@ -129,6 +129,8 @@ void ServerForm::ClientTCP(CString strMessage) {
 	int nLength = strMessage.GetLength() * sizeof(TCHAR);
 
 	m_Client.Send((LPCTSTR)strMessage, nLength);
+	SetList(_T("송신"),strMessage);
+	
 }
 
 
@@ -180,7 +182,8 @@ void ServerForm::exit_s3()
 
 
 // 소켓통신 로그
-void ServerForm::SetList(CString strMessage) {
+void ServerForm::SetList(CString str,CString strMessage) 
+{
 	time_t timer;
 	struct tm* t;
 	timer = time(NULL);
@@ -191,8 +194,9 @@ void ServerForm::SetList(CString strMessage) {
 		CString(std::to_string(t->tm_min).c_str()) + _T("/") +
 		CString(std::to_string(t->tm_sec).c_str());
 	m_ListTcp.InsertItem(Count, (CString(std::to_string(Count + 1).c_str())));
-	m_ListTcp.SetItemText(Count, 1, strMessage);
-	m_ListTcp.SetItemText(Count, 2, static_cast<LPCTSTR>(time_s));
+	m_ListTcp.SetItemText(Count, 1, str);
+	m_ListTcp.SetItemText(Count, 2, strMessage);
+	m_ListTcp.SetItemText(Count, 3, static_cast<LPCTSTR>(time_s));
 	Count++;
 }
 
@@ -271,6 +275,7 @@ void ServerForm::OnLvnItemchangedListTcp(NMHDR* pNMHDR, LRESULT* pResult)
 void ServerForm::OnBnClickedLogBut()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	Count = 0;
 	m_ListTcp.DeleteAllItems();
 
 }

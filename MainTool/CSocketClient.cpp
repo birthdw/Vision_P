@@ -44,7 +44,7 @@ void CSocketClient::OnReceive(int nErrorCode)
 	if (nRead > 0) {
 		szBuffer[nRead] = '\0';
 		CString strReceive(szBuffer);
-		ToolManager::GetInstance()->m_Serverform->SetList(strReceive);
+		ToolManager::GetInstance()->m_Serverform->SetList(_T("수신"),strReceive);
 		recvinfo(strReceive);
 	}
 
@@ -125,7 +125,8 @@ void CSocketClient::ProcessString(const CString& str)
                 else if (betweenColonAndSlash.Find(_T("DONE")) != -1)
                 {
                     // "DONE을 포함하면 전달
-                    ToolManager::GetInstance()->m_Serverform->ClientTCP(betweenColonAndSlash);; 
+                    CString str = _T("START");
+                    ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
                 }
 
             }
