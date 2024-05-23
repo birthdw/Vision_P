@@ -26,7 +26,6 @@ public:
 	virtual BOOL OnInitDialog();
 	void LoadOnlineImage(LPCTSTR url);
 	afx_msg void OnPaint();
-	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton5();
 

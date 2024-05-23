@@ -42,7 +42,6 @@ void TestTab::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(TestTab, CDialog)
 	ON_WM_PAINT()
-	ON_BN_CLICKED(IDC_BUTTON1, &TestTab::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &TestTab::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON5, &TestTab::OnBnClickedButton5)
 END_MESSAGE_MAP()
@@ -142,10 +141,7 @@ void TestTab::OnPaint()
 }
 
 
-void TestTab::OnBnClickedButton1()
-{
 
-}
 
 
 void TestTab::OnBnClickedButton2()
@@ -173,6 +169,11 @@ void TestTab::OnBnClickedButton5()
 {
 	//삭제
 	ToolManager::GetInstance()->m_Serverform->m_aws->AlldeleteData(CurId.c_str());
+
+
+	ToolManager::GetInstance()->m_tab->SetCurSel(0);
+	ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_SHOW);
+	ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_HIDE);
 
 
 
