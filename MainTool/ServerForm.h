@@ -94,6 +94,7 @@ public:
 	// 서버 저장 자료형
 	string m_awscolor = "";
 	string m_awsfaulty = "";
+	afx_msg void OnBnClickedLogBut();
 };
 
 

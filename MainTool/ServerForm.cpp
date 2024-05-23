@@ -41,6 +41,7 @@ BEGIN_MESSAGE_MAP(ServerForm, CFormView)
 	ON_WM_PAINT()
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_TCP, &ServerForm::OnLvnItemchangedListTcp)
 	ON_MESSAGE(WM_SOCKET_THREAD_FINISHED, &ServerForm::OnSocketThreadFinished)
+	ON_BN_CLICKED(IDC_LOG_BUT, &ServerForm::OnBnClickedLogBut)
 END_MESSAGE_MAP()
 
 
@@ -264,4 +265,12 @@ void ServerForm::OnLvnItemchangedListTcp(NMHDR* pNMHDR, LRESULT* pResult)
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	*pResult = 0;
+}
+
+
+void ServerForm::OnBnClickedLogBut()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_ListTcp.DeleteAllItems();
+
 }

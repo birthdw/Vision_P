@@ -92,8 +92,15 @@ UINT COLORRODING(LPVOID pParam) //MFC 연결 상태 그리는 스레드
 		}
 		else if (thisObj->m_ThreadColor == COLORTHREAD::THREADRUN) {
 			thisObj->InvalidateRect(NULL, FALSE);
-			Sleep(200);
+
+			if (thisObj->m_ListTcp.GetItemCount() > 0) {
+				thisObj->GetDlgItem(IDC_LOG_BUT)->EnableWindow(true);
+			}
+			else {
+				thisObj->GetDlgItem(IDC_LOG_BUT)->EnableWindow(false);
+			}
 		}
+		Sleep(200);
 	}
 }
 

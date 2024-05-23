@@ -47,6 +47,8 @@
 #define IDC_LIST_TCP                    1017
 #define IDC_BUTTON13                    1018
 #define IDC_EDIT1                       1018
+#define IDC_TCP_BUT2                    1018
+#define IDC_LOG_BUT                     1018
 #define IDC_BUTTON14                    1019
 #define IDC_ColorEdit                   1019
 #define IDC_                            1020
