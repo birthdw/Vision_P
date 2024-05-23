@@ -152,25 +152,26 @@ void CntrlForm::OnBnClickedButton1()
 	//레일 ON OFF 버튼
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 버튼 상태를 토글
-	m_isRailOn = !m_isRailOn;
 
 	// 버튼 텍스트 변경
-	CButton* pButton = (CButton*)GetDlgItem(IDC_BUTTON1);
-	if (m_isRailOn)
-	{
-		pButton->SetWindowText(_T("Rail_ON"));
-		CString str = _T("RBT:RAIL_ON");
-		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	if (!ToolManager::GetInstance()->m_Serverform->m_TCPConnect) {
+		CButton* pButton = (CButton*)GetDlgItem(IDC_BUTTON1);
+		m_isRailOn = !m_isRailOn;
+		if (m_isRailOn)
+		{
+			pButton->SetWindowText(_T("Rail_ON"));
+			CString str = _T("RBT:RAIL_ON");
+			ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 
+		}
+		else
+		{
+			pButton->SetWindowText(_T("Rail_OFF"));
+			CString str = _T("RBT:RAIL_OFF");
+			ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+		}
 	}
-	else
-	{
-		pButton->SetWindowText(_T("Rail_OFF"));
-		CString str = _T("RBT:RAIL_OFF");
-		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
-
-	}
-
 }
 
 
