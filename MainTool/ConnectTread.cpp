@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ConnectTread.h"
 #include "ServerForm.h"
+#include "ToolManager.h"
+#include "ResultForm.h"
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
@@ -102,5 +104,38 @@ UINT COLORRODING(LPVOID pParam) //MFC 연결 상태 그리는 스레드
 		}
 		Sleep(200);
 	}
+}
+
+UINT ThreadCamera(LPVOID pParam) {
+	ToolManager* thisObj;
+	thisObj = (ToolManager*)pParam;
+	
+	thisObj->cap >> thisObj->frame;
+	vector<Detection> output = thisObj->inf->runInference(thisObj->frame);
+	thisObj->m_Resform->camera = true;
+	
+	return 0;
+}
+
+UINT ThreadCameraButton(LPVOID pParam) {
+	ResultForm* thisObj;
+	thisObj = (ResultForm*)pParam;
+
+	while (1) {
+		if (!thisObj->camera) {
+			thisObj->GetDlgItem(IDC_BStart)->EnableWindow(false);
+			thisObj->GetDlgItem(IDC_BStop)->EnableWindow(false);
+			thisObj->GetDlgItem(IDC_BUTTON1)->EnableWindow(false);
+			thisObj->GetDlgItem(IDC_BUTTON2)->EnableWindow(false);
+		}
+		else {
+			thisObj->GetDlgItem(IDC_BStart)->EnableWindow(true);
+			thisObj->GetDlgItem(IDC_BStop)->EnableWindow(true);
+			thisObj->GetDlgItem(IDC_BUTTON1)->EnableWindow(true);
+			thisObj->GetDlgItem(IDC_BUTTON2)->EnableWindow(true);
+			return 0;
+		}
+	}
+	return 0;
 }
 

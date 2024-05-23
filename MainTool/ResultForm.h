@@ -36,6 +36,7 @@ public:
 	CStatic m_Color;
 	afx_msg void OnBnClickedButton6();
 	int cnt = 0;
+	bool camera = false;
 	CButton m_btempdetect;
 	virtual void OnInitialUpdate();
 	afx_msg void OnPaint();
