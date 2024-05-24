@@ -179,6 +179,8 @@ void ResultForm::OnBnClickedBstart()
 		m_btempdetect.EnableWindow(FALSE);
 		CString str = _T("START");
 		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+		ToolManager::GetInstance()->SetReady(true);
 	}
 
 }
@@ -197,6 +199,7 @@ void ResultForm::OnBnClickedBstop()
 		m_btempdetect.EnableWindow(TRUE);
 	}
 
+	ToolManager::GetInstance()->SetReady(false);
 }
 
 void ResultForm::Setbutton(bool n)

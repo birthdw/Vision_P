@@ -75,10 +75,15 @@ bool ToolManager::Update(double t)
 	maxG = 0;
 	maxB = 0;
 
-
+	
 
 	if (FrmKilled == false)
 	{
+		if (m_bReadyState == false)
+		{
+			return false;
+		}
+
 		cap >> frame;
 		resize(frame, frame, Size(600, 450));
 
@@ -88,6 +93,15 @@ bool ToolManager::Update(double t)
 		switch (m_OldState)
 		{
 		case PROCESSSTATE::STANDBY:
+			SetProcessState(PROCESSSTATE::WAIT_CAM_GRAB);
+			break;
+		case PROCESSSTATE::WAIT_CAM_GRAB:
+			// 카메라 촬상 조건 추가
+			if (bGrap==true)
+			{
+				SetProcessState(PROCESSSTATE::INSPECT);
+				bGrap = false;
+			}
 			break;
 		case PROCESSSTATE::INSPECT:
 			m_Res = Detect();
@@ -106,7 +120,7 @@ bool ToolManager::Update(double t)
 				m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
 			}
 			m_Resform->RedrawWindow();
-			m_CurState = PROCESSSTATE::STANDBY;
+			SetProcessState(PROCESSSTATE::STANDBY);
 			break;
 		case PROCESSSTATE::ABNORMAL:
 			break;
@@ -477,7 +491,13 @@ void ToolManager::SetProcessState(PROCESSSTATE s)
 	m_CurState = s;
 }
 
-vector<AWSLIST> ToolManager::GetVec()
+vector<TEMPINFO> ToolManager::GetVec()
 {
 	return m_TempVec;
+}
+
+
+void ToolManager::SetReady(bool bReady)
+{
+	m_bReadyState = bReady;
 }

@@ -93,7 +93,7 @@ public:
 	bool FrmKilled = false;
 	bool RecCtrl = false;
 	bool SpecialOn = false;
-	bool bGrab = false;
+	bool bGrap = false;
 public:
 	double dfps;
 	double fpscnt;
@@ -131,9 +131,12 @@ public:
 		PROCESSSTATE m_OldState;
 		PROCESSSTATE m_CurState;
 
-		vector<AWSLIST> m_TempVec;
+		vector<TEMPINFO> m_TempVec;
 
 
+		bool m_bReadyState = false;
+
+		void SetReady(bool bReady);
 
 
 };

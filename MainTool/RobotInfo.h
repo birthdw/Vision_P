@@ -43,6 +43,7 @@ enum class COLORTHREAD : int
 enum class PROCESSSTATE : int
 {
 	STANDBY = 0,
+	WAIT_CAM_GRAB,
 	INSPECT,
 	ABNORMAL,
 	PROCESS_END
