@@ -39,3 +39,11 @@ enum class COLORTHREAD : int
 	THREADRUN = 0,
 	THREADEXIT
 };
+
+enum class PROCESSSTATE : int
+{
+	STANDBY = 0,
+	INSPECT,
+	ABNORMAL,
+	PROCESS_END
+};

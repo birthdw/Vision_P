@@ -128,7 +128,7 @@ void ResultForm::OnPaint()
 
 	switch (ToolManager::GetInstance()->m_Res)
 	{
-	case RESULT::RES_END:
+	case RESULT::RES_NONE:
 		image.Load(_T("white.bmp"));//기본
 		break;
 	case RESULT::RED:
