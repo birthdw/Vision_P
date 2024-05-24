@@ -65,81 +65,8 @@ void CSocketClient::recvinfo(CString strMessage)
 	{
 		socketend();
 	}
-    else if(strMessage == _T(""))
-
-
-    {
-        ProcessString(strMessage);
-    }
-
-
-}
-
-// 문자열을 주어진 구분자로 나누는 함수
-vector<CString> CSocketClient::SplitCString(const CString& str, const CString& delimiter)
-{
-    // 문자열을 분할하여 저장할 벡터 생성
-    std::vector<CString> tokens;
-
-    // 시작 위치 초기화
-    int startPos = 0;
-
-    // 문자열을 주어진 구분자(delimiter)로 분할하고 첫 번째 토큰 가져오기
-    CString token = str.Tokenize(delimiter, startPos);
-
-    // 토큰이 비어 있지 않은 동안 반복
-    while (!token.IsEmpty())
-    {
-        // 토큰을 벡터에 추가
-        tokens.push_back(token);
-        // 다음 토큰을 가져오기 위해 시작 위치 이동
-        token = str.Tokenize(delimiter, startPos);
-    }
-
-    // 분할된 토큰들을 저장한 벡터 반환
-    return tokens;
-}
-
-void CSocketClient::ProcessString(const CString& str)
-{
-    // 문자열에 '/'가 포함되어 있는지 검사
-    if (str.Find(_T('/')) != -1)
-    {
-        // '/'가 포함되어 있는 경우
-
-        // '/'로 문자열을 분할하여 첫 번째 단계의 결과를 저장할 벡터 생성
-        std::vector<CString> firstSplit = SplitCString(str, _T("/"));
-
-        // 첫 번째 단계의 결과를 반복하여 처리
-        for (const auto& part : firstSplit)
-        {
-            int colonPos = part.Find(':');
-            if (colonPos != -1)
-            {
-                CString betweenColonAndSlash = part.Mid(colonPos + 1);
-
-                if (betweenColonAndSlash.Find(_T("GRAP")) != -1)
-                {
-                    // "GRAP" 포함하면 전달
-                    ToolManager::GetInstance()->bGrab = true;
-                    ToolManager::GetInstance()->m_Serverform->ClientTCP(betweenColonAndSlash); 
-                }
-
-                else if (betweenColonAndSlash.Find(_T("DONE")) != -1)
-                {
-                    // "DONE을 포함하면 전달
-                    CString str = _T("START");
-                    ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
-                }
-
-            }
-        }
-    }
-    else 
-    {
-        // '/'가 포함되어 있지 않은 경우
-        // 전체 문자열을 그대로 출력
-        CString str_ar = _T("올바른 명령이 아닙니다");
-        ToolManager::GetInstance()->m_Serverform->ClientTCP(str_ar);
+    else {
+        ToolManager::GetInstance()->m_Serverform->SetSocketMessage(strMessage);
     }
 }
+

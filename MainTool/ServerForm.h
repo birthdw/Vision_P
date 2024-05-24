@@ -107,16 +107,23 @@ private:
 	string m_modifyCurId;
 	string m_awsdate;
 
+	// 소켓 저장 자료형
+	CString SocketMessage = _T("");
+
 public:
 	AWSINFO GetAwsInfo();				// 서버 동작 얻어옴
 	void SetAwsInfo(AWSINFO pAWS);		// 서버 동작 
 	void SetModify(string color, string faulty, string curId);
+	vector<CString> SplitCString(const CString& str, const CString& delimiter);
 
 
 	void SetAwsColor(string set);
 	string GetAwsColor();
 	void SetAwsFaulty(string set);
 	string GetAwsFaulty();
+
+	void SetSocketMessage(CString set);
+	CString GetSocketMessage();
 
 	void SetModifyColor(string set);
 	string GetModifyColor();

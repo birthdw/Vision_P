@@ -6,4 +6,4 @@ UINT COLORRODING(LPVOID pParam);
 UINT ThreadCamera(LPVOID pParam);
 UINT ThreadCameraButton(LPVOID pParam);
 UINT ThreadUpdate(LPVOID pParam);
-UINT test(LPVOID pParam);
+UINT ThreadRecv(LPVOID pParam);

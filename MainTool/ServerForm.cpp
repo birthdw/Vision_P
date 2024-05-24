@@ -95,6 +95,7 @@ void ServerForm::OnInitialUpdate()
 	UpdateData(FALSE);
 	m_awsinfo = AWSINFO::SEVERSTART;
 	AfxBeginThread(COLORRODING, this);
+	AfxBeginThread(ThreadRecv, this);
 	AfxBeginThread(initawsT, this);
 }
 
@@ -252,6 +253,30 @@ void ServerForm::initaws()
 	m_ControlColor = STATUCOLOR::SERVERGREEN;
 }
 
+vector<CString> ServerForm::SplitCString(const CString& str, const CString& delimiter)
+{
+	// 문자열을 분할하여 저장할 벡터 생성
+	std::vector<CString> tokens;
+
+	// 시작 위치 초기화
+	int startPos = 0;
+
+	// 문자열을 주어진 구분자(delimiter)로 분할하고 첫 번째 토큰 가져오기
+	CString token = str.Tokenize(delimiter, startPos);
+
+	// 토큰이 비어 있지 않은 동안 반복
+	while (!token.IsEmpty())
+	{
+		// 토큰을 벡터에 추가
+		tokens.push_back(token);
+		// 다음 토큰을 가져오기 위해 시작 위치 이동
+		token = str.Tokenize(delimiter, startPos);
+	}
+
+	// 분할된 토큰들을 저장한 벡터 반환
+	return tokens;
+}
+
 
 AWSINFO ServerForm::GetAwsInfo()
 {
@@ -290,6 +315,16 @@ void ServerForm::SetAwsFaulty(string set)
 string ServerForm::GetAwsFaulty()
 {
 	return m_awsfaulty;
+}
+
+void ServerForm::SetSocketMessage(CString set)
+{
+	SocketMessage = set;
+}
+
+CString ServerForm::GetSocketMessage()
+{
+	return SocketMessage;
 }
 
 void ServerForm::SetModifyColor(string set)

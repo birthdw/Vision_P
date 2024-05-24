@@ -14,9 +14,6 @@ public:
 	void socketend();
 	void recvinfo(CString strMessage);
 
-	void ProcessString(const CString& str);
-	vector<CString> SplitCString(const CString& str, const CString& delimiter);
-
 	int Count = 0;
 };
 

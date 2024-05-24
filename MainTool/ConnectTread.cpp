@@ -7,12 +7,55 @@
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
-UINT test(LPVOID pParam) {
+UINT ThreadRecv(LPVOID pParam) {
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
+	
+	while (1) {
+		CString str = thisObj->GetSocketMessage();
+		if (str != _T("")) {
+			if (str.Find(_T('/')) != -1)
+			{
+				// '/'가 포함되어 있는 경우
 
-	thisObj->ClientTCP(_T("test"));
-	return 0;
+				// '/'로 문자열을 분할하여 첫 번째 단계의 결과를 저장할 벡터 생성
+				std::vector<CString> firstSplit = thisObj->SplitCString(str, _T("/"));
+
+				// 첫 번째 단계의 결과를 반복하여 처리
+				for (const auto& part : firstSplit)
+				{
+					int colonPos = part.Find(':');
+					if (colonPos != -1)
+					{
+						CString betweenColonAndSlash = part.Mid(colonPos + 1);
+
+						if (betweenColonAndSlash.Find(_T("GRAP")) != -1)
+						{
+							// "GRAP" 포함하면 전달
+							ToolManager::GetInstance()->bGrap = true;
+							ToolManager::GetInstance()->m_Serverform->ClientTCP(betweenColonAndSlash);
+						}
+
+						else if (betweenColonAndSlash.Find(_T("DONE")) != -1)
+						{
+							// "DONE을 포함하면 전달
+							CString str = _T("START");
+							ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+						}
+
+					}
+				}
+			}
+			else
+			{
+				// '/'가 포함되어 있지 않은 경우
+				// 전체 문자열을 그대로 출력
+				CString str_ar = _T("올바른 명령이 아닙니다");
+				ToolManager::GetInstance()->m_Serverform->ClientTCP(str_ar);
+			}
+		}
+		Sleep(100);
+	}
 }
 
 UINT initawsT(LPVOID pParam)//서버
