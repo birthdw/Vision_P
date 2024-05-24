@@ -81,7 +81,6 @@ void DetectTab::OnBnClickedButton1()
 	ToolManager::GetInstance()->m_Serverform->SetAwslist(AWSINFO::AWSLIST);
 	vector<AWSLIST> vecInfo = ToolManager::GetInstance()->m_Serverform->m_boxlist;
 
-
 	for (int i = 0; i < vecInfo.size(); ++i)
 	{
 		m_List.InsertItem(i, CString(vecInfo[i].id.c_str()));

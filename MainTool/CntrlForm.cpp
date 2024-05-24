@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CntrlForm, CFormView)
 	ON_BN_CLICKED(IDC_b8, &CntrlForm::OnBnClickedb8)
 	ON_BN_CLICKED(IDC_b7, &CntrlForm::OnBnClickedb7)
 	ON_BN_CLICKED(IDC_BUTTON1, &CntrlForm::OnBnClickedButton1)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -185,4 +186,45 @@ void CntrlForm::OnInitialUpdate()
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	ToolManager::GetInstance()->SetCntrlForm(this);
+}
+
+
+void CntrlForm::OnPaint()
+{
+	// device context for painting
+ // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+ // 그리기 메시지에 대해서는 CFormView::OnPaint()을(를) 호출하지 마십시오.
+	CPaintDC dc(this);
+
+
+	CImage png_grab, grab_on, morter, morter_on, frame;
+
+	png_grab.Load(L"Grab.png");
+	morter.Load(L"morter.png");
+	frame.Load(L"frame.png");
+
+	if (png_grab.GetBPP() == 32) // 32 비트 이미지에서만 투명도 처리
+	{
+		for (int y = 0; y < png_grab.GetHeight(); ++y)
+		{
+			for (int x = 0; x < png_grab.GetWidth(); ++x)
+			{
+				// 각 픽셀의 주소 가져오기
+				COLORREF* pPixel = reinterpret_cast<COLORREF*>(png_grab.GetPixelAddress(x, y));
+
+				// 알파 값이 0이면 (투명한 부분)
+				if ((*pPixel & 0xFF000000) == 0)
+				{
+					// 흰색으로 변경
+					*pPixel = RGB(255, 255, 255);
+				}
+			}
+		}
+	}
+
+	// 이미지를 지정된 크기로 그리기
+	png_grab.StretchBlt(dc, 250, 100, 100, 100);
+	morter.StretchBlt(dc, 250, 200, 100, 100);
+	morter.StretchBlt(dc, 250, 300, 100, 100);
+
 }

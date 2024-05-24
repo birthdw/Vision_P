@@ -76,7 +76,6 @@ bool ToolManager::Update(double t)
 		cap >> frame;
 		resize(frame, frame, Size(600, 450));
 		m_Res = Detect();
-		//m_detecttab->Update();
 
 		if (bGrab == true)
 		{
