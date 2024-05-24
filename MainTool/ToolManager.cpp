@@ -21,6 +21,7 @@ ToolManager::ToolManager()
 	fpscnt = 0;
 	dfps = 0;
 	updatetime = 0;
+	m_OldState = PROCESSSTATE::STANDBY;
 }
 
 ToolManager::~ToolManager()
@@ -58,7 +59,7 @@ void ToolManager::Initialize()
 
 		AfxBeginThread(ThreadCamera, this);
 	}
-	
+
 }
 
 bool ToolManager::Update(double t)
@@ -74,21 +75,45 @@ bool ToolManager::Update(double t)
 	maxG = 0;
 	maxB = 0;
 
+
+
 	if (FrmKilled == false)
 	{
 		cap >> frame;
 		resize(frame, frame, Size(600, 450));
-		m_Res = Detect();
 
-		if (bGrab == true)
+		if (m_OldState != m_CurState)
+			m_OldState = m_CurState;
+
+		switch (m_OldState)
 		{
-			if (m_Res != RES_END)
+		case PROCESSSTATE::STANDBY:
+			break;
+		case PROCESSSTATE::INSPECT:
+			m_Res = Detect();
+
+			if (m_Res == RES_END)
 			{
-
-				
+				m_Serverform->ClientTCP(_T("ST/PROC:ERROR/END"));
 			}
+			else if (m_Res == RES_NONE)
+			{
+				m_Serverform->ClientTCP(_T("ST/PROC:RETRY/END"));
+			}
+			else
+			{
+				imwrite("BOX.jpg", frame);
+				SendResult(m_Res);
+				m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
+			}
+			m_Resform->RedrawWindow();
+			m_CurState = PROCESSSTATE::STANDBY;
+			break;
+		case PROCESSSTATE::ABNORMAL:
+			break;
+		default:
+			break;
 		}
-
 	}
 	else
 	{
@@ -100,6 +125,8 @@ bool ToolManager::Update(double t)
 		resize(frame, frame, Size(600, 450));
 	}
 
+
+	
 
 	if (1.0 <= dtime)
 	{
@@ -120,19 +147,14 @@ void ToolManager::LateUpdate()
 
 void ToolManager::Render()
 {
-
-
 	putText(frame, "R:" + to_string(maxR), Point(0, 70), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
 	putText(frame, "G:" + to_string(maxG), Point(0, 110), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
 	putText(frame, "B:" + to_string(maxB), Point(0, 150), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
 	putText(frame, "fps: " + to_string(dfps), Point(10, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
 	cv::imshow("TEST", frame);
-
 	int key = cv::waitKey(1);
 	if (key == 27)
 		::PostQuitMessage(WM_QUIT);
-
-
 }
 
 RESULT ToolManager::Detect()
@@ -142,7 +164,7 @@ RESULT ToolManager::Detect()
 	std::cout << "Number of detections:" << detections << std::endl;
 
 	if (detections <= 0)
-		return RESULT::RES_END;
+		return RESULT::RES_NONE;
 
 	for (int i = 0; i < detections; ++i)
 	{
@@ -167,23 +189,20 @@ RESULT ToolManager::Detect()
 			}
 			else
 			{
-				m_Serverform->SetAwsFaulty("false");
+				m_Serverform->m_awsfaulty = "false";
 				if ((maxR >= 150 && maxR <= 255) && (maxG >= 150 && maxG <= 255) && (maxB >= 0 && maxB <= 100))
 				{
 					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
-					m_Serverform->SetAwsColor("yellow");
 					return RESULT::YELLOW;
 				}
 				else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 90) && (maxB >= 0 && maxB <= 90))
 				{
 					putText(frame, "RED" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
-					m_Serverform->SetAwsColor("red");
 					return RESULT::RED;
 				}
 				else if ((maxR >= 0 && maxR <= 120) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
 				{
 					putText(frame, "GREEN" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
-					m_Serverform->SetAwsColor("green");
 					return RESULT::GREEN;
 				}
 
@@ -354,4 +373,79 @@ void ToolManager::findMostFrequentColor(const Mat& roi, int& maxR, int& maxG, in
 			maxR = i;
 		}
 	}
+}
+
+void ToolManager::SendResult(RESULT res)
+{
+	
+	if (res == RESULT::YELLOW) {
+		if (m_Serverform->GetControlContainer() == STATUCOLOR::SERVERGREEN)
+		{
+			m_Serverform->SetAwsColor("yellow");
+			m_Serverform->SetAwsFaulty("false");
+		}
+		else
+		{
+			AWSLIST res;
+			res.color = "yellow";
+			res.faulty = "false";
+			m_TempVec.emplace_back(res);
+		}
+		m_Serverform->ClientTCP(_T("ST/PROC:YELLOW/END"));
+	}
+	else if (res == RESULT::RED) {
+		if (m_Serverform->GetControlContainer() == STATUCOLOR::SERVERGREEN)
+		{
+			m_Serverform->SetAwsColor("red");
+			m_Serverform->SetAwsFaulty("false");
+		}
+		else
+		{
+			AWSLIST res;
+			res.color = "red";
+			res.faulty = "false";
+			m_TempVec.emplace_back(res);
+		}
+		
+		m_Serverform->ClientTCP(_T("ST/PROC:RED/END"));
+	}
+	else if (res == RESULT::GREEN) {
+		if (m_Serverform->GetControlContainer() == STATUCOLOR::SERVERGREEN)
+		{
+			m_Serverform->SetAwsColor("green");
+			m_Serverform->SetAwsFaulty("false");
+		}
+		else
+		{
+			AWSLIST res;
+			res.color = "green";
+			res.faulty = "false";
+			m_TempVec.emplace_back(res);
+		}
+		m_Serverform->ClientTCP(_T("ST/PROC:GREEN/END"));
+	}
+	else if (res == RESULT::FAIL) {
+		if (m_Serverform->GetControlContainer() == STATUCOLOR::SERVERGREEN)
+		{
+			m_Serverform->SetAwsColor("fail");
+			m_Serverform->SetAwsFaulty("true");
+		}
+		else
+		{
+			AWSLIST res;
+			res.color = "fail";
+			res.faulty = "true";
+			m_TempVec.emplace_back(res);
+		}
+		m_Serverform->ClientTCP(_T("ST/PROC:FAIL/END"));
+	}
+	
+
+
+
+}
+
+void ToolManager::SetProcessState(PROCESSSTATE s)
+{
+	m_CurState = s;
 }

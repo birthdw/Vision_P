@@ -7,9 +7,11 @@ class TestTab;
 class ResultForm;
 class CntrlForm;
 
+enum class PROCESSSTATE;
+
 enum RESULT
 {
-	FAIL,RED,YELLOW,GREEN,RES_NONE, RES_END
+	FAIL,RED,YELLOW,GREEN,RES_NONE,RES_END
 };
 
 
@@ -71,8 +73,10 @@ public:
 	void Set_Mod_Txt(int idx, CString cstr);
 
 	void findMostFrequentColor(const Mat& roi, int& maxR, int& maxG, int& maxB);
-
+	void SendResult(RESULT res);
 	
+	void SetProcessState(PROCESSSTATE s);
+
 public:
 	HWND MainHndle;
 	HWND Toolviewhandle;
@@ -116,5 +120,19 @@ public:
 
 public:
 	int testcnt=0;
+
+	
+
+
+
+//새로 만들것들 
+	public:
+		PROCESSSTATE m_OldState;
+		PROCESSSTATE m_CurState;
+
+		vector<AWSLIST> m_TempVec;
+
+
+
 
 };
