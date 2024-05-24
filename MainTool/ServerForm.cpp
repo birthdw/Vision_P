@@ -95,7 +95,7 @@ void ServerForm::OnInitialUpdate()
 	UpdateData(FALSE);
 	m_awsinfo = AWSINFO::SEVERSTART;
 	AfxBeginThread(COLORRODING, this);
-	AfxBeginThread(ThreadRecv, this);
+
 	AfxBeginThread(initawsT, this);
 }
 
@@ -131,7 +131,7 @@ void ServerForm::ClientTCP(CString strMessage) {
 	int nLength = strMessage.GetLength() * sizeof(TCHAR);
 
 	m_Client.Send((LPCTSTR)strMessage, nLength);
-	SetList(_T("송신"),strMessage);
+	//SetList(_T("송신"),strMessage);
 	
 }
 

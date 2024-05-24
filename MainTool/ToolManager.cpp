@@ -51,7 +51,7 @@ void ToolManager::DestroyInstance()
 
 void ToolManager::Initialize()
 {
-	if (cap.open(0, cv::CAP_DSHOW) == true)
+	if (cap.open(1, cv::CAP_DSHOW) == true)
 	{
 		inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
 		m_strPickinLst = L"";
@@ -99,6 +99,7 @@ bool ToolManager::Update(double t)
 			// 카메라 촬상 조건 추가
 			if (bGrap==true)
 			{
+				m_Serverform->SetList(_T(""), _T("INSPECT START"));
 				SetProcessState(PROCESSSTATE::INSPECT);
 				bGrap = false;
 			}
@@ -108,15 +109,18 @@ bool ToolManager::Update(double t)
 
 			if (m_Res == RES_END)
 			{
+				m_Serverform->SetList(_T(""), _T("PROC:ERROR"));
 				m_Serverform->ClientTCP(_T("ST/PROC:ERROR/END"));
 			}
 			else if (m_Res == RES_NONE)
 			{
+				m_Serverform->SetList(_T(""), _T("PROC:RETRY"));
 				m_Serverform->ClientTCP(_T("ST/PROC:RETRY/END"));
 			}
 			else
 			{
 				SendResult(m_Res);
+				
 				m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
 			}
 			m_Resform->RedrawWindow();
@@ -419,7 +423,7 @@ void ToolManager::SendResult(RESULT res)
 			res.date = time_s;
 			m_TempVec.emplace_back(res);
 		}
-
+		m_Serverform->SetList(_T(""), _T("PROC:YELLOW"));
 		m_Serverform->ClientTCP(_T("ST/PROC:YELLOW/END"));
 	}
 	else if (res == RESULT::RED) {
@@ -440,6 +444,7 @@ void ToolManager::SendResult(RESULT res)
 			m_TempVec.emplace_back(res);
 		}
 
+		m_Serverform->SetList(_T(""), _T("PROC:RED"));
 		m_Serverform->ClientTCP(_T("ST/PROC:RED/END"));
 	}
 	else if (res == RESULT::GREEN) {
@@ -459,6 +464,7 @@ void ToolManager::SendResult(RESULT res)
 			res.date = time_s;
 			m_TempVec.emplace_back(res);
 		}
+		m_Serverform->SetList(_T(""), _T("PROC:GREEN"));
 		m_Serverform->ClientTCP(_T("ST/PROC:GREEN/END"));
 	}
 	else if (res == RESULT::FAIL) {
@@ -478,6 +484,7 @@ void ToolManager::SendResult(RESULT res)
 			res.date = time_s;
 			m_TempVec.emplace_back(res);
 		}
+		m_Serverform->SetList(_T(""), _T("PROC:FAIL"));
 		m_Serverform->ClientTCP(_T("ST/PROC:FAIL/END"));
 	}
 
