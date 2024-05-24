@@ -43,6 +43,11 @@ public:
 	bool m_isRailOn;
 	virtual void OnInitialUpdate();
 	afx_msg void OnPaint();
+
+
+public:
+	bool bGrab = false;
+
 };
 
 

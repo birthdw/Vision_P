@@ -68,8 +68,8 @@ void CntrlForm::OnBnClickedButton2()
 	CString str = _T("RBT:HOME");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 
-	
-	
+
+
 }
 
 
@@ -82,6 +82,9 @@ void CntrlForm::OnBnClickedb1()
 	//앞+
 	CString str = _T("RBT:M1_P10");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	bGrab = true;
+	Invalidate(false);
 }
 
 
@@ -176,7 +179,7 @@ void CntrlForm::OnBnClickedButton1()
 
 		}
 	}
-	
+
 }
 
 
@@ -199,7 +202,13 @@ void CntrlForm::OnPaint()
 
 	CImage png_grab, grab_on, morter, morter_on, frame;
 
-	png_grab.Load(L"Grab.png");
+	if (bGrab == false)
+		png_grab.Load(L"Grab.png");
+	else
+		png_grab.Load(L"Grab_on.png");
+
+
+
 	morter.Load(L"morter.png");
 	frame.Load(L"frame.png");
 
