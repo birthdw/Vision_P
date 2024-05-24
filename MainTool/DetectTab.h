@@ -23,7 +23,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedButton1();
 	afx_msg void OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult);
 
 

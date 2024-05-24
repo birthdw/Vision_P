@@ -189,7 +189,6 @@ RESULT ToolManager::Detect()
 			}
 			else
 			{
-				m_Serverform->m_awsfaulty = "false";
 				if ((maxR >= 150 && maxR <= 255) && (maxG >= 150 && maxG <= 255) && (maxB >= 0 && maxB <= 100))
 				{
 					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
@@ -379,7 +378,7 @@ void ToolManager::SendResult(RESULT res)
 {
 	
 	if (res == RESULT::YELLOW) {
-		if (m_Serverform->GetControlContainer() == STATUCOLOR::SERVERGREEN)
+		if (m_Serverform->GetControlColor() == STATUCOLOR::SERVERGREEN)
 		{
 			m_Serverform->SetAwsColor("yellow");
 			m_Serverform->SetAwsFaulty("false");
@@ -394,7 +393,7 @@ void ToolManager::SendResult(RESULT res)
 		m_Serverform->ClientTCP(_T("ST/PROC:YELLOW/END"));
 	}
 	else if (res == RESULT::RED) {
-		if (m_Serverform->GetControlContainer() == STATUCOLOR::SERVERGREEN)
+		if (m_Serverform->GetControlColor() == STATUCOLOR::SERVERGREEN)
 		{
 			m_Serverform->SetAwsColor("red");
 			m_Serverform->SetAwsFaulty("false");
@@ -410,7 +409,7 @@ void ToolManager::SendResult(RESULT res)
 		m_Serverform->ClientTCP(_T("ST/PROC:RED/END"));
 	}
 	else if (res == RESULT::GREEN) {
-		if (m_Serverform->GetControlContainer() == STATUCOLOR::SERVERGREEN)
+		if (m_Serverform->GetControlColor() == STATUCOLOR::SERVERGREEN)
 		{
 			m_Serverform->SetAwsColor("green");
 			m_Serverform->SetAwsFaulty("false");
@@ -425,7 +424,7 @@ void ToolManager::SendResult(RESULT res)
 		m_Serverform->ClientTCP(_T("ST/PROC:GREEN/END"));
 	}
 	else if (res == RESULT::FAIL) {
-		if (m_Serverform->GetControlContainer() == STATUCOLOR::SERVERGREEN)
+		if (m_Serverform->GetControlColor() == STATUCOLOR::SERVERGREEN)
 		{
 			m_Serverform->SetAwsColor("fail");
 			m_Serverform->SetAwsFaulty("true");
@@ -448,4 +447,9 @@ void ToolManager::SendResult(RESULT res)
 void ToolManager::SetProcessState(PROCESSSTATE s)
 {
 	m_CurState = s;
+}
+
+vector<AWSLIST> ToolManager::GetVec()
+{
+	return m_TempVec;
 }

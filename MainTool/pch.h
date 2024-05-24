@@ -29,6 +29,7 @@ using namespace cv;
 
 #include "define.h"
 #include "struct.h"
+#include "RobotInfo.h"
 
 
 

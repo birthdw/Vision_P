@@ -35,7 +35,6 @@ void DetectTab::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(DetectTab, CDialog)
-	ON_BN_CLICKED(IDC_BUTTON1, &DetectTab::OnBnClickedButton1)
 	ON_NOTIFY(NM_CLICK, IDC_LIST1, &DetectTab::OnNMClickList1)
 END_MESSAGE_MAP()
 
@@ -75,23 +74,6 @@ BOOL DetectTab::OnInitDialog()
 }
 
 
-void DetectTab::OnBnClickedButton1()
-{
-	vector<AWSLIST> vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();
-
-	//for (int i = 0; i < vecInfo.size(); ++i)
-	//{
-	//	m_List.InsertItem(i, CString(vecInfo[i].id.c_str()));
-	//	m_List.SetItemText(i, 1, CString(vecInfo[i].url.c_str()));
-	//	m_List.SetItemText(i, 2, CString(vecInfo[i].color.c_str()));
-	//	m_List.SetItemText(i, 3, CString(vecInfo[i].faulty.c_str()));
-	//	m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
-	//}
-	
-
-}
-
-
 
 
 void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
@@ -126,6 +108,26 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 
 CString DetectTab::Update(bool set)
 {
+
+	/*if (ToolManager::GetInstance()->m_Serverform->GetControlColor() != STATUCOLOR::SERVERGREEN)
+	{
+		m_List.DeleteAllItems();
+		if (ToolManager::GetInstance()->GetVec().size() > 0)
+		{
+			for (int i = 0; i < ToolManager::GetInstance()->GetVec().size(); ++i)
+			{
+					m_List.InsertItem(i, CString(ToolManager::GetInstance()->GetVec()[i].id.c_str()));
+					m_List.SetItemText(i, 1, CString(ToolManager::GetInstance()->GetVec()[i].url.c_str()));
+					m_List.SetItemText(i, 2, CString(ToolManager::GetInstance()->GetVec()[i].color.c_str()));
+					m_List.SetItemText(i, 3, CString(ToolManager::GetInstance()->GetVec()[i].faulty.c_str()));
+					m_List.SetItemText(i, 4, CString(ToolManager::GetInstance()->GetVec()[i].date.c_str()));
+			}
+		}
+	}*/
+
+
+
+
 	/*vector<AWSLIST> vecInfo;
 	vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();*/
 

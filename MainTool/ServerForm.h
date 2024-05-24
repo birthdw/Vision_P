@@ -5,7 +5,6 @@
 // ServerForm 폼 보기
 #include "CSocketClient.h"
 #include "AWS.h"
-#include "RobotInfo.h"
 
 
 class ServerForm : public CFormView
