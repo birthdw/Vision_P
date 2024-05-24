@@ -83,7 +83,7 @@ void CntrlForm::OnBnClickedb1()
 	CString str = _T("RBT:M1_P10");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 
-	bGrab = true;
+	Grab_on = true;
 	Invalidate(false);
 }
 
@@ -94,6 +94,9 @@ void CntrlForm::OnBnClickedb2()
 	//앞- 
 	CString str = _T("RBT:M1_M10");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	Grab_on = true;
+	Invalidate(false);
 }
 
 
@@ -103,6 +106,9 @@ void CntrlForm::OnBnClickedb3()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString str = _T("RBT:M2_P10");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	Morter_on = true;
+	Invalidate(false);
 }
 
 
@@ -112,6 +118,9 @@ void CntrlForm::OnBnClickedb4()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString str = _T("RBT:M2_M10");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	Morter_on = true;
+	Invalidate(false);
 }
 
 
@@ -121,6 +130,9 @@ void CntrlForm::OnBnClickedb5()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString str = _T("RBT:M3_P10");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	Morter2_on = true;
+	Invalidate(false);
 }
 
 
@@ -130,6 +142,9 @@ void CntrlForm::OnBnClickedb6()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString str = _T("RBT:M3_M10");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	Morter2_on = true;
+	Invalidate(false);
 }
 
 
@@ -140,6 +155,9 @@ void CntrlForm::OnBnClickedb8()
 
 	CString str = _T("RBT:M4_M10");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	Morter3_on = true;
+	Invalidate(false);
 }
 
 
@@ -149,6 +167,9 @@ void CntrlForm::OnBnClickedb7()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString str = _T("RBT:M4_P10");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+	Morter3_on = true;
+	Invalidate(false);
 
 }
 
@@ -200,40 +221,36 @@ void CntrlForm::OnPaint()
 	CPaintDC dc(this);
 
 
-	CImage png_grab, grab_on, morter, morter_on, frame;
+	CImage png_grab, grab_on, morter, frame, morter2, morter3;
 
-	if (bGrab == false)
+	if (Grab_on == false)
 		png_grab.Load(L"Grab.png");
 	else
 		png_grab.Load(L"Grab_on.png");
 
 
+	if (Morter_on == false)
+		morter.Load(L"morter.png");
+	else
+		morter.Load(L"morter_on.png");
 
-	morter.Load(L"morter.png");
-	frame.Load(L"frame.png");
 
-	if (png_grab.GetBPP() == 32) // 32 비트 이미지에서만 투명도 처리
-	{
-		for (int y = 0; y < png_grab.GetHeight(); ++y)
-		{
-			for (int x = 0; x < png_grab.GetWidth(); ++x)
-			{
-				// 각 픽셀의 주소 가져오기
-				COLORREF* pPixel = reinterpret_cast<COLORREF*>(png_grab.GetPixelAddress(x, y));
+	if (Morter2_on == false)
+		morter2.Load(L"morter.png");
+	else
+		morter2.Load(L"morter_on.png");
 
-				// 알파 값이 0이면 (투명한 부분)
-				if ((*pPixel & 0xFF000000) == 0)
-				{
-					// 흰색으로 변경
-					*pPixel = RGB(255, 255, 255);
-				}
-			}
-		}
-	}
+
+	if (Morter3_on == false)
+		morter3.Load(L"morter.png");
+	else
+		morter3.Load(L"morter_on.png");
+
 
 	// 이미지를 지정된 크기로 그리기
 	png_grab.StretchBlt(dc, 250, 100, 100, 100);
 	morter.StretchBlt(dc, 250, 200, 100, 100);
-	morter.StretchBlt(dc, 250, 300, 100, 100);
+	morter2.StretchBlt(dc, 250, 300, 100, 100);
+	morter3.StretchBlt(dc, 250, 400, 100, 100);
 
 }

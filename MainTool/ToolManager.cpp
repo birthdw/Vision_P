@@ -50,12 +50,15 @@ void ToolManager::DestroyInstance()
 
 void ToolManager::Initialize()
 {
-	cap.open(0, cv::CAP_DSHOW);
-	inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
-	m_strPickinLst = L"";
-	m_Res = RESULT::RES_END;
+	if (cap.open(0, cv::CAP_DSHOW) == true)
+	{
+		inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
+		m_strPickinLst = L"";
+		m_Res = RESULT::RES_END;
 
-	AfxBeginThread(ThreadCamera, this);
+		AfxBeginThread(ThreadCamera, this);
+	}
+	
 }
 
 bool ToolManager::Update(double t)

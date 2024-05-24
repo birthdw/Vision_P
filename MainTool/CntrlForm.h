@@ -46,7 +46,11 @@ public:
 
 
 public:
-	bool bGrab = false;
+	bool Grab_on = false;
+	bool Morter_on = false;
+	bool Morter2_on = false;
+	bool Morter3_on = false;
+
 
 };
 

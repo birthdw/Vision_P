@@ -65,11 +65,14 @@ void CSocketClient::recvinfo(CString strMessage)
 	{
 		socketend();
 	}
+    else if(strMessage == _T(""))
 
-    else
+
     {
         ProcessString(strMessage);
     }
+
+
 }
 
 // 문자열을 주어진 구분자로 나누는 함수
