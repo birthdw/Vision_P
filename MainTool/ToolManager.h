@@ -18,7 +18,7 @@ class ToolManager
 private:
 	ToolManager(ToolManager&);
 
-private:
+public:
 	ToolManager();
 	~ToolManager();
 

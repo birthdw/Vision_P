@@ -154,12 +154,7 @@ void TestTab::OnBnClickedButton2()
 	GetDlgItemText(IDC_FaultyEdit, f);
 	string co = CT2CA(c);
 	string fa = CT2CA(f);
-	ToolManager::GetInstance()->m_Serverform->m_aws->RDSupdateData("color", co.c_str(), CurId.c_str());
-	ToolManager::GetInstance()->m_Serverform->m_aws->RDSupdateData("faulty", fa.c_str(), CurId.c_str());
-
-
-	ToolManager::GetInstance()->m_detecttab->m_List.DeleteAllItems();
-	ToolManager::GetInstance()->m_detecttab->Update();
+	ToolManager::GetInstance()->m_Serverform->SetModify(co, fa, CurId);
 
 	UpdateData(TRUE);
 }

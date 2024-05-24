@@ -78,7 +78,7 @@ BOOL DetectTab::OnInitDialog()
 void DetectTab::OnBnClickedButton1()
 {
 
-	ToolManager::GetInstance()->m_Serverform->SetAwsInfo(AWSINFO::AWSLIST);
+	ToolManager::GetInstance()->m_Serverform->SetAwslist(AWSINFO::AWSLIST);
 	vector<AWSLIST> vecInfo = ToolManager::GetInstance()->m_Serverform->m_boxlist;
 
 
@@ -129,8 +129,11 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 
 CString DetectTab::Update(bool set)
 {
-	ToolManager::GetInstance()->m_Serverform->SetAwsInfo(AWSINFO::AWSLIST);
-	vector<AWSLIST> vecInfo = ToolManager::GetInstance()->m_Serverform->m_boxlist;
+	ToolManager::GetInstance()->m_Serverform->SetAwslist(AWSINFO::AWSLIST);
+	vector<AWSLIST> vecInfo;
+	if (ToolManager::GetInstance()->m_Serverform->m_boxrun) {
+		vecInfo = ToolManager::GetInstance()->m_Serverform->m_boxlist;
+	}
 
 	if (set) {
 		m_List.DeleteAllItems();
@@ -147,7 +150,10 @@ CString DetectTab::Update(bool set)
 
 	CString oldid = _T("");
 	if (!vecInfo.empty()) {
-		oldid = CString(vecInfo[0].id.c_str());
+		for (int i = 0; i < vecInfo.size(); ++i)
+		{
+			oldid += CString(vecInfo[i].id.c_str()) + CString(vecInfo[i].color.c_str()) + CString(vecInfo[i].faulty.c_str());
+		}
 	}
 	
 	return oldid;

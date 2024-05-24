@@ -16,6 +16,7 @@ protected:
 	ServerForm();           // 동적 만들기에 사용되는 protected 생성자입니다.
 	virtual ~ServerForm();
 	AWSINFO m_awsinfo;
+	AWSINFO m_awslist = AWSINFO::STAY;
 public:
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ServerForm };
@@ -61,6 +62,9 @@ public:
 	// 서버 동작 함수
 	AWSINFO GetAwsInfo();				// 서버 동작 얻어옴
 	void SetAwsInfo (AWSINFO pAWS);		// 서버 동작 
+	AWSINFO GetAwslist();				// 리스트만 따로 얻어옴
+	void SetAwslist(AWSINFO pAWS);		// 리스트만 따로 동작
+	void SetModify(string color, string faulty, string curId);
 	void exit_s3();						// 서버 종료 함수
 	void initaws();						// 서버 연결 함수
 
@@ -81,6 +85,7 @@ public:
 	BOOL m_TCPConnect = TRUE;			// 연결, 연결끊기 스위치
 	BOOL AWSRUN = TRUE;					// 서버 연결 스위치
 	BOOL m_SocketThreadSWICHT = TRUE;	// 소켓 쓰레드 병목 막는 스위치
+	bool m_boxrun = false;
 	
 
 	// DB 리스트 불러오면 여기에 저장
@@ -94,6 +99,9 @@ public:
 	// 서버 저장 자료형
 	string m_awscolor = "";
 	string m_awsfaulty = "";
+	string m_modifyColor;
+	string m_modifyFaulty;
+	string m_modifyCurId;
 	afx_msg void OnBnClickedLogBut();
 };
 

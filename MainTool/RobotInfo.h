@@ -1,4 +1,5 @@
 #pragma once
+
 typedef struct RobotInfo {
 	int x_limit, y_limit, pos, home;
 }RINFO;
@@ -9,7 +10,8 @@ enum class AWSINFO :int {
 	AWSSEND,
 	AWSCHEAK,
 	AWSEXIT,
-	AWSLIST
+	AWSLIST,
+	AWSMODIFY
 };
 
 typedef struct {

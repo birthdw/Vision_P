@@ -19,7 +19,6 @@ UINT initawsT(LPVOID pParam)//서버
 		if (thisObj->GetAwsInfo() == AWSINFO::SEVERSTART) {
 			TRACE(_T("Thread Index "));
 			thisObj->initaws();
-			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSSEND) {
 			string info = "('" + thisObj->m_awscolor + "', '" + thisObj->m_awsfaulty + "')";
@@ -27,18 +26,25 @@ UINT initawsT(LPVOID pParam)//서버
 			thisObj->m_awsfaulty = "";
 
 			thisObj->m_aws->Allinput(info.c_str(), "BOX.jpg");
-			thisObj->SetAwsInfo(AWSINFO::STAY);
-
 		}
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSCHEAK) {
 			thisObj->m_aws->RDSckeckConnection();
-			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
-		else if (thisObj->GetAwsInfo() == AWSINFO::AWSLIST) {
+		else if (thisObj->GetAwsInfo() == AWSINFO::AWSMODIFY) {	
+			thisObj->m_aws->RDSupdateData("color", thisObj->m_modifyColor.c_str(), thisObj->m_modifyCurId.c_str());
+			thisObj->m_aws->RDSupdateData("faulty", thisObj->m_modifyFaulty.c_str(), thisObj->m_modifyCurId.c_str());
+		}
+
+		// 리스트만 주기적으로 불러옴
+		if (thisObj->GetAwslist() == AWSINFO::AWSLIST) {
+			thisObj->m_boxrun = false;
 			thisObj->m_boxlist = thisObj->m_aws->RDSjoinData();
 			TRACE("%d\r\n", thisObj->m_boxlist);
-			thisObj->SetAwsInfo(AWSINFO::STAY);
+			thisObj->m_boxrun = true;
 		}
+
+		thisObj->SetAwslist(AWSINFO::STAY);
+		thisObj->SetAwsInfo(AWSINFO::STAY);
 		Sleep(100);
 	}
 

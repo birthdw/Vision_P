@@ -264,6 +264,24 @@ void ServerForm::SetAwsInfo(AWSINFO pAWS)
 	m_awsinfo = pAWS;
 }
 
+AWSINFO ServerForm::GetAwslist()
+{
+	return m_awslist;
+}
+
+void ServerForm::SetAwslist(AWSINFO pAWS)
+{
+	m_awslist = pAWS;
+}
+
+void ServerForm::SetModify(string color, string faulty, string curId)
+{
+	m_modifyColor = color;
+	m_modifyFaulty = faulty;
+	m_modifyCurId = curId;
+	m_awsinfo = AWSINFO::AWSMODIFY;
+}
+
 
 void ServerForm::OnLvnItemchangedListTcp(NMHDR* pNMHDR, LRESULT* pResult)
 {
