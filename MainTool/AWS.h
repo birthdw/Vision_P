@@ -42,20 +42,20 @@ public:
     bool RDSupdateData(const char* columnname, const char* reviseData, const char* id, const char* standard_columnname = "id", const char* tablename = "thing");// 데이터 수정 함수
     bool RDSdeleteData(const char* columnname, const char* deleteline, const char* tablename = "thing");// 데이터 삭제 함수
     bool RDScheckDataExists(const char* columnname, const char* findwhat, const char* tablename = "thing");// 데이터 존재 확인 함수
-    bool RDSinserts3Data();// S3 데이터 삽입 함수
+    bool RDSinserts3Data(string date);// S3 데이터 삽입 함수
     vector<AWSLIST> AWS::RDSjoinData();// 데이터 테이블 연동 함수
     bool RDSckeckConnection();// 연결 확인 함수
     //void RDSconnectionEnd();// 연결 종료 함수
 
     //s3
     //bool JoinS3();// S3연결 함수
-    bool PutObject(const String& fileName);// 오브젝트 추가 함수
+    bool PutObject(const String& fileName, string date);// 오브젝트 추가 함수
     bool GetObject(const String& objectKey);// 오브젝트 가져오기 함수
     bool DeleteObjects(const std::vector<Aws::String>& objectKey);// 오브젝트 삭제 함수
     void S3connectionEnd();// S3 연결 종료 함수
 
     //한번에 모든 테이블 데이터 올리기
-    void Allinput(const char* inputData, const String & fileName, const char* columnname = "color, faulty", const char* tablename = "thing");
+    void Allinput(string date, const char* inputData, const String & fileName, const char* columnname = "color, faulty", const char* tablename = "thing");
     
     //한번에 모든 테이블의 원하는 행 데이터 지우기
     void AlldeleteData(const char* deleteline, const char* columnname="id", const char* tablename = "thing", const char* tablename2 = "s3data");

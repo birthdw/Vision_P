@@ -109,21 +109,21 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 CString DetectTab::Update(bool set)
 {
 
-	/*if (ToolManager::GetInstance()->m_Serverform->GetControlColor() != STATUCOLOR::SERVERGREEN)
-	{
-		m_List.DeleteAllItems();
-		if (ToolManager::GetInstance()->GetVec().size() > 0)
-		{
-			for (int i = 0; i < ToolManager::GetInstance()->GetVec().size(); ++i)
-			{
-					m_List.InsertItem(i, CString(ToolManager::GetInstance()->GetVec()[i].id.c_str()));
-					m_List.SetItemText(i, 1, CString(ToolManager::GetInstance()->GetVec()[i].url.c_str()));
-					m_List.SetItemText(i, 2, CString(ToolManager::GetInstance()->GetVec()[i].color.c_str()));
-					m_List.SetItemText(i, 3, CString(ToolManager::GetInstance()->GetVec()[i].faulty.c_str()));
-					m_List.SetItemText(i, 4, CString(ToolManager::GetInstance()->GetVec()[i].date.c_str()));
-			}
-		}
-	}*/
+	//if (ToolManager::GetInstance()->m_Serverform->GetControlColor() != STATUCOLOR::SERVERGREEN)
+	//{
+	//	m_List.DeleteAllItems();
+	//	if (ToolManager::GetInstance()->GetVec().size() > 0)
+	//	{
+	//		for (int i = 0; i < ToolManager::GetInstance()->GetVec().size(); ++i)
+	//		{
+	//				m_List.InsertItem(i, CString(ToolManager::GetInstance()->GetVec()[i].id.c_str()));
+	//				m_List.SetItemText(i, 1, CString(ToolManager::GetInstance()->GetVec()[i].url.c_str()));
+	//				m_List.SetItemText(i, 2, CString(ToolManager::GetInstance()->GetVec()[i].color.c_str()));
+	//				m_List.SetItemText(i, 3, CString(ToolManager::GetInstance()->GetVec()[i].faulty.c_str()));
+	//				m_List.SetItemText(i, 4, CString(ToolManager::GetInstance()->GetVec()[i].date.c_str()));
+	//		}
+	//	}
+	//}
 
 
 

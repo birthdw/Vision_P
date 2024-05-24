@@ -151,7 +151,7 @@ bool AWS::RDScheckDataExists(const char* columnname, const char* findwhat, const
 }
 
 // S3 데이터 삽입 함수
-bool AWS::RDSinserts3Data()
+bool AWS::RDSinserts3Data(string date)
 {
     // 최근 항목의 id를 가져오는 SQL 쿼리 생성
     string select_query = "SELECT id FROM (SELECT * FROM thing ORDER BY id DESC LIMIT 1)";
@@ -162,7 +162,7 @@ bool AWS::RDSinserts3Data()
     // 쿼리 실행 결과 확인
     if (PQresultStatus(res1) == PGRES_TUPLES_OK) {
         // 가져온 id를 사용하여 S3 데이터 삽입 쿼리 생성
-        string insert_query = "INSERT INTO public.s3data (id, date, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ", LOCALTIMESTAMP(0),'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(PQgetvalue(res1, 0, 0)) + ".jpg')";
+        string insert_query = "INSERT INTO public.s3data (id, date, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ","+date+",'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(PQgetvalue(res1, 0, 0)) + ".jpg')";
         //string insert_query = "INSERT INTO public.thing (id, date, url) VALUES ('3', '2024-05-22 17:55:52', '1234.jpg')";
         
         PGresult* res = PQexec(conn, insert_query.c_str());// 삽입 쿼리 실행
@@ -254,7 +254,7 @@ bool AWS::RDSckeckConnection()
 ////////////////////////////////////////////////////////////
 
 // 오브젝트 추가 함수
-bool AWS::PutObject(const String& fileName)
+bool AWS::PutObject(const String& fileName,string date)
 {
     S3Client s3_client(m_clientConfig);// S3 클라이언트 생성
     string select_query = "SELECT id FROM (SELECT * FROM thing ORDER BY id DESC LIMIT 1)";
@@ -295,7 +295,7 @@ bool AWS::PutObject(const String& fileName)
             return false;
         }
         else {
-            RDSinserts3Data();
+            RDSinserts3Data(date);
             cout << "Added object '" << fileName << "' to bucket '"
                 << bucketName << "'." << endl;
         }
@@ -399,6 +399,7 @@ bool AWS::DeleteObjects(const vector<String>& objectKey)
 
 //한번에 모든 테이블 데이터 올리기
 void AWS::Allinput(
+    string date,
     const char* inputData,
     const String& fileName,
     const char* columnname,
@@ -406,7 +407,7 @@ void AWS::Allinput(
 )
 {
     RDSinsertData(columnname, inputData, tablename);
-    PutObject(fileName.c_str());
+    PutObject(fileName.c_str(),date);
 
 }
 

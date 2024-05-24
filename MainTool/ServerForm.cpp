@@ -322,6 +322,16 @@ string ServerForm::GetModifyCurId()
 	return m_modifyCurId;
 }
 
+void ServerForm::SetDate(string set)
+{
+	m_awsdate = set;
+}
+
+string ServerForm::GetDate()
+{
+	return m_awsdate;
+}
+
 void ServerForm::SetClientClose()
 {
 	m_Client.Close();

@@ -76,7 +76,7 @@ public:
 	void SendResult(RESULT res);
 	
 	void SetProcessState(PROCESSSTATE s);
-	vector<AWSLIST>  GetVec();
+	vector<TEMPINFO>  GetVec();
 
 public:
 	HWND MainHndle;

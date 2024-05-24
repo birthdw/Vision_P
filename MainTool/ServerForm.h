@@ -105,7 +105,7 @@ private:
 	string m_modifyColor;
 	string m_modifyFaulty;
 	string m_modifyCurId;
-
+	string m_awsdate;
 
 public:
 	AWSINFO GetAwsInfo();				// 서버 동작 얻어옴
@@ -124,6 +124,10 @@ public:
 	string GetModifyFaulty();
 	void SetModifyCurId(string set);
 	string GetModifyCurId();
+
+	void SetDate(string set);
+	string GetDate();
+
 
 	void SetClientClose();
 

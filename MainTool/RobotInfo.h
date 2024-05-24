@@ -47,3 +47,13 @@ enum class PROCESSSTATE : int
 	ABNORMAL,
 	PROCESS_END
 };
+
+
+typedef struct TempInfo{
+
+	string filename;
+	string color;
+	string faulty;
+	string date;
+
+}TEMPINFO;

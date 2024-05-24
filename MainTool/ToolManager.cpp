@@ -102,7 +102,6 @@ bool ToolManager::Update(double t)
 			}
 			else
 			{
-				imwrite("BOX.jpg", frame);
 				SendResult(m_Res);
 				m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
 			}
@@ -126,7 +125,7 @@ bool ToolManager::Update(double t)
 	}
 
 
-	
+
 
 	if (1.0 <= dtime)
 	{
@@ -376,20 +375,37 @@ void ToolManager::findMostFrequentColor(const Mat& roi, int& maxR, int& maxG, in
 
 void ToolManager::SendResult(RESULT res)
 {
-	
+
+
+	time_t timer;
+	struct tm* t;
+	timer = time(NULL);
+	t = localtime(&timer);
+	string time_s = std::to_string(t->tm_year + 1900) + "/" +
+		std::to_string(t->tm_mon + 1) + "/" +
+		std::to_string(t->tm_hour) + "/" +
+		std::to_string(t->tm_min) + "/" +
+		std::to_string(t->tm_sec);
+
+
 	if (res == RESULT::YELLOW) {
 		if (m_Serverform->GetControlColor() == STATUCOLOR::SERVERGREEN)
 		{
 			m_Serverform->SetAwsColor("yellow");
 			m_Serverform->SetAwsFaulty("false");
+			m_Serverform->SetDate(time_s);
+			imwrite("BOX.jpg", frame);
 		}
 		else
 		{
-			AWSLIST res;
+			TEMPINFO res;
+			res.filename = "";
 			res.color = "yellow";
 			res.faulty = "false";
+			res.date = time_s;
 			m_TempVec.emplace_back(res);
 		}
+
 		m_Serverform->ClientTCP(_T("ST/PROC:YELLOW/END"));
 	}
 	else if (res == RESULT::RED) {
@@ -397,15 +413,19 @@ void ToolManager::SendResult(RESULT res)
 		{
 			m_Serverform->SetAwsColor("red");
 			m_Serverform->SetAwsFaulty("false");
+			m_Serverform->SetDate(time_s);
+			imwrite("BOX.jpg", frame);
 		}
 		else
 		{
-			AWSLIST res;
+			TEMPINFO res;
+			res.filename = "";
 			res.color = "red";
 			res.faulty = "false";
+			res.date = time_s;
 			m_TempVec.emplace_back(res);
 		}
-		
+
 		m_Serverform->ClientTCP(_T("ST/PROC:RED/END"));
 	}
 	else if (res == RESULT::GREEN) {
@@ -413,12 +433,16 @@ void ToolManager::SendResult(RESULT res)
 		{
 			m_Serverform->SetAwsColor("green");
 			m_Serverform->SetAwsFaulty("false");
+			m_Serverform->SetDate(time_s);
+			imwrite("BOX.jpg", frame);
 		}
 		else
 		{
-			AWSLIST res;
+			TEMPINFO res;
+			res.filename = "";
 			res.color = "green";
 			res.faulty = "false";
+			res.date = time_s;
 			m_TempVec.emplace_back(res);
 		}
 		m_Serverform->ClientTCP(_T("ST/PROC:GREEN/END"));
@@ -428,17 +452,21 @@ void ToolManager::SendResult(RESULT res)
 		{
 			m_Serverform->SetAwsColor("fail");
 			m_Serverform->SetAwsFaulty("true");
+			m_Serverform->SetDate(time_s);
+			imwrite("BOX.jpg", frame);
 		}
 		else
 		{
-			AWSLIST res;
+			TEMPINFO res;
+			res.filename = "";
 			res.color = "fail";
 			res.faulty = "true";
+			res.date = time_s;
 			m_TempVec.emplace_back(res);
 		}
 		m_Serverform->ClientTCP(_T("ST/PROC:FAIL/END"));
 	}
-	
+
 
 
 

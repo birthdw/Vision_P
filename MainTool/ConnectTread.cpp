@@ -39,7 +39,7 @@ UINT initawsT(LPVOID pParam)//¼­¹ö
 			thisObj->SetAwsColor("");
 			thisObj->SetAwsFaulty("");
 
-			thisObj->GetAWS()->Allinput(info.c_str(), "BOX.jpg");
+			thisObj->GetAWS()->Allinput(thisObj->GetDate(), info.c_str(), "BOX.jpg");
 
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
