@@ -51,6 +51,7 @@
 #define IDC_LOG_BUT                     1018
 #define IDC_BUTTON14                    1019
 #define IDC_ColorEdit                   1019
+#define IDC_LOG_BUT2                    1019
 #define IDC_                            1020
 #define IDC_Url                         1020
 #define IDC_UrlEdit                     1020

@@ -77,18 +77,16 @@ BOOL DetectTab::OnInitDialog()
 
 void DetectTab::OnBnClickedButton1()
 {
+	vector<AWSLIST> vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();
 
-	ToolManager::GetInstance()->m_Serverform->SetAwslist(AWSINFO::AWSLIST);
-	vector<AWSLIST> vecInfo = ToolManager::GetInstance()->m_Serverform->m_boxlist;
-
-	for (int i = 0; i < vecInfo.size(); ++i)
-	{
-		m_List.InsertItem(i, CString(vecInfo[i].id.c_str()));
-		m_List.SetItemText(i, 1, CString(vecInfo[i].url.c_str()));
-		m_List.SetItemText(i, 2, CString(vecInfo[i].color.c_str()));
-		m_List.SetItemText(i, 3, CString(vecInfo[i].faulty.c_str()));
-		m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
-	}
+	//for (int i = 0; i < vecInfo.size(); ++i)
+	//{
+	//	m_List.InsertItem(i, CString(vecInfo[i].id.c_str()));
+	//	m_List.SetItemText(i, 1, CString(vecInfo[i].url.c_str()));
+	//	m_List.SetItemText(i, 2, CString(vecInfo[i].color.c_str()));
+	//	m_List.SetItemText(i, 3, CString(vecInfo[i].faulty.c_str()));
+	//	m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
+	//}
 	
 
 }
@@ -128,13 +126,11 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 
 CString DetectTab::Update(bool set)
 {
-	ToolManager::GetInstance()->m_Serverform->SetAwslist(AWSINFO::AWSLIST);
-	vector<AWSLIST> vecInfo;
-	if (ToolManager::GetInstance()->m_Serverform->m_boxrun) {
-		vecInfo = ToolManager::GetInstance()->m_Serverform->m_boxlist;
-	}
+	/*vector<AWSLIST> vecInfo;
+	vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();*/
 
-	if (set) {
+
+	/*if (set) {
 		m_List.DeleteAllItems();
 
 		for (int i = 0; i < vecInfo.size(); ++i)
@@ -153,9 +149,9 @@ CString DetectTab::Update(bool set)
 		{
 			oldid += CString(vecInfo[i].id.c_str()) + CString(vecInfo[i].color.c_str()) + CString(vecInfo[i].faulty.c_str());
 		}
-	}
+	}*/
 	
-	return oldid;
+	return _T("");
 }
 
 void DetectTab::Set_Text(int curidx,int idx, CString cstr)

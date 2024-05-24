@@ -7,44 +7,54 @@
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
+UINT test(LPVOID pParam) {
+	ServerForm* thisObj;
+	thisObj = (ServerForm*)pParam;
+
+	thisObj->ClientTCP(_T("test"));
+	return 0;
+}
 
 UINT initawsT(LPVOID pParam)//서버
 {
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
 	while (1) {
+
 		if (thisObj->GetAwsInfo() == AWSINFO::AWSEXIT) {
 			return 0;
 		}
+
 		if (thisObj->GetAwsInfo() == AWSINFO::SEVERSTART) {
 			TRACE(_T("Thread Index "));
 			thisObj->initaws();
+
+			if (thisObj->GetAWS() == nullptr) {
+				thisObj->SetAwsInfo(AWSINFO::SEVERSTART);
+			}
+			else thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSSEND) {
-			string info = "('" + thisObj->m_awscolor + "', '" + thisObj->m_awsfaulty + "')";
-			thisObj->m_awscolor = "";
-			thisObj->m_awsfaulty = "";
+			string info = "('" + thisObj->GetAwsColor() + "', '" + thisObj->GetAwsColor() + "')";
+			thisObj->SetAwsColor("");
+			thisObj->SetAwsFaulty("");
 
-			thisObj->m_aws->Allinput(info.c_str(), "BOX.jpg");
+			thisObj->GetAWS()->Allinput(info.c_str(), "BOX.jpg");
+
+			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSCHEAK) {
-			thisObj->m_aws->RDSckeckConnection();
+			thisObj->GetAWS()->RDSckeckConnection();
+			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSMODIFY) {	
-			thisObj->m_aws->RDSupdateData("color", thisObj->m_modifyColor.c_str(), thisObj->m_modifyCurId.c_str());
-			thisObj->m_aws->RDSupdateData("faulty", thisObj->m_modifyFaulty.c_str(), thisObj->m_modifyCurId.c_str());
+			thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
+			thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
+			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 
-		// 리스트만 주기적으로 불러옴
-		if (thisObj->GetAwslist() == AWSINFO::AWSLIST) {
-			thisObj->m_boxrun = false;
-			thisObj->m_boxlist = thisObj->m_aws->RDSjoinData();
-			TRACE("%d\r\n", thisObj->m_boxlist);
-			thisObj->m_boxrun = true;
-		}
-
-		thisObj->SetAwslist(AWSINFO::STAY);
-		thisObj->SetAwsInfo(AWSINFO::STAY);
+		/*thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
+		TRACE("%d\r\n", thisObj->GetBoxlist());*/
 		Sleep(100);
 	}
 
@@ -63,7 +73,7 @@ UINT ThreadSocket(LPVOID pParam)//통신
 
 
 	BOOL success = FALSE;
-	if (thisObj->m_TCPConnect) {
+	if (thisObj->GetTCPConnect()) {
 		if (hSocket.Connect(thisObj->IPAddress(), thisObj->m_Port) == FALSE)
 		{
 			hSocket.Close();
@@ -78,7 +88,7 @@ UINT ThreadSocket(LPVOID pParam)//통신
 		}
 	}
 	else {
-		thisObj->m_ControlColor = STATUCOLOR::SOCKETRED;
+		thisObj->SetControlColor(STATUCOLOR::SOCKETRED);
 		success = TRUE;
 	}
 
@@ -96,10 +106,10 @@ UINT COLORRODING(LPVOID pParam) //MFC 연결 상태 그리는 스레드
 
 	while (1) 
 	{
-		if (thisObj->m_ThreadColor == COLORTHREAD::THREADEXIT) {
+		if (thisObj->GetThreadColor() == COLORTHREAD::THREADEXIT) {
 			return 0;
 		}
-		else if (thisObj->m_ThreadColor == COLORTHREAD::THREADRUN) {
+		else if (thisObj->GetThreadColor() == COLORTHREAD::THREADRUN) {
 			thisObj->InvalidateRect(NULL, FALSE);
 
 			if (thisObj->m_ListTcp.GetItemCount() > 0) {

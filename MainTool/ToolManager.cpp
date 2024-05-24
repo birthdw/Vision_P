@@ -84,22 +84,7 @@ bool ToolManager::Update(double t)
 		{
 			if (m_Res != RES_END)
 			{
-				bGrab = false;
-				m_Resform->RedrawWindow();
-				imwrite("BOX.jpg", frame);
-				m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
-				if (m_Serverform->m_awscolor == "fail") {
-					m_Serverform->ClientTCP(_T("ST/PROC:BEGIN1/END"));
-				}
-				else if (m_Serverform->m_awscolor == "green") {
-					m_Serverform->ClientTCP(_T("ST/PROC:BEGIN2/END"));
-				}
-				else if (m_Serverform->m_awscolor == "yellow") {
-					m_Serverform->ClientTCP(_T("ST/PROC:BEGIN3/END"));
-				}
-				else if (m_Serverform->m_awscolor == "red") {
-					m_Serverform->ClientTCP(_T("ST/PROC:BEGIN4/END"));
-				}
+
 				
 			}
 		}
@@ -178,29 +163,27 @@ RESULT ToolManager::Detect()
 			if (detection.className == "fail")
 			{
 				cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
-				m_Serverform->m_awscolor = "fail";
-				m_Serverform->m_awsfaulty = "true";
 				return RESULT::FAIL;
 			}
 			else
 			{
-				m_Serverform->m_awsfaulty = "false";
+				m_Serverform->SetAwsFaulty("false");
 				if ((maxR >= 150 && maxR <= 255) && (maxG >= 150 && maxG <= 255) && (maxB >= 0 && maxB <= 100))
 				{
 					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
-					m_Serverform->m_awscolor = "yellow";
+					m_Serverform->SetAwsColor("yellow");
 					return RESULT::YELLOW;
 				}
 				else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 90) && (maxB >= 0 && maxB <= 90))
 				{
 					putText(frame, "RED" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
-					m_Serverform->m_awscolor = "red";
+					m_Serverform->SetAwsColor("red");
 					return RESULT::RED;
 				}
 				else if ((maxR >= 0 && maxR <= 120) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
 				{
 					putText(frame, "GREEN" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
-					m_Serverform->m_awscolor = "green";
+					m_Serverform->SetAwsColor("green");
 					return RESULT::GREEN;
 				}
 

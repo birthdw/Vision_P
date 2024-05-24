@@ -53,10 +53,10 @@ void CSocketClient::OnReceive(int nErrorCode)
 
 void CSocketClient::socketend()
 {
-	ToolManager::GetInstance()->m_Serverform->m_Client.Close();
+    ToolManager::GetInstance()->m_Serverform->SetClientClose();
 	ToolManager::GetInstance()->m_Serverform->m_TCP_BUTTON.SetWindowText(L"연결");
-	ToolManager::GetInstance()->m_Serverform->m_TCPConnect = TRUE;
-    ToolManager::GetInstance()->m_Serverform->m_ControlColor = STATUCOLOR::SOCKETRED;
+	ToolManager::GetInstance()->m_Serverform->SETTCPConnect(TRUE);
+    ToolManager::GetInstance()->m_Serverform->SetControlColor(STATUCOLOR::SOCKETRED);
 }
 
 void CSocketClient::recvinfo(CString strMessage)

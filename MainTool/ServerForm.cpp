@@ -194,10 +194,10 @@ void ServerForm::SetList(CString str,CString strMessage)
 		CString(std::to_string(t->tm_hour).c_str()) + _T("/") +
 		CString(std::to_string(t->tm_min).c_str()) + _T("/") +
 		CString(std::to_string(t->tm_sec).c_str());
-	m_ListTcp.InsertItem(Count, (CString(std::to_string(Count + 1).c_str())));
-	m_ListTcp.SetItemText(Count, 1, str);
-	m_ListTcp.SetItemText(Count, 2, strMessage);
-	m_ListTcp.SetItemText(Count, 3, static_cast<LPCTSTR>(time_s));
+	m_ListTcp.InsertItem(0, (CString(std::to_string(Count + 1).c_str())));
+	m_ListTcp.SetItemText(0, 1, str);
+	m_ListTcp.SetItemText(0, 2, strMessage);
+	m_ListTcp.SetItemText(0, 3, static_cast<LPCTSTR>(time_s));
 	Count++;
 }
 
@@ -264,22 +264,112 @@ void ServerForm::SetAwsInfo(AWSINFO pAWS)
 	m_awsinfo = pAWS;
 }
 
-AWSINFO ServerForm::GetAwslist()
-{
-	return m_awslist;
-}
-
-void ServerForm::SetAwslist(AWSINFO pAWS)
-{
-	m_awslist = pAWS;
-}
-
 void ServerForm::SetModify(string color, string faulty, string curId)
 {
 	m_modifyColor = color;
 	m_modifyFaulty = faulty;
 	m_modifyCurId = curId;
 	m_awsinfo = AWSINFO::AWSMODIFY;
+}
+
+void ServerForm::SetAwsColor(string set)
+{
+	m_awscolor = set;
+}
+
+string ServerForm::GetAwsColor()
+{
+	return m_awscolor;
+}
+
+void ServerForm::SetAwsFaulty(string set)
+{
+	m_awsfaulty = set;
+}
+
+string ServerForm::GetAwsFaulty()
+{
+	return m_awsfaulty;
+}
+
+void ServerForm::SetModifyColor(string set)
+{
+	m_modifyColor = set;
+}
+
+string ServerForm::GetModifyColor()
+{
+	return m_modifyColor;
+}
+
+void ServerForm::SetModifyFaulty(string set)
+{
+	m_modifyFaulty = set;
+}
+
+string ServerForm::GetModifyFaulty()
+{
+	return m_modifyFaulty;
+}
+
+void ServerForm::SetModifyCurId(string set)
+{
+	m_modifyCurId = set;
+}
+
+string ServerForm::GetModifyCurId()
+{
+	return m_modifyCurId;
+}
+
+void ServerForm::SetClientClose()
+{
+	m_Client.Close();
+}
+
+void ServerForm::SetThreadColor(COLORTHREAD set)
+{
+	m_ThreadColor = set;
+}
+
+COLORTHREAD ServerForm::GetThreadColor()
+{
+	return m_ThreadColor;
+}
+
+void ServerForm::SetControlColor(STATUCOLOR set)
+{
+	m_ControlColor = set;
+}
+
+STATUCOLOR ServerForm::GetControlColor()
+{
+	return m_ControlColor;
+}
+
+void ServerForm::SETTCPConnect(BOOL set)
+{
+	m_TCPConnect = set;
+}
+
+BOOL ServerForm::GetTCPConnect()
+{
+	return m_TCPConnect;
+}
+
+void ServerForm::SETBoxlist(vector<AWSLIST> set)
+{
+	m_boxlist = set;
+}
+
+vector<AWSLIST> ServerForm::GetBoxlist()
+{
+	return m_boxlist;
+}
+
+AWS* ServerForm::GetAWS()
+{
+	return m_aws;
 }
 
 

@@ -163,7 +163,7 @@ void TestTab::OnBnClickedButton2()
 void TestTab::OnBnClickedButton5()
 {
 	//삭제
-	ToolManager::GetInstance()->m_Serverform->m_aws->AlldeleteData(CurId.c_str());
+	ToolManager::GetInstance()->m_Serverform->GetAWS()->AlldeleteData(CurId.c_str());
 
 
 	ToolManager::GetInstance()->m_tab->SetCurSel(0);

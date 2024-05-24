@@ -181,7 +181,7 @@ void CntrlForm::OnBnClickedButton1()
 	// 버튼 상태를 토글
 
 	// 버튼 텍스트 변경
-	if (!ToolManager::GetInstance()->m_Serverform->m_TCPConnect)
+	if (!ToolManager::GetInstance()->m_Serverform->GetTCPConnect())
 	{
 		CButton* pButton = (CButton*)GetDlgItem(IDC_BUTTON1);
 		m_isRailOn = !m_isRailOn;

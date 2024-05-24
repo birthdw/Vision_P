@@ -171,7 +171,7 @@ void ResultForm::OnPaint()
 void ResultForm::OnBnClickedBstart()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (ToolManager::GetInstance()->m_Serverform->m_TCPConnect == false)
+	if (ToolManager::GetInstance()->m_Serverform->GetTCPConnect() == false)
 	{
 		Setbutton(false);
 		ToolManager::GetInstance()->SetKillFrm(false);
@@ -187,7 +187,7 @@ void ResultForm::OnBnClickedBstart()
 void ResultForm::OnBnClickedBstop()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (ToolManager::GetInstance()->m_Serverform->m_TCPConnect == false)
+	if (ToolManager::GetInstance()->m_Serverform->GetTCPConnect() == false)
 	{
 		Setbutton(true);
 		CString str = _T("STOP");
