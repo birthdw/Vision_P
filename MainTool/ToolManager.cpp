@@ -430,6 +430,7 @@ void ToolManager::SendResult(RESULT res)
 			res.faulty = "false";
 			res.date = time_s;
 			m_TempVec.emplace_back(res);
+			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
 		m_Serverform->SetList(_T(""), _T("PROC:YELLOW"));
 		m_Serverform->ClientTCP(_T("ST/PROC:YELLOW/END"));
@@ -451,6 +452,7 @@ void ToolManager::SendResult(RESULT res)
 			res.faulty = "false";
 			res.date = time_s;
 			m_TempVec.emplace_back(res);
+			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
 
 		m_Serverform->SetList(_T(""), _T("PROC:RED"));
@@ -473,6 +475,7 @@ void ToolManager::SendResult(RESULT res)
 			res.faulty = "false";
 			res.date = time_s;
 			m_TempVec.emplace_back(res);
+			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
 		m_Serverform->SetList(_T(""), _T("PROC:GREEN"));
 		m_Serverform->ClientTCP(_T("ST/PROC:GREEN/END"));
@@ -494,6 +497,7 @@ void ToolManager::SendResult(RESULT res)
 			res.faulty = "true";
 			res.date = time_s;
 			m_TempVec.emplace_back(res);
+			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
 		m_Serverform->SetList(_T(""), _T("PROC:FAIL"));
 		m_Serverform->ClientTCP(_T("ST/PROC:FAIL/END"));
