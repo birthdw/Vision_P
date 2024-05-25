@@ -250,7 +250,8 @@ void ServerForm::initaws()
 		delete m_aws;
 		m_aws = new AWS();
 	}
-	m_ControlColor = STATUCOLOR::SERVERGREEN;
+	SetControlColor(STATUCOLOR::SERVERGREEN);
+	SetServerSwitch(STATUCOLOR::SERVERGREEN);
 }
 
 vector<CString> ServerForm::SplitCString(const CString& str, const CString& delimiter)
@@ -390,6 +391,16 @@ void ServerForm::SetControlColor(STATUCOLOR set)
 STATUCOLOR ServerForm::GetControlColor()
 {
 	return m_ControlColor;
+}
+
+void ServerForm::SetServerSwitch(STATUCOLOR set)
+{
+	m_ServerSwitch = set;
+}
+
+STATUCOLOR ServerForm::GetServerSwitch()
+{
+	return m_ServerSwitch;
 }
 
 void ServerForm::SETTCPConnect(BOOL set)

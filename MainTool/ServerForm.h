@@ -75,9 +75,11 @@ private:
 private:
 	// 통신상태 색깔 자료형
 	STATUCOLOR m_ControlColor = STATUCOLOR::STAY;			// 통신상태 색깔 정할 수 있음
+	STATUCOLOR m_ServerSwitch = STATUCOLOR::SERVERRED;
 	COLORTHREAD m_ThreadColor = COLORTHREAD::THREADRUN;		// 통신상태 색깔 쓰레드 종료
 	CString m_SColor = L"yellow";							// 서버 통신상태 색깔
 	CString m_KColor = L"red";								// 소켓 통신상태 색깔
+	
 
 
 private:
@@ -142,6 +144,8 @@ public:
 	COLORTHREAD GetThreadColor();
 	void SetControlColor(STATUCOLOR set);
 	STATUCOLOR GetControlColor();
+	void SetServerSwitch(STATUCOLOR set);
+	STATUCOLOR GetServerSwitch();
 
 	void SETTCPConnect(BOOL set);
 	BOOL GetTCPConnect();

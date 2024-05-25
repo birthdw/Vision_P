@@ -407,7 +407,7 @@ void ToolManager::SendResult(RESULT res)
 
 
 	if (res == RESULT::YELLOW) {
-		if (m_Serverform->GetControlColor() == STATUCOLOR::SERVERGREEN)
+		if (m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN)
 		{
 			m_Serverform->SetAwsColor("yellow");
 			m_Serverform->SetAwsFaulty("false");
@@ -427,7 +427,7 @@ void ToolManager::SendResult(RESULT res)
 		m_Serverform->ClientTCP(_T("ST/PROC:YELLOW/END"));
 	}
 	else if (res == RESULT::RED) {
-		if (m_Serverform->GetControlColor() == STATUCOLOR::SERVERGREEN)
+		if (m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN)
 		{
 			m_Serverform->SetAwsColor("red");
 			m_Serverform->SetAwsFaulty("false");
@@ -448,7 +448,7 @@ void ToolManager::SendResult(RESULT res)
 		m_Serverform->ClientTCP(_T("ST/PROC:RED/END"));
 	}
 	else if (res == RESULT::GREEN) {
-		if (m_Serverform->GetControlColor() == STATUCOLOR::SERVERGREEN)
+		if (m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN)
 		{
 			m_Serverform->SetAwsColor("green");
 			m_Serverform->SetAwsFaulty("false");
@@ -468,7 +468,7 @@ void ToolManager::SendResult(RESULT res)
 		m_Serverform->ClientTCP(_T("ST/PROC:GREEN/END"));
 	}
 	else if (res == RESULT::FAIL) {
-		if (m_Serverform->GetControlColor() == STATUCOLOR::SERVERGREEN)
+		if (m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN)
 		{
 			m_Serverform->SetAwsColor("fail");
 			m_Serverform->SetAwsFaulty("true");
