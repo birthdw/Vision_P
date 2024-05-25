@@ -507,19 +507,7 @@ void ToolManager::TempVecSendAll()
 {
 	if (m_TempVec.size() <= 0)
 		return;
-
-	for (int i = 0; i < m_TempVec.size(); ++i)
-	{
-		m_Serverform->SetAwsColor(m_TempVec[i].color);
-		m_Serverform->SetAwsFaulty(m_TempVec[i].faulty);
-		m_Serverform->SetDate(m_TempVec[i].date);
-		m_Serverform->SetAwsFilename(m_TempVec[i].filename);
-
-
-		m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
-		m_Resform->RedrawWindow();
-
-	}
+	m_Serverform->SetAwsInfo(AWSINFO::AWSTEMPLIST);
 }
 
 vector<TEMPINFO> ToolManager::GetVec()

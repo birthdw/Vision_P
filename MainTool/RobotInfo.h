@@ -11,6 +11,7 @@ enum class AWSINFO :int {
 	AWSCHEAK,
 	AWSEXIT,
 	AWSLIST,
+	AWSTEMPLIST,
 	AWSMODIFY
 };
 

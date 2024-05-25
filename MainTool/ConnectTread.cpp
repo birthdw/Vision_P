@@ -40,12 +40,23 @@ UINT initawsT(LPVOID pParam)//¼­¹ö
 			else thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSSEND) {
-			string info = "('" + thisObj->GetAwsColor() + "', '" + thisObj->GetAwsColor() + "')";
+			string info = "('" + thisObj->GetAwsColor() + "', '" + thisObj->GetAwsFaulty() + "')";
 			thisObj->SetAwsColor("");
 			thisObj->SetAwsFaulty("");
 
 			thisObj->GetAWS()->Allinput(thisObj->GetDate(), info.c_str(),thisObj->GetAwsFilename());
 
+			thisObj->SetAwsInfo(AWSINFO::STAY);
+		}
+		else if (thisObj->GetAwsInfo() == AWSINFO::AWSTEMPLIST) {
+
+			ToolManager* pInstance = ToolManager::GetInstance();
+			for (int i = 0; i < pInstance->m_TempVec.size(); ++i)
+			{
+				string info = "('" + pInstance->m_TempVec[i].color + "', '" + pInstance->m_TempVec[i].faulty + "')";
+				thisObj->GetAWS()->Allinput(pInstance->m_TempVec[i].date, info.c_str(), pInstance->m_TempVec[i].filename);
+			}
+			pInstance->m_TempVec.clear();
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSCHEAK) {
