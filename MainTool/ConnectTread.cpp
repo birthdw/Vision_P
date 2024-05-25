@@ -44,7 +44,7 @@ UINT initawsT(LPVOID pParam)//서버
 			thisObj->SetAwsColor("");
 			thisObj->SetAwsFaulty("");
 
-			thisObj->GetAWS()->Allinput(thisObj->GetDate(), info.c_str(), "BOX.jpg");
+			thisObj->GetAWS()->Allinput(thisObj->GetDate(), info.c_str(),thisObj->GetAwsFilename());
 
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
@@ -58,8 +58,8 @@ UINT initawsT(LPVOID pParam)//서버
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 
-		/*thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
-		TRACE("%d\r\n", thisObj->GetBoxlist());*/
+		thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
+		TRACE("%d\r\n", thisObj->GetBoxlist());
 		Sleep(100);
 	}
 
@@ -167,8 +167,8 @@ UINT ThreadUpdate(LPVOID pParam) {
 	CString youngID;
 
 	while (1) {
-		if (thisObj->Threadupdate) return 0;
-
+		if (thisObj->Threadupdate) 
+			return 0;
 		else {
 			CString oldID = thisObj->Update(false);
 			if (oldID != _T("")) {

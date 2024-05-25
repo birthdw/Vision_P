@@ -75,10 +75,11 @@ bool ToolManager::Update(double t)
 	maxG = 0;
 	maxB = 0;
 
-	
+
 
 	if (FrmKilled == false)
 	{
+
 		if (m_bReadyState == false)
 		{
 			return false;
@@ -97,7 +98,7 @@ bool ToolManager::Update(double t)
 			break;
 		case PROCESSSTATE::WAIT_CAM_GRAB:
 			// 카메라 촬상 조건 추가
-			if (bGrap==true)
+			if (bGrap == true)
 			{
 				m_Serverform->SetList(_T(""), _T("INSPECT START"));
 				SetProcessState(PROCESSSTATE::INSPECT);
@@ -120,7 +121,7 @@ bool ToolManager::Update(double t)
 			else
 			{
 				SendResult(m_Res);
-				
+
 				m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
 			}
 			m_Resform->RedrawWindow();
@@ -412,12 +413,13 @@ void ToolManager::SendResult(RESULT res)
 			m_Serverform->SetAwsColor("yellow");
 			m_Serverform->SetAwsFaulty("false");
 			m_Serverform->SetDate(time_s);
+			m_Serverform->SetAwsFilename("BOX.jpg");
 			imwrite("BOX.jpg", frame);
 		}
 		else
 		{
 			TEMPINFO res;
-			res.filename = "";
+			res.filename = "BOX" + to_string(tempboxcnt) + ".jpg";
 			res.color = "yellow";
 			res.faulty = "false";
 			res.date = time_s;
@@ -432,12 +434,13 @@ void ToolManager::SendResult(RESULT res)
 			m_Serverform->SetAwsColor("red");
 			m_Serverform->SetAwsFaulty("false");
 			m_Serverform->SetDate(time_s);
+			m_Serverform->SetAwsFilename("BOX.jpg");
 			imwrite("BOX.jpg", frame);
 		}
 		else
 		{
 			TEMPINFO res;
-			res.filename = "";
+			res.filename = "BOX" + to_string(tempboxcnt) + ".jpg";
 			res.color = "red";
 			res.faulty = "false";
 			res.date = time_s;
@@ -453,12 +456,13 @@ void ToolManager::SendResult(RESULT res)
 			m_Serverform->SetAwsColor("green");
 			m_Serverform->SetAwsFaulty("false");
 			m_Serverform->SetDate(time_s);
+			m_Serverform->SetAwsFilename("BOX.jpg");
 			imwrite("BOX.jpg", frame);
 		}
 		else
 		{
 			TEMPINFO res;
-			res.filename = "";
+			res.filename = "BOX" + to_string(tempboxcnt) + ".jpg";
 			res.color = "green";
 			res.faulty = "false";
 			res.date = time_s;
@@ -473,12 +477,13 @@ void ToolManager::SendResult(RESULT res)
 			m_Serverform->SetAwsColor("fail");
 			m_Serverform->SetAwsFaulty("true");
 			m_Serverform->SetDate(time_s);
+			m_Serverform->SetAwsFilename("BOX.jpg");
 			imwrite("BOX.jpg", frame);
 		}
 		else
 		{
 			TEMPINFO res;
-			res.filename = "";
+			res.filename = "BOX" + to_string(tempboxcnt) + ".jpg";
 			res.color = "fail";
 			res.faulty = "true";
 			res.date = time_s;
@@ -489,13 +494,32 @@ void ToolManager::SendResult(RESULT res)
 	}
 
 
-
+	++tempboxcnt;
 
 }
 
 void ToolManager::SetProcessState(PROCESSSTATE s)
 {
 	m_CurState = s;
+}
+
+void ToolManager::TempVecSendAll()
+{
+	if (m_TempVec.size() <= 0)
+		return;
+
+	for (int i = 0; i < m_TempVec.size(); ++i)
+	{
+		m_Serverform->SetAwsColor(m_TempVec[i].color);
+		m_Serverform->SetAwsFaulty(m_TempVec[i].faulty);
+		m_Serverform->SetDate(m_TempVec[i].date);
+		m_Serverform->SetAwsFilename(m_TempVec[i].filename);
+
+
+		m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
+		m_Resform->RedrawWindow();
+
+	}
 }
 
 vector<TEMPINFO> ToolManager::GetVec()

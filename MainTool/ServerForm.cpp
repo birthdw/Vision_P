@@ -318,6 +318,16 @@ string ServerForm::GetAwsFaulty()
 	return m_awsfaulty;
 }
 
+void ServerForm::SetAwsFilename(string set)
+{
+	m_awsfilename = set;
+}
+
+string ServerForm::GetAwsFilename()
+{
+	return m_awsfilename;
+}
+
 void ServerForm::SetSocketMessage(CString set)
 {
 	SocketMessage = set;

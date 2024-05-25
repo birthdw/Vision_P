@@ -95,7 +95,7 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 	ToolManager::GetInstance()->m_Testtab->Setcnt(clickindex);
 
 	ToolManager::GetInstance()->m_Testtab->CurId = CT2CA(id);
-		
+
 	ToolManager::GetInstance()->m_Testtab->Url = url;
 	ToolManager::GetInstance()->m_Testtab->Color = Color;
 	ToolManager::GetInstance()->m_Testtab->Faulty = Faulty;
@@ -108,31 +108,30 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 
 CString DetectTab::Update(bool set)
 {
-
-	//if (ToolManager::GetInstance()->m_Serverform->GetControlColor() != STATUCOLOR::SERVERGREEN)
-	//{
-	//	m_List.DeleteAllItems();
-	//	if (ToolManager::GetInstance()->GetVec().size() > 0)
-	//	{
-	//		for (int i = 0; i < ToolManager::GetInstance()->GetVec().size(); ++i)
-	//		{
-	//				m_List.InsertItem(i, CString(ToolManager::GetInstance()->GetVec()[i].id.c_str()));
-	//				m_List.SetItemText(i, 1, CString(ToolManager::GetInstance()->GetVec()[i].url.c_str()));
-	//				m_List.SetItemText(i, 2, CString(ToolManager::GetInstance()->GetVec()[i].color.c_str()));
-	//				m_List.SetItemText(i, 3, CString(ToolManager::GetInstance()->GetVec()[i].faulty.c_str()));
-	//				m_List.SetItemText(i, 4, CString(ToolManager::GetInstance()->GetVec()[i].date.c_str()));
-	//		}
-	//	}
-	//}
-
-
-
-
-	/*vector<AWSLIST> vecInfo;
-	vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();*/
+	if (ToolManager::GetInstance()->m_Serverform->GetServerSwitch() != STATUCOLOR::SERVERGREEN)
+	{
+		m_List.DeleteAllItems();
+		if (ToolManager::GetInstance()->GetVec().size() > 0)
+		{
+			for (int i = 0; i < ToolManager::GetInstance()->GetVec().size(); ++i)
+			{
+				m_List.InsertItem(i, CString(to_string(i + 1).c_str()));
+				m_List.SetItemText(i, 1, CString(ToolManager::GetInstance()->GetVec()[i].filename.c_str()));
+				m_List.SetItemText(i, 2, CString(ToolManager::GetInstance()->GetVec()[i].color.c_str()));
+				m_List.SetItemText(i, 3, CString(ToolManager::GetInstance()->GetVec()[i].faulty.c_str()));
+				m_List.SetItemText(i, 4, CString(ToolManager::GetInstance()->GetVec()[i].date.c_str()));
+			}
+		}
+	}
+	else
+		ToolManager::GetInstance()->TempVecSendAll();
 
 
-	/*if (set) {
+	vector<AWSLIST> vecInfo;
+	vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();
+
+
+	if (set) {
 		m_List.DeleteAllItems();
 
 		for (int i = 0; i < vecInfo.size(); ++i)
@@ -151,12 +150,12 @@ CString DetectTab::Update(bool set)
 		{
 			oldid += CString(vecInfo[i].id.c_str()) + CString(vecInfo[i].color.c_str()) + CString(vecInfo[i].faulty.c_str());
 		}
-	}*/
-	
-	return _T("");
+	}
+
+	return oldid;
 }
 
-void DetectTab::Set_Text(int curidx,int idx, CString cstr)
+void DetectTab::Set_Text(int curidx, int idx, CString cstr)
 {
 
 	UpdateData(FALSE);

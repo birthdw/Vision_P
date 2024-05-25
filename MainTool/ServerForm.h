@@ -108,6 +108,7 @@ private:
 	string m_modifyFaulty;
 	string m_modifyCurId;
 	string m_awsdate;
+	string m_awsfilename;
 
 	// 소켓 저장 자료형
 	CString SocketMessage = _T("");
@@ -123,6 +124,10 @@ public:
 	string GetAwsColor();
 	void SetAwsFaulty(string set);
 	string GetAwsFaulty();
+
+	void SetAwsFilename(string set);
+	string GetAwsFilename();
+
 
 	void SetSocketMessage(CString set);
 	CString GetSocketMessage();

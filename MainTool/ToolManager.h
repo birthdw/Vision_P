@@ -76,7 +76,16 @@ public:
 	void SendResult(RESULT res);
 	
 	void SetProcessState(PROCESSSTATE s);
+
+
+	void TempVecSendAll();
+
+
+
+
 	vector<TEMPINFO>  GetVec();
+
+
 
 public:
 	HWND MainHndle;
@@ -122,6 +131,7 @@ public:
 public:
 	int testcnt=0;
 
+	int tempboxcnt = 0;
 	
 
 
