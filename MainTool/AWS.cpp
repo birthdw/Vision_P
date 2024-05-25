@@ -162,7 +162,7 @@ bool AWS::RDSinserts3Data(string date)
     // 쿼리 실행 결과 확인
     if (PQresultStatus(res1) == PGRES_TUPLES_OK) {
         // 가져온 id를 사용하여 S3 데이터 삽입 쿼리 생성
-        string insert_query = "INSERT INTO public.s3data (id, date, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ","+date+",'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(PQgetvalue(res1, 0, 0)) + ".jpg')";
+        string insert_query = "INSERT INTO public.s3data (id, date, url) VALUES (" + string(PQgetvalue(res1,0,0)) + ",\'"+ date +"\',\'https://box-s3-buket.s3.ap-northeast-2.amazonaws.com/" + string(PQgetvalue(res1, 0, 0)) + ".jpg\')";
         //string insert_query = "INSERT INTO public.thing (id, date, url) VALUES ('3', '2024-05-22 17:55:52', '1234.jpg')";
         
         PGresult* res = PQexec(conn, insert_query.c_str());// 삽입 쿼리 실행
