@@ -108,6 +108,7 @@ public:
 	double fpscnt;
 	double dtime;
 	double updatetime;
+	bool onlycam = false;
 public:
 	CString m_strPickinLst;
 	CString m_strPickinLst2;

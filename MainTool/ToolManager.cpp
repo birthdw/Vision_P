@@ -71,66 +71,72 @@ bool ToolManager::Update(double t)
 	++fpscnt;
 	dtime += t;
 	updatetime += t;
-	maxR = 0;
-	maxG = 0;
-	maxB = 0;
+	
 
-
+	
 
 	if (FrmKilled == false)
 	{
-
-		if (m_bReadyState == false)
+		if (onlycam == true && m_bReadyState == false)
 		{
-			return false;
+			cap >> frame;
+			resize(frame, frame, Size(600, 450));
+			Detect();
 		}
-
-		cap >> frame;
-		resize(frame, frame, Size(600, 450));
-
-		if (m_OldState != m_CurState)
-			m_OldState = m_CurState;
-
-		switch (m_OldState)
+		else
 		{
-		case PROCESSSTATE::STANDBY:
-			SetProcessState(PROCESSSTATE::WAIT_CAM_GRAB);
-			break;
-		case PROCESSSTATE::WAIT_CAM_GRAB:
-			// 카메라 촬상 조건 추가
-			if (bGrap == true)
+			if (m_bReadyState == false)
 			{
-				m_Serverform->SetList(_T(""), _T("INSPECT START"));
-				SetProcessState(PROCESSSTATE::INSPECT);
-				bGrap = false;
+				return false;
 			}
-			break;
-		case PROCESSSTATE::INSPECT:
-			m_Res = Detect();
 
-			if (m_Res == RES_END)
-			{
-				m_Serverform->SetList(_T(""), _T("PROC:ERROR"));
-				m_Serverform->ClientTCP(_T("ST/PROC:ERROR/END"));
-			}
-			else if (m_Res == RES_NONE)
-			{
-				m_Serverform->SetList(_T(""), _T("PROC:RETRY"));
-				m_Serverform->ClientTCP(_T("ST/PROC:RETRY/END"));
-			}
-			else
-			{
-				SendResult(m_Res);
+			cap >> frame;
+			resize(frame, frame, Size(600, 450));
 
-				m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
+			if (m_OldState != m_CurState)
+				m_OldState = m_CurState;
+
+			switch (m_OldState)
+			{
+			case PROCESSSTATE::STANDBY:
+				SetProcessState(PROCESSSTATE::WAIT_CAM_GRAB);
+				break;
+			case PROCESSSTATE::WAIT_CAM_GRAB:
+				// 카메라 촬상 조건 추가
+				if (bGrap == true)
+				{
+					m_Serverform->SetList(_T(""), _T("INSPECT START"));
+					SetProcessState(PROCESSSTATE::INSPECT);
+					bGrap = false;
+				}
+				break;
+			case PROCESSSTATE::INSPECT:
+				m_Res = Detect();
+
+				if (m_Res == RES_END)
+				{
+					m_Serverform->SetList(_T(""), _T("PROC:ERROR"));
+					m_Serverform->ClientTCP(_T("ST/PROC:ERROR/END"));
+				}
+				else if (m_Res == RES_NONE)
+				{
+					m_Serverform->SetList(_T(""), _T("PROC:RETRY"));
+					m_Serverform->ClientTCP(_T("ST/PROC:RETRY/END"));
+				}
+				else
+				{
+					SendResult(m_Res);
+
+					m_Serverform->SetAwsInfo(AWSINFO::AWSSEND);
+				}
+				m_Resform->RedrawWindow();
+				SetProcessState(PROCESSSTATE::STANDBY);
+				break;
+			case PROCESSSTATE::ABNORMAL:
+				break;
+			default:
+				break;
 			}
-			m_Resform->RedrawWindow();
-			SetProcessState(PROCESSSTATE::STANDBY);
-			break;
-		case PROCESSSTATE::ABNORMAL:
-			break;
-		default:
-			break;
 		}
 	}
 	else

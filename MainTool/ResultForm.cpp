@@ -66,6 +66,7 @@ void ResultForm::OnBnClickedButton1()
 	// cam on
 	ToolManager::GetInstance()->SetKillFrm(false);
 	ToolManager::GetInstance()->SetSpecialOn(false);
+	ToolManager::GetInstance()->onlycam = true;
 	m_btempdetect.EnableWindow(FALSE);
 
 }
@@ -76,6 +77,7 @@ void ResultForm::OnBnClickedButton2()
 	// cam off
 	ToolManager::GetInstance()->SetKillFrm(true);
 	ToolManager::GetInstance()->SetSpecialOn(false);
+	ToolManager::GetInstance()->onlycam = false;
 	m_btempdetect.EnableWindow(TRUE);
 
 }
