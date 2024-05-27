@@ -148,6 +148,8 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 			m_Client.Create();
 			if (m_Client.Connect(IPAddress(), m_Port) == FALSE) {
 				AfxMessageBox(_T("ERROR : Failed to connect Server"));
+				m_SocketThreadSWICHT = TRUE;
+				GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
 				m_Client.Close();
 				return 0;
 			}
