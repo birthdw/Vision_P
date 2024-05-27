@@ -507,3 +507,8 @@ void ToolManager::SetInference()
 {
 	inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
 }
+
+bool ToolManager::SetCap(int set)
+{
+	return cap.open(set, cv::CAP_DSHOW);
+}

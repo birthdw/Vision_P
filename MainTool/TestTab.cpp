@@ -6,7 +6,6 @@
 #include "afxdialogex.h"
 #include "TestTab.h"
 #include "ToolManager.h"
-#include "CModDlg.h"
 #include "AWS.h"
 #include "ServerForm.h"
 #include "DetectTab.h"
