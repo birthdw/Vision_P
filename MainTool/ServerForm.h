@@ -51,36 +51,12 @@ public:
 	CStatic m_ServerColor;				// 서버 통신상태 픽쳐 컨트롤
 
 private:
-	// 서버 스위치
-	AWSINFO m_awsinfo;
-
-public:
-	// 소켓통신 함수
-	const CString IPAddress() const;	// IP Address를 호출합니다.
-	void ClientTCP(CString strMessage);	// 서버로 정보를 전송할때 사용합니다.
-	void SetList(CString str, CString strMessage);	// 리스트 컨트롤에 로그 추가
-
-
-	// 서버 동작 함수
-	void exit_s3();						// 서버 종료 함수
-	void initaws();						// 서버 연결 함수
-
-
-private:
-	// 소켓 통신 자료형
-	CSocketClient m_Client;				// 소켓 연결
-	int Count = 0;						// 소켓 로그 카운트
-
-
-private:
 	// 통신상태 색깔 자료형
 	STATUCOLOR m_ControlColor = STATUCOLOR::STAY;			// 통신상태 색깔 정할 수 있음
 	STATUCOLOR m_ServerSwitch = STATUCOLOR::SERVERRED;
 	COLORTHREAD m_ThreadColor = COLORTHREAD::THREADRUN;		// 통신상태 색깔 쓰레드 종료
 	CString m_SColor = L"yellow";							// 서버 통신상태 색깔
 	CString m_KColor = L"red";								// 소켓 통신상태 색깔
-	
-
 
 private:
 	// 스위치
@@ -99,7 +75,6 @@ private:
 	SDKOptions m_options;
 	AWS* m_aws = nullptr;
 
-
 private:
 	// 서버 저장 자료형
 	string m_awscolor = "";
@@ -110,55 +85,59 @@ private:
 	string m_awsdate;
 	string m_awsfilename;
 
+	AWSINFO m_awsinfo;											// 서버 스위치
+
 	// 소켓 저장 자료형
 	CString SocketMessage = _T("");
 
+	// 소켓 통신 자료형
+	CSocketClient m_Client;										// 소켓 연결
+	int Count = 0;												// 소켓 로그 카운트
 public:
-	AWSINFO GetAwsInfo();				// 서버 동작 얻어옴
-	void SetAwsInfo(AWSINFO pAWS);		// 서버 동작 
-	void SetModify(string color, string faulty, string curId);
 	vector<CString> SplitCString(const CString& str, const CString& delimiter);
-
-
-	void SetAwsColor(string set);
-	string GetAwsColor();
-	void SetAwsFaulty(string set);
-	string GetAwsFaulty();
-
-	void SetAwsFilename(string set);
-	string GetAwsFilename();
-
-
-	void SetSocketMessage(CString set);
-	CString GetSocketMessage();
-
-	void SetModifyColor(string set);
-	string GetModifyColor();
-	void SetModifyFaulty(string set);
-	string GetModifyFaulty();
-	void SetModifyCurId(string set);
-	string GetModifyCurId();
-
-	void SetDate(string set);
-	string GetDate();
-
-
-	void SetClientClose();
-
-	void SetThreadColor(COLORTHREAD set);
-	COLORTHREAD GetThreadColor();
-	void SetControlColor(STATUCOLOR set);
-	STATUCOLOR GetControlColor();
-	void SetServerSwitch(STATUCOLOR set);
-	STATUCOLOR GetServerSwitch();
-
-	void SETTCPConnect(BOOL set);
-	BOOL GetTCPConnect();
-
-	void SETBoxlist(vector<AWSLIST> set);
 	vector<AWSLIST> GetBoxlist();
 
-	AWS* GetAWS();
+	// 소켓통신 함수
+	const CString IPAddress() const;							// IP Address를 호출합니다.
+	void ClientTCP(CString strMessage);							// 서버로 정보를 전송할때 사용합니다.
+	void SetList(CString str, CString strMessage);				// 리스트 컨트롤에 로그 추가
+
+	// 서버 동작 함수
+	void exit_s3();												// 서버 종료 함수
+	void initaws();												// 서버 연결 함수
+
+public:
+	AWSINFO GetAwsInfo();										// 서버 동작 상태
+	BOOL GetTCPConnect();										// 소켓 통신 연결 상태
+	AWS* GetAWS();												// 서버 연결 동작
+	string GetAwsColor();										// 서버 저장 상자 색깔 상태
+	string GetAwsFaulty();										// 서버 저장 상자 불량 상태
+	string GetAwsFilename();									// 서버 저장 이미지 파일 이름
+	string GetModifyColor();									// 서버 색깔 수정
+	string GetModifyFaulty();									// 서버 불량 유무 수정
+	string GetModifyCurId();									// 서버 상태 수정
+	string GetDate();											// 날짜 얻어옴
+	COLORTHREAD GetThreadColor();								// 상태 그리기 쓰레드 스위치
+	STATUCOLOR GetControlColor();								// 서버 모든 상태 스위치
+	STATUCOLOR GetServerSwitch();								// 서버만 상태 확인 스위치
+	
+public:
+	void SetAwsInfo(AWSINFO pAWS);								// 서버 동작 
+	void SetModify(string color, string faulty, string curId);	// 서버 리스트 수정
+	void SetAwsColor(string set);								// 서버 저장 상자 색깔 상태
+	void SetAwsFaulty(string set);								// 서버 저장 상자 불량 상태
+	void SetAwsFilename(string set);							// 박스 사진 이름
+	void SetModifyColor(string set);							// 서버 색깔 수정
+	void SetModifyFaulty(string set);							// 서버 불량 수정
+	void SetModifyCurId(string set);							// 서버 수정
+	void SetDate(string set);									// 날짜 세팅
+	void SetClientClose();										// 소켓 통신 종료
+	void SetThreadColor(COLORTHREAD set);						// 상태 그리기 쓰레드 스위치
+	void SetControlColor(STATUCOLOR set);						// 서버 모든 상태 스위치
+	void SetServerSwitch(STATUCOLOR set);						// 서버만 상태 확인 스위치
+	void SETTCPConnect(BOOL set);								// 소켓통신 연결 상태 확인
+	void SETBoxlist(vector<AWSLIST> set);						// 서버 리스트 저장
+
 };
 
 

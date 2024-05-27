@@ -18,13 +18,12 @@ CSocketClient::~CSocketClient()
 }
 
 
-// CSocketClient 멤버 함수
-
-
+// 소켓 닫히면 실행됨
 void CSocketClient::OnClose(int nErrorCode)
 {
 	// 서버 연결이 끊길 때를 정의합니다.
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+    socketend();
 	ShutDown();
 	Close();
 
@@ -32,6 +31,7 @@ void CSocketClient::OnClose(int nErrorCode)
 }
 
 
+// 서버에서 오는 데이터 탐색
 void CSocketClient::OnReceive(int nErrorCode)
 {
 	// 서버에서 오는 데이터를 받습니다.
@@ -51,6 +51,8 @@ void CSocketClient::OnReceive(int nErrorCode)
 	CSocket::OnReceive(nErrorCode);
 }
 
+
+// 소켓 끝나면 실행되는 함수
 void CSocketClient::socketend()
 {
     ToolManager::GetInstance()->m_Serverform->SetClientClose();
@@ -59,6 +61,7 @@ void CSocketClient::socketend()
     ToolManager::GetInstance()->m_Serverform->SetControlColor(STATUCOLOR::SOCKETRED);
 }
 
+// 데이터가 들어오면 문자를 받습니다.
 void CSocketClient::recvinfo(CString strMessage)
 {
     if (strMessage == _T("END"))

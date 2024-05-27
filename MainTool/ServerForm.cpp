@@ -328,16 +328,6 @@ string ServerForm::GetAwsFilename()
 	return m_awsfilename;
 }
 
-void ServerForm::SetSocketMessage(CString set)
-{
-	SocketMessage = set;
-}
-
-CString ServerForm::GetSocketMessage()
-{
-	return SocketMessage;
-}
-
 void ServerForm::SetModifyColor(string set)
 {
 	m_modifyColor = set;

@@ -15,66 +15,90 @@ UINT initawsT(LPVOID pParam)//서버
 	thisObj = (ServerForm*)pParam;
 
 	while (1) {
+		
+		switch (thisObj->GetAwsInfo()) {
 
-		// AWS 서버 쓰레드 종료
-		if (thisObj->GetAwsInfo() == AWSINFO::AWSEXIT) {
-			return 0;
-		}
-
-		// AWS 서버 시작
-		if (thisObj->GetAwsInfo() == AWSINFO::SEVERSTART) {
-			TRACE(_T("Thread Index "));
-			thisObj->initaws();
-
-			// 서버 리트라이
-			if (thisObj->GetAWS() == nullptr) {
-				thisObj->SetAwsInfo(AWSINFO::SEVERSTART);
-				thisObj->SetControlColor(STATUCOLOR::SERVERRED);
-				thisObj->SetServerSwitch(STATUCOLOR::SERVERRED);
-			}
-			else thisObj->SetAwsInfo(AWSINFO::STAY);
-		}
-
-		// AWS 서버 저장
-		else if (thisObj->GetAwsInfo() == AWSINFO::AWSSEND) {
-			string info = "('" + thisObj->GetAwsColor() + "', '" + thisObj->GetAwsFaulty() + "')";
-			thisObj->SetAwsColor("");
-			thisObj->SetAwsFaulty("");
-
-			thisObj->GetAWS()->Allinput(thisObj->GetDate(), info.c_str(),thisObj->GetAwsFilename());
-
-			thisObj->SetAwsInfo(AWSINFO::STAY);
-		}
-
-		// 로컬때 저장된 정보 서버에 저장
-		else if (thisObj->GetAwsInfo() == AWSINFO::AWSTEMPLIST) {
-
-			ToolManager* pInstance = ToolManager::GetInstance();
-			for (int i = 0; i < pInstance->m_TempVec.size(); ++i)
+			// AWS 서버 쓰레드 종료
+			case AWSINFO::AWSEXIT:
 			{
-				string info = "('" + pInstance->m_TempVec[i].color + "', '" + pInstance->m_TempVec[i].faulty + "')";
-				thisObj->GetAWS()->Allinput(pInstance->m_TempVec[i].date, info.c_str(), pInstance->m_TempVec[i].filename);
+				return 0;
 			}
-			pInstance->m_TempVec.clear();
-			thisObj->SetAwsInfo(AWSINFO::STAY);
-		}
+				
 
-		// 서버 연결 체크
-		else if (thisObj->GetAwsInfo() == AWSINFO::AWSCHEAK) {
-			thisObj->GetAWS()->RDSckeckConnection();
-			thisObj->SetAwsInfo(AWSINFO::STAY);
-		}
+			// AWS 서버 시작
+			case AWSINFO::SEVERSTART:
+			{
+				TRACE(_T("Thread Index "));
+				thisObj->initaws();
 
-		// 저장된 정보 수정
-		else if (thisObj->GetAwsInfo() == AWSINFO::AWSMODIFY) {	
-			thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
-			thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
-			thisObj->SetAwsInfo(AWSINFO::STAY);
-		}
+				// 서버 리트라이
+				if (thisObj->GetAWS() == nullptr) {
+					thisObj->SetAwsInfo(AWSINFO::SEVERSTART);
+					thisObj->SetControlColor(STATUCOLOR::SERVERRED);
+					thisObj->SetServerSwitch(STATUCOLOR::SERVERRED);
+				}
+				else thisObj->SetAwsInfo(AWSINFO::STAY);
+				break;
+			}
 
-		// 서버 리스트 불러오기
-		thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
-		TRACE("%d\r\n", thisObj->GetBoxlist());
+
+			// AWS 서버 저장
+			case AWSINFO::AWSSEND:
+			{
+				string info = "('" + thisObj->GetAwsColor() + "', '" + thisObj->GetAwsFaulty() + "')";
+				thisObj->SetAwsColor("");
+				thisObj->SetAwsFaulty("");
+
+				thisObj->GetAWS()->Allinput(thisObj->GetDate(), info.c_str(), thisObj->GetAwsFilename());
+
+				thisObj->SetAwsInfo(AWSINFO::STAY);
+				break;
+			}
+				
+
+			// 로컬때 저장된 정보 서버에 저장
+			case AWSINFO::AWSTEMPLIST:
+			{
+				ToolManager* pInstance = ToolManager::GetInstance();
+				for (int i = 0; i < pInstance->m_TempVec.size(); ++i)
+				{
+					string info = "('" + pInstance->m_TempVec[i].color + "', '" + pInstance->m_TempVec[i].faulty + "')";
+					thisObj->GetAWS()->Allinput(pInstance->m_TempVec[i].date, info.c_str(), pInstance->m_TempVec[i].filename);
+				}
+				pInstance->m_TempVec.clear();
+				thisObj->SetAwsInfo(AWSINFO::STAY);
+				break;
+			}
+
+
+			// 서버 연결 체크
+			case AWSINFO::AWSCHEAK:
+			{
+				thisObj->GetAWS()->RDSckeckConnection();
+				thisObj->SetAwsInfo(AWSINFO::STAY);
+				break;
+			}
+				
+
+			// 저장된 정보 수정
+			case AWSINFO::AWSMODIFY:
+			{
+				thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
+				thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
+				thisObj->SetAwsInfo(AWSINFO::STAY);
+				break;
+			}
+				
+
+			// 서버 리스트 불러오기
+			default:	
+			{
+				thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
+				TRACE("%d\r\n", thisObj->GetBoxlist());
+				break;
+			}
+		
+		}
 		Sleep(100);
 	}
 
@@ -150,7 +174,7 @@ UINT COLORRODING(LPVOID pParam)
 				thisObj->GetDlgItem(IDC_LOG_BUT)->EnableWindow(false);
 			}
 		}
-		Sleep(200);
+		Sleep(500);
 	}
 }
 
@@ -206,6 +230,7 @@ UINT ThreadCameraButton(LPVOID pParam) {
 			thisObj->GetDlgItem(IDC_BUTTON1)->EnableWindow(true);
 			thisObj->GetDlgItem(IDC_BUTTON2)->EnableWindow(true);
 		}
+		Sleep(500);
 	}
 	return 0;
 }
