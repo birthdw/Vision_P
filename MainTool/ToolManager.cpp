@@ -17,7 +17,6 @@ ToolManager::ToolManager()
 {
 	ForceQuit = false;
 	FrmKilled = true;
-	btest = false;
 	fpscnt = 0;
 	dfps = 0;
 	updatetime = 0;
@@ -26,7 +25,7 @@ ToolManager::ToolManager()
 
 ToolManager::~ToolManager()
 {
-	cameraR = false;
+
 }
 
 ToolManager* ToolManager::GetInstance()
@@ -308,24 +307,13 @@ void ToolManager::SetKillFrm(bool set)
 	FrmKilled = set;
 }
 
-void ToolManager::Settest(bool set)
-{
-	btest = set;
-}
 
-void ToolManager::SetRec(bool set)
-{
-	RecCtrl = set;
-}
+
+
 
 void ToolManager::SetSpecialOn(bool set)
 {
 	SpecialOn = set;
-}
-
-void ToolManager::SetInference()
-{
-	inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
 }
 
 CTabCtrl* ToolManager::GetTabctrl()
@@ -344,20 +332,7 @@ void ToolManager::Mod_Txt(int cur, int idx, CString cstr)
 	m_detecttab->Set_Text(cur, idx, cstr);
 }
 
-void ToolManager::Set_Mod_Txt(int idx, CString cstr)
-{
-	switch (idx)
-	{
-	case 1:
-		m_strPickinLst = cstr;
-		break;
-	case 2:
-		m_strPickinLst2 = cstr;
-		break;
-	default:
-		break;
-	}
-}
+
 
 
 void ToolManager::findMostFrequentColor(const Mat& roi, int& maxR, int& maxG, int& maxB)
@@ -528,7 +503,7 @@ void ToolManager::SetReady(bool bReady)
 	m_bReadyState = bReady;
 }
 
-bool ToolManager::SetCap(int set)
+void ToolManager::SetInference()
 {
-	return cap.open(set, cv::CAP_DSHOW);
+	inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
 }
