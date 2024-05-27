@@ -12,7 +12,6 @@
 #define IDD_ListForm                    315
 #define IDD_DetectTab                   316
 #define IDD_TestTab                     317
-#define IDD_Mod                         318
 #define IDC_BUTTON3                     1002
 #define IDC_BUTTON4                     1003
 #define IDC_IPADDRESS1                  1006
@@ -46,7 +45,6 @@
 #define IDC_LIST3                       1017
 #define IDC_LIST_TCP                    1017
 #define IDC_BUTTON13                    1018
-#define IDC_EDIT1                       1018
 #define IDC_TCP_BUT2                    1018
 #define IDC_LOG_BUT                     1018
 #define IDC_BUTTON14                    1019
