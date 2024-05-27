@@ -52,6 +52,8 @@ public:
 	bool Morter3_on = false;
 
 
+	void setbutton(bool n);
+
 };
 
 

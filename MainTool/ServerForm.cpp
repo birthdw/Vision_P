@@ -6,6 +6,7 @@
 #include "ServerForm.h"
 #include "ToolManager.h"
 #include "ConnectTread.h"
+#include "ResultForm.h"
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
@@ -104,7 +105,8 @@ void ServerForm::OnBnClickedTcpBut()
 {
 	// 소켓 통신 연결, 연결끊기를 정의합니다.
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (m_SocketThreadSWICHT) {
+	if (m_SocketThreadSWICHT) 
+	{
 		GetDlgItem(IDC_TCP_BUT)->EnableWindow(false);
 		m_ControlColor = STATUCOLOR::SOCKETYELLOW;
 		m_SocketThreadSWICHT = FALSE;
@@ -131,7 +133,7 @@ void ServerForm::ClientTCP(CString strMessage) {
 	int nLength = strMessage.GetLength() * sizeof(TCHAR);
 
 	m_Client.Send((LPCTSTR)strMessage, nLength);
-	//SetList(_T("송신"),strMessage);
+	SetList(_T("송신"),strMessage);
 	
 }
 
@@ -149,6 +151,7 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 			if (m_Client.Connect(IPAddress(), m_Port) == FALSE) {
 				AfxMessageBox(_T("ERROR : Failed to connect Server"));
 				m_SocketThreadSWICHT = TRUE;
+				m_TCP_BUTTON.SetWindowText(L"연결");
 				GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
 				m_Client.Close();
 				return 0;
@@ -172,6 +175,7 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 	}
 
 	
+	ToolManager::GetInstance()->m_Resform->Setbutton(true);
 	m_SocketThreadSWICHT = TRUE;
 	GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
 

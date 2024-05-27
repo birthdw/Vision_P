@@ -14,9 +14,11 @@ UINT initawsT(LPVOID pParam)//서버
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
 
-	while (1) {
+	while (1) 
+	{
 		
-		switch (thisObj->GetAwsInfo()) {
+		switch (thisObj->GetAwsInfo()) 
+		{
 
 			// AWS 서버 쓰레드 종료
 			case AWSINFO::AWSEXIT:
@@ -32,7 +34,8 @@ UINT initawsT(LPVOID pParam)//서버
 				thisObj->initaws();
 
 				// 서버 리트라이
-				if (thisObj->GetAWS() == nullptr) {
+				if (thisObj->GetAWS() == nullptr) 
+				{
 					thisObj->SetAwsInfo(AWSINFO::SEVERSTART);
 					thisObj->SetControlColor(STATUCOLOR::SERVERRED);
 					thisObj->SetServerSwitch(STATUCOLOR::SERVERRED);

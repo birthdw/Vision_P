@@ -118,7 +118,7 @@ void ResultForm::OnInitialUpdate()
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
 	AfxBeginThread(ThreadCameraButton, this);
-	m_btempdetect.EnableWindow(FALSE);
+	m_btempdetect.EnableWindow(false);
 	ToolManager::GetInstance()->m_Resform = this;
 }
 

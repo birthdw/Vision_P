@@ -6,6 +6,7 @@
 #include "CSocketClient.h"
 #include "ServerForm.h"
 #include "ToolManager.h"
+#include "CntrlForm.h"
 
 // CSocketClient
 
@@ -130,6 +131,71 @@ void CSocketClient::ProcessString(const CString& str)
                     CString str = _T("START");
                     ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
                 }
+
+                else if (betweenColonAndSlash.Find(_T("HOME")) != -1)
+                {
+                    
+                    ToolManager::GetInstance()->m_CntrlForm->Grab_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Morter_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Morter2_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Morter3_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Invalidate(true);
+                }
+
+                else if (betweenColonAndSlash.Find(_T("M1_P10")) != -1)
+                {
+                    
+                    ToolManager::GetInstance()->m_CntrlForm->Grab_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Invalidate(true);
+                }
+
+                else if (betweenColonAndSlash.Find(_T("M1_M10")) != -1)
+                {
+                    
+                    ToolManager::GetInstance()->m_CntrlForm->Grab_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Invalidate(true);
+                }
+
+                else if (betweenColonAndSlash.Find(_T("M2_P10")) != -1)
+                {
+                    
+                    ToolManager::GetInstance()->m_CntrlForm->Morter_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Invalidate(true);
+                }
+
+                else if (betweenColonAndSlash.Find(_T("M2_M10")) != -1)
+                {
+                   
+                    ToolManager::GetInstance()->m_CntrlForm->Morter_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Invalidate(true);
+                }
+
+                else if (betweenColonAndSlash.Find(_T("M3_P10")) != -1)
+                {
+                    
+                    ToolManager::GetInstance()->m_CntrlForm->Morter2_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Invalidate(true);
+                }
+                else if (betweenColonAndSlash.Find(_T("M3_M10")) != -1)
+                {
+                    
+                    ToolManager::GetInstance()->m_CntrlForm->Morter2_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Invalidate(true);
+                }
+                else if (betweenColonAndSlash.Find(_T("M4_P10")) != -1)
+                {
+                    
+                    ToolManager::GetInstance()->m_CntrlForm->Morter3_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Invalidate(true);
+                }
+                else if (betweenColonAndSlash.Find(_T("M4_M10")) != -1)
+                {
+                   
+                    ToolManager::GetInstance()->m_CntrlForm->Morter3_on = false;
+                    ToolManager::GetInstance()->m_CntrlForm->Invalidate(true);
+                }
+
+
 
             }
         }

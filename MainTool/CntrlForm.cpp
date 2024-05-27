@@ -67,9 +67,14 @@ void CntrlForm::OnBnClickedButton2()
 
 	CString str = _T("RBT:HOME");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
-
-
-
+	
+	
+	
+	Morter_on = true;
+	Morter2_on = true;
+	Morter3_on = true;
+	Grab_on = true;
+	Invalidate(false);
 }
 
 
@@ -210,6 +215,7 @@ void CntrlForm::OnInitialUpdate()
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	ToolManager::GetInstance()->SetCntrlForm(this);
+	setbutton(false);
 }
 
 
@@ -253,4 +259,18 @@ void CntrlForm::OnPaint()
 	morter2.StretchBlt(dc, 250, 300, 100, 100);
 	morter3.StretchBlt(dc, 250, 400, 100, 100);
 
+}
+
+void CntrlForm::setbutton(bool n)
+{
+	GetDlgItem(IDC_BUTTON2)->EnableWindow(n);
+	GetDlgItem(IDC_BUTTON1)->EnableWindow(n);
+	GetDlgItem(IDC_b2)->EnableWindow(n);
+	GetDlgItem(IDC_b1)->EnableWindow(n);
+	GetDlgItem(IDC_b4)->EnableWindow(n);
+	GetDlgItem(IDC_b3)->EnableWindow(n);
+	GetDlgItem(IDC_b5)->EnableWindow(n);
+	GetDlgItem(IDC_b6)->EnableWindow(n);
+	GetDlgItem(IDC_b7)->EnableWindow(n);
+	GetDlgItem(IDC_b8)->EnableWindow(n);
 }
