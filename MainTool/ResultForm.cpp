@@ -21,6 +21,7 @@ ResultForm::ResultForm()
 
 ResultForm::~ResultForm()
 {
+	buttoncheck = false;
 }
 
 void ResultForm::DoDataExchange(CDataExchange* pDX)

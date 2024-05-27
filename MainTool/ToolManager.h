@@ -63,6 +63,7 @@ public:
 	void Settest(bool set);
 	void SetRec(bool set);
 	void SetSpecialOn(bool set);
+	void SetInference();
 public:
 	CTabCtrl* GetTabctrl();
 public:
@@ -103,6 +104,7 @@ public:
 	bool RecCtrl = false;
 	bool SpecialOn = false;
 	bool bGrap = false;
+	bool cameraR = true;
 public:
 	double dfps;
 	double fpscnt;
@@ -148,6 +150,7 @@ public:
 		bool m_bReadyState = false;
 
 		void SetReady(bool bReady);
+		bool SetCap(int set);
 
 
 };

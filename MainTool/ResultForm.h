@@ -28,20 +28,26 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	virtual void OnInitialUpdate();
+
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnBnClickedButton5();
-	CStatic m_Color;
 	afx_msg void OnBnClickedButton6();
-	int cnt = 0;
-	bool camera = false;
-	CButton m_btempdetect;
-	virtual void OnInitialUpdate();
 	afx_msg void OnPaint();
 	afx_msg void OnBnClickedBstart();
 	afx_msg void OnBnClickedBstop();
+
+	CButton m_btempdetect;
+	CStatic m_Color;
+
+	int cnt = 0;
+	bool camera = false;
+	bool buttoncheck = true;
+	
+	
 
 	void Setbutton(bool n);
 };

@@ -7,38 +7,35 @@
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
-UINT ThreadRecv(LPVOID pParam) {
-	ServerForm* thisObj;
-	thisObj = (ServerForm*)pParam;
-	
-	while (1) {
-		CString str = thisObj->GetSocketMessage();
-		if (str != _T("")) {
-			
-		}
-		Sleep(100);
-	}
-}
 
+// AWS 서버 쓰레드
 UINT initawsT(LPVOID pParam)//서버
 {
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
+
 	while (1) {
 
+		// AWS 서버 쓰레드 종료
 		if (thisObj->GetAwsInfo() == AWSINFO::AWSEXIT) {
 			return 0;
 		}
 
+		// AWS 서버 시작
 		if (thisObj->GetAwsInfo() == AWSINFO::SEVERSTART) {
 			TRACE(_T("Thread Index "));
 			thisObj->initaws();
 
+			// 서버 리트라이
 			if (thisObj->GetAWS() == nullptr) {
 				thisObj->SetAwsInfo(AWSINFO::SEVERSTART);
+				thisObj->SetControlColor(STATUCOLOR::SERVERRED);
+				thisObj->SetServerSwitch(STATUCOLOR::SERVERRED);
 			}
 			else thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
+
+		// AWS 서버 저장
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSSEND) {
 			string info = "('" + thisObj->GetAwsColor() + "', '" + thisObj->GetAwsFaulty() + "')";
 			thisObj->SetAwsColor("");
@@ -48,6 +45,8 @@ UINT initawsT(LPVOID pParam)//서버
 
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
+
+		// 로컬때 저장된 정보 서버에 저장
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSTEMPLIST) {
 
 			ToolManager* pInstance = ToolManager::GetInstance();
@@ -59,16 +58,21 @@ UINT initawsT(LPVOID pParam)//서버
 			pInstance->m_TempVec.clear();
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
+
+		// 서버 연결 체크
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSCHEAK) {
 			thisObj->GetAWS()->RDSckeckConnection();
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
+
+		// 저장된 정보 수정
 		else if (thisObj->GetAwsInfo() == AWSINFO::AWSMODIFY) {	
 			thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
 			thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
 			thisObj->SetAwsInfo(AWSINFO::STAY);
 		}
 
+		// 서버 리스트 불러오기
 		thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
 		TRACE("%d\r\n", thisObj->GetBoxlist());
 		Sleep(100);
@@ -78,7 +82,8 @@ UINT initawsT(LPVOID pParam)//서버
 }
 
 
-UINT ThreadSocket(LPVOID pParam)//통신
+// 소켓통신 첫 접속 쓰레드
+UINT ThreadSocket(LPVOID pParam)
 {
 	ServerForm* thisObj = static_cast<ServerForm*>(pParam);
 
@@ -89,6 +94,8 @@ UINT ThreadSocket(LPVOID pParam)//통신
 
 
 	BOOL success = FALSE;
+
+	// 연결 체크
 	if (thisObj->GetTCPConnect()) {
 		if (hSocket.Connect(thisObj->IPAddress(), thisObj->m_Port) == FALSE)
 		{
@@ -103,31 +110,39 @@ UINT ThreadSocket(LPVOID pParam)//통신
 			success = TRUE;
 		}
 	}
+
+	// 연결 끊기
 	else {
 		thisObj->SetControlColor(STATUCOLOR::SOCKETRED);
 		success = TRUE;
 	}
 
-	// 메인 스레드에 메시지 보내기
+	// 메인 스레드에 메시지 보내기 (이벤트)
 	::PostMessage(thisObj->GetSafeHwnd(), WM_SOCKET_THREAD_FINISHED, (WPARAM)success, 0);
 
 	return 0;
 }
 
 
-UINT COLORRODING(LPVOID pParam) //MFC 연결 상태 그리는 스레드
+//MFC 연결 상태 체크 쓰레드
+UINT COLORRODING(LPVOID pParam) 
 {
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
 
 	while (1) 
 	{
+		
+		// 쓰레드 자원 해제
 		if (thisObj->GetThreadColor() == COLORTHREAD::THREADEXIT) {
 			return 0;
 		}
+
+		// paint 체크
 		else if (thisObj->GetThreadColor() == COLORTHREAD::THREADRUN) {
 			thisObj->InvalidateRect(NULL, FALSE);
 
+			// 로그 비우기 버튼 활성화 유무
 			if (thisObj->m_ListTcp.GetItemCount() > 0) {
 				thisObj->GetDlgItem(IDC_LOG_BUT)->EnableWindow(true);
 			}
@@ -142,19 +157,43 @@ UINT COLORRODING(LPVOID pParam) //MFC 연결 상태 그리는 스레드
 UINT ThreadCamera(LPVOID pParam) {
 	ToolManager* thisObj;
 	thisObj = (ToolManager*)pParam;
+	int Count = 1;
+
+	// 카메라 실행
+	while (thisObj->cameraR) {
+		if (Count < 0) {
+			AfxMessageBox(_T("NO CAMERA"));
+			return 0;
+		}
+
+		if (thisObj->SetCap(Count) == true)
+		{
+			thisObj->SetInference();
+			thisObj->m_strPickinLst = L"";
+			thisObj->m_Res = RESULT::RES_END;
+
+			thisObj->cap >> thisObj->frame;
+
+			thisObj->cameraR = false;
+			break;
+		}
+		else {
+			Count--;
+		}
+	}
 	
-	thisObj->cap >> thisObj->frame;
 	vector<Detection> output = thisObj->inf->runInference(thisObj->frame);
 	thisObj->m_Resform->camera = true;
 	
 	return 0;
 }
 
+// 기계 자동 실행 시 수동 버튼 비활성화
 UINT ThreadCameraButton(LPVOID pParam) {
 	ResultForm* thisObj;
 	thisObj = (ResultForm*)pParam;
 
-	while (1) {
+	while (thisObj->buttoncheck) {
 		if (!thisObj->camera) {
 			thisObj->GetDlgItem(IDC_BStart)->EnableWindow(false);
 			thisObj->GetDlgItem(IDC_BStop)->EnableWindow(false);
@@ -166,12 +205,12 @@ UINT ThreadCameraButton(LPVOID pParam) {
 			thisObj->GetDlgItem(IDC_BStop)->EnableWindow(true);
 			thisObj->GetDlgItem(IDC_BUTTON1)->EnableWindow(true);
 			thisObj->GetDlgItem(IDC_BUTTON2)->EnableWindow(true);
-			return 0;
 		}
 	}
 	return 0;
 }
 
+// 리스트 업데이트 쓰레드
 UINT ThreadUpdate(LPVOID pParam) {
 	DetectTab* thisObj;
 	thisObj = (DetectTab*)pParam;

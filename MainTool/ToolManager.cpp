@@ -26,7 +26,7 @@ ToolManager::ToolManager()
 
 ToolManager::~ToolManager()
 {
-
+	cameraR = false;
 }
 
 ToolManager* ToolManager::GetInstance()
@@ -51,15 +51,7 @@ void ToolManager::DestroyInstance()
 
 void ToolManager::Initialize()
 {
-	if (cap.open(1, cv::CAP_DSHOW) == true)
-	{
-		inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
-		m_strPickinLst = L"";
-		m_Res = RESULT::RES_END;
-
-		AfxBeginThread(ThreadCamera, this);
-	}
-
+	AfxBeginThread(ThreadCamera, this);
 }
 
 bool ToolManager::Update(double t)
@@ -331,6 +323,11 @@ void ToolManager::SetSpecialOn(bool set)
 	SpecialOn = set;
 }
 
+void ToolManager::SetInference()
+{
+	inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
+}
+
 CTabCtrl* ToolManager::GetTabctrl()
 {
 	return m_tab;
@@ -529,4 +526,9 @@ vector<TEMPINFO> ToolManager::GetVec()
 void ToolManager::SetReady(bool bReady)
 {
 	m_bReadyState = bReady;
+}
+
+bool ToolManager::SetCap(int set)
+{
+	return cap.open(set, cv::CAP_DSHOW);
 }
