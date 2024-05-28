@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 
-
+class ColortTestDlg;
 // ResultForm 폼 보기
 
 class ResultForm : public CFormView
@@ -50,6 +50,13 @@ public:
 	
 
 	void Setbutton(bool n);
+	afx_msg void OnBnClickedBcolortest();
+
+
+public:
+
+	ColortTestDlg* m_Colortest;
+
 };
 
 

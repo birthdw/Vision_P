@@ -14,7 +14,6 @@ IMPLEMENT_DYNAMIC(ColortTestDlg, CDialogEx)
 
 ColortTestDlg::ColortTestDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_COLORTEST, pParent)
-	, redmin(0)
 {
 
 }

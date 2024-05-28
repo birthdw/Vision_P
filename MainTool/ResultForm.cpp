@@ -8,6 +8,7 @@
 #include "ServerForm.h"
 #include "CntrlForm.h"
 #include "ConnectTread.h"
+#include "ColortTestDlg.h"
 
 // ResultForm
 
@@ -39,6 +40,7 @@ BEGIN_MESSAGE_MAP(ResultForm, CFormView)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BStart, &ResultForm::OnBnClickedBstart)
 	ON_BN_CLICKED(IDC_BStop, &ResultForm::OnBnClickedBstop)
+	ON_BN_CLICKED(IDC_Bcolortest, &ResultForm::OnBnClickedBcolortest)
 END_MESSAGE_MAP()
 
 
@@ -217,4 +219,12 @@ void ResultForm::Setbutton(bool n)
 	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b6)->EnableWindow(n);
 	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b7)->EnableWindow(n);
 	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b8)->EnableWindow(n);
+}
+
+
+void ResultForm::OnBnClickedBcolortest()
+{
+	m_Colortest = new ColortTestDlg;
+	m_Colortest->Create(IDD_COLORTEST, this);
+	m_Colortest->ShowWindow(SW_SHOW);
 }
