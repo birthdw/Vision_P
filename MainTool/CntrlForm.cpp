@@ -13,6 +13,7 @@ IMPLEMENT_DYNCREATE(CntrlForm, CFormView)
 
 CntrlForm::CntrlForm()
 	: CFormView(IDD_CntrlForm)
+	, m_morter(_T(""))
 {
 }
 
@@ -24,6 +25,7 @@ CntrlForm::~CntrlForm()
 void CntrlForm::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT1, m_morter);
 }
 
 BEGIN_MESSAGE_MAP(CntrlForm, CFormView)
@@ -64,9 +66,10 @@ void CntrlForm::Dump(CDumpContext& dc) const
 void CntrlForm::OnBnClickedButton2()
 {
 	//home
-
+	
 	CString str = _T("RBT:HOME");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	
 	
 	
 	
@@ -85,9 +88,8 @@ void CntrlForm::OnBnClickedb1()
 {
 	//모터1 +
 	//앞+
-	CString str = _T("RBT:M1_P10");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 
+	sendCntrl(_T("RBT:M1_P10:"));
 	Grab_on = true;
 	Invalidate(false);
 }
@@ -97,8 +99,7 @@ void CntrlForm::OnBnClickedb2()
 {
 	//모터 1
 	//앞- 
-	CString str = _T("RBT:M1_M10");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	sendCntrl(_T("RBT:M1_M10:"));
 
 	Grab_on = true;
 	Invalidate(false);
@@ -109,8 +110,7 @@ void CntrlForm::OnBnClickedb3()
 {
 	//모터 2 +
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString str = _T("RBT:M2_P10");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	sendCntrl(_T("RBT:M2_P10:"));
 
 	Morter_on = true;
 	Invalidate(false);
@@ -121,9 +121,7 @@ void CntrlForm::OnBnClickedb4()
 {
 	//모터2 -
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString str = _T("RBT:M2_M10");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
-
+	sendCntrl(_T("RBT:M2_M10:"));
 	Morter_on = true;
 	Invalidate(false);
 }
@@ -133,8 +131,7 @@ void CntrlForm::OnBnClickedb5()
 {
 	//모터3 +
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString str = _T("RBT:M3_P10");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	sendCntrl(_T("RBT:M3_P10:"));
 
 	Morter2_on = true;
 	Invalidate(false);
@@ -145,8 +142,7 @@ void CntrlForm::OnBnClickedb6()
 {
 	//모터3 -
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString str = _T("RBT:M3_M10");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	sendCntrl(_T("RBT:M3_M10:"));
 
 	Morter2_on = true;
 	Invalidate(false);
@@ -158,8 +154,7 @@ void CntrlForm::OnBnClickedb8()
 	//모터4 -
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	CString str = _T("RBT:M4_M10");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	sendCntrl(_T("RBT:M4_M10:"));
 
 	Morter3_on = true;
 	Invalidate(false);
@@ -170,8 +165,7 @@ void CntrlForm::OnBnClickedb7()
 {
 	//모터4 +
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString str = _T("RBT:M4_P10");
-	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+	sendCntrl(_T("RBT:M4_P10:"));
 
 	Morter3_on = true;
 	Invalidate(false);
@@ -260,6 +254,27 @@ void CntrlForm::OnPaint()
 	morter3.StretchBlt(dc, 250, 400, 100, 100);
 
 }
+
+void CntrlForm::sendCntrl(CString set)
+{
+	UpdateData(true);
+
+	if (!_ttoi(m_morter))
+	{
+		AfxMessageBox(_T("잘못됨"));
+		return;
+	}
+	int num = _ttoi(m_morter);
+	if (num < 0)
+		m_morter = _T("0");
+	else if (num > 180)
+		m_morter = _T("180");
+	CString str = set + m_morter;
+	//TRACE("%s\r\n", str); 
+	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+}
+
 
 void CntrlForm::setbutton(bool n)
 {

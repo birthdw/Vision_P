@@ -159,6 +159,7 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 			m_TCP_BUTTON.SetWindowText(L"연결끊기");
 			m_TCPConnect = FALSE;
 			m_ControlColor = STATUCOLOR::SOCKETGREEN;
+			ToolManager::GetInstance()->m_Resform->Setbutton(true);
 		}
 		else if (!m_TCPConnect) {
 			ClientTCP(_T("END"));
@@ -166,16 +167,16 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 			m_TCP_BUTTON.SetWindowText(L"연결");
 			m_TCPConnect = TRUE;
 			m_ControlColor = STATUCOLOR::SOCKETRED;
+			ToolManager::GetInstance()->m_Resform->Setbutton(false);
 		}
 	}
 	else
 	{
 		AfxMessageBox(_T("Failed to connect socket."));
 		m_ControlColor = STATUCOLOR::SOCKETRED;
+		ToolManager::GetInstance()->m_Resform->Setbutton(false);
 	}
 
-	
-	ToolManager::GetInstance()->m_Resform->Setbutton(true);
 	m_SocketThreadSWICHT = TRUE;
 	GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
 

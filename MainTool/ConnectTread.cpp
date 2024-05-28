@@ -97,7 +97,7 @@ UINT initawsT(LPVOID pParam)//¼­¹ö
 			default:	
 			{
 				thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
-				TRACE("%d\r\n", thisObj->GetBoxlist());
+				//TRACE("%d\r\n", thisObj->GetBoxlist());
 				break;
 			}
 		

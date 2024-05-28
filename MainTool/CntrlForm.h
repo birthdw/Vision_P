@@ -54,6 +54,10 @@ public:
 
 	void setbutton(bool n);
 
+public:
+
+	void sendCntrl(CString str);
+	CString m_morter;
 };
 
 

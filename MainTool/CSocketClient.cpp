@@ -7,6 +7,7 @@
 #include "ServerForm.h"
 #include "ToolManager.h"
 #include "CntrlForm.h"
+#include "ResultForm.h"
 
 // CSocketClient
 
@@ -61,6 +62,7 @@ void CSocketClient::socketend()
 	ToolManager::GetInstance()->m_Serverform->m_TCP_BUTTON.SetWindowText(L"연결");
 	ToolManager::GetInstance()->m_Serverform->SETTCPConnect(TRUE);
     ToolManager::GetInstance()->m_Serverform->SetControlColor(STATUCOLOR::SOCKETRED);
+    ToolManager::GetInstance()->m_Resform->Setbutton(false);
 }
 
 // 데이터가 들어오면 문자를 받습니다.
