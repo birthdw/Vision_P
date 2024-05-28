@@ -131,11 +131,15 @@ public:
 
 
 public:
-	int rmin = 0;
-	int rmax = 255;
-	int ymin = 0;
-	int ymax = 255;
-	int gmin = 0;
-	int gmax = 255;
+
+	//0 red / 1 yellow / 2 green
+	//0~1 r 2~3 g 4~5 b
+	int forcolor[3][6];
+
+
+	
+
+
+
 
 };

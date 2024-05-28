@@ -12,7 +12,7 @@ CFrameMgr::CFrameMgr()
 
 CFrameMgr::~CFrameMgr()
 {
-	int test;
+	
 }
 
 void CFrameMgr::InitFrame()

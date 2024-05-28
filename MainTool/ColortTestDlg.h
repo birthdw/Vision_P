@@ -29,4 +29,18 @@ public:
 	CEdit greenmax;
 	CEdit yellowmin;
 	CEdit yellowmax;
+	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton5();
+	int grmin;
+	int grmax;
+	int ggmin;
+	int ggmax;
+	int gbmin;
+	int gbmax;
+	int yrmin;
+	int yrmax;
+	int ygmin;
+	int ygmax;
+	int ybmin;
+	int ybmax;
 };

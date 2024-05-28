@@ -51,6 +51,15 @@ void ToolManager::DestroyInstance()
 void ToolManager::Initialize()
 {
 	AfxBeginThread(ThreadCamera, this);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int k = 0; k < 6; ++k)
+		{
+			forcolor[i][k] = 0;
+		}
+	}
+
 }
 
 bool ToolManager::Update(double t)
@@ -289,17 +298,17 @@ RESULT ToolManager::Detecttest()
 			}
 			else
 			{
-				if ((maxR >= rmin && maxR <= rmax) && (maxG >= gmin && maxG <= gmax) && (maxB >= ymin && maxB <= ymax))
+				if ((maxR >= forcolor[0][0] && maxR <= forcolor[0][1]) && (maxG >= forcolor[0][2] && maxG <= forcolor[0][3]) && (maxB >= forcolor[0][4] && maxB <= forcolor[0][5]))
 				{
 					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
 					return RESULT::YELLOW;
 				}
-				else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 90) && (maxB >= 0 && maxB <= 90))
+				else if ((maxR >= forcolor[1][0] && maxR <= forcolor[1][1]) && (maxG >= forcolor[1][2] && maxG <= forcolor[1][3]) && (maxB >= forcolor[1][4] && maxB <= forcolor[1][5]))
 				{
 					putText(frame, "RED" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
 					return RESULT::RED;
 				}
-				else if ((maxR >= 0 && maxR <= 120) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
+				else if ((maxR >= forcolor[2][0] && maxR <= forcolor[2][1]) && (maxG >= forcolor[2][2] && maxG <= forcolor[2][3]) && (maxB >= forcolor[2][4] && maxB <= forcolor[2][5]))
 				{
 					putText(frame, "GREEN" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
 					return RESULT::GREEN;
