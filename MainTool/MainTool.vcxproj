@@ -193,6 +193,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="CntrlForm.h" />
+    <ClInclude Include="ColortTestDlg.h" />
     <ClInclude Include="ConnectTread.h" />
     <ClInclude Include="CSocketClient.h" />
     <ClInclude Include="define.h" />
@@ -220,6 +221,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="CntrlForm.cpp" />
+    <ClCompile Include="ColortTestDlg.cpp" />
     <ClCompile Include="ConnectTread.cpp" />
     <ClCompile Include="CSocketClient.cpp" />
     <ClCompile Include="DetectTab.cpp" />

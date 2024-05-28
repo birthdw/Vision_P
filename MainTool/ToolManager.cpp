@@ -72,7 +72,7 @@ bool ToolManager::Update(double t)
 		{
 			cap >> frame;
 			resize(frame, frame, Size(600, 450));
-			Detect();
+			Detecttest();
 		}
 		else
 		{
@@ -255,6 +255,60 @@ void ToolManager::RenderImg(CStatic* p, CString filepath)
 	dc = p->GetDC();
 	image.StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);
 	ReleaseDC(p->GetSafeHwnd(), dc->m_hDC);
+}
+
+RESULT ToolManager::Detecttest()
+{
+	vector<Detection> output = inf->runInference(frame);
+	int detections = output.size();
+	std::cout << "Number of detections:" << detections << std::endl;
+
+	if (detections <= 0)
+		return RESULT::RES_NONE;
+
+	for (int i = 0; i < detections; ++i)
+	{
+		Detection detection = output[i];
+		if (detection.confidence < 0.8)
+			continue;
+		cv::Rect box = detection.box;
+		std::string classString = detection.className + ' ' + std::to_string(detection.confidence).substr(0, 4);
+		cv::Scalar color = detection.color;
+		cv::Size textSize = cv::getTextSize(classString, cv::FONT_HERSHEY_DUPLEX, 1, 2, 0);
+		cv::Rect textBox(box.x, box.y - 40, textSize.width + 10, textSize.height + 20);
+
+		if (box.x > 0 && box.y > 0 && box.x + box.width < frame.cols && box.y + box.height < frame.rows)
+		{
+
+			roi = Mat(frame, box);
+			findMostFrequentColor(roi, maxR, maxG, maxB);
+			if (detection.className == "fail")
+			{
+				cv::putText(frame, classString, cv::Point(box.x + 5, box.y - 10), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 0), 2, 0);
+				return RESULT::FAIL;
+			}
+			else
+			{
+				if ((maxR >= rmin && maxR <= rmax) && (maxG >= gmin && maxG <= gmax) && (maxB >= ymin && maxB <= ymax))
+				{
+					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					return RESULT::YELLOW;
+				}
+				else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 90) && (maxB >= 0 && maxB <= 90))
+				{
+					putText(frame, "RED" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					return RESULT::RED;
+				}
+				else if ((maxR >= 0 && maxR <= 120) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
+				{
+					putText(frame, "GREEN" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					return RESULT::GREEN;
+				}
+
+			}
+		}
+	}
+	return RESULT::RES_END;
 }
 
 void ToolManager::Setserverform(ServerForm* s)

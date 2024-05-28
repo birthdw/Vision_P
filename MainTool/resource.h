@@ -12,6 +12,7 @@
 #define IDD_ListForm                    315
 #define IDD_DetectTab                   316
 #define IDD_TestTab                     317
+#define IDD_COLORTEST                   320
 #define IDC_BUTTON3                     1002
 #define IDC_BUTTON4                     1003
 #define IDC_IPADDRESS1                  1006
@@ -67,14 +68,20 @@
 #define IDC_ForID                       1031
 #define IDC_BStart                      1032
 #define IDC_Bcolortest                  1033
+#define IDC_EDIT1                       1034
+#define IDC_EDIT2                       1035
+#define IDC_EDIT3                       1036
+#define IDC_EDIT4                       1037
+#define IDC_EDIT5                       1040
+#define IDC_EDIT6                       1041
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        320
+#define _APS_NEXT_RESOURCE_VALUE        322
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1034
+#define _APS_NEXT_CONTROL_VALUE         1035
 #define _APS_NEXT_SYMED_VALUE           318
 #endif
 #endif

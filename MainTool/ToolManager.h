@@ -44,6 +44,8 @@ public:
 	void ShowPic(string Filename);    //파일열기한 이미지 보여줄려는용
 	void RenderImg(CStatic* p, CString filepath);  //파일패스에있는 이미지 렌더링
 
+	RESULT Detecttest();   //검출코드
+
 public:
 	void Setserverform(ServerForm* s);
 	void SetCntrlForm(CntrlForm* c);
@@ -124,5 +126,16 @@ public:
 	void SetReady(bool bReady);
 	bool SetCap(int set);
 	void SetInference();
+
+
+
+
+public:
+	int rmin = 0;
+	int rmax = 255;
+	int ymin = 0;
+	int ymax = 255;
+	int gmin = 0;
+	int gmax = 255;
 
 };

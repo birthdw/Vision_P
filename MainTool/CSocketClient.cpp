@@ -42,7 +42,8 @@ void CSocketClient::OnReceive(int nErrorCode)
 	memset(szBuffer, 0, sizeof(szBuffer));
 
 	int nRead = Receive(szBuffer, sizeof(szBuffer));
-	if (nRead > 0) {
+	if (nRead > 0) 
+    {
 		szBuffer[nRead] = '\0';
 		CString strReceive(szBuffer);
 		ToolManager::GetInstance()->m_Serverform->SetList(_T("수신"),strReceive);

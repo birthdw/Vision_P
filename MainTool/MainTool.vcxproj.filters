@@ -136,6 +136,9 @@
     <ClInclude Include="ConnectTread.h">
       <Filter>08.Tread</Filter>
     </ClInclude>
+    <ClInclude Include="ColortTestDlg.h">
+      <Filter>04.Dlg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -188,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="ConnectTread.cpp">
       <Filter>08.Tread</Filter>
+    </ClCompile>
+    <ClCompile Include="ColortTestDlg.cpp">
+      <Filter>04.Dlg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
