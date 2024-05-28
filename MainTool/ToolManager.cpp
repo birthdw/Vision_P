@@ -300,18 +300,18 @@ RESULT ToolManager::Detecttest()
 			{
 				if ((maxR >= forcolor[0][0] && maxR <= forcolor[0][1]) && (maxG >= forcolor[0][2] && maxG <= forcolor[0][3]) && (maxB >= forcolor[0][4] && maxB <= forcolor[0][5]))
 				{
-					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
-					return RESULT::YELLOW;
-				}
-				else if ((maxR >= forcolor[1][0] && maxR <= forcolor[1][1]) && (maxG >= forcolor[1][2] && maxG <= forcolor[1][3]) && (maxB >= forcolor[1][4] && maxB <= forcolor[1][5]))
-				{
 					putText(frame, "RED" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
 					return RESULT::RED;
 				}
-				else if ((maxR >= forcolor[2][0] && maxR <= forcolor[2][1]) && (maxG >= forcolor[2][2] && maxG <= forcolor[2][3]) && (maxB >= forcolor[2][4] && maxB <= forcolor[2][5]))
+				else if ((maxR >= forcolor[1][0] && maxR <= forcolor[1][1]) && (maxG >= forcolor[1][2] && maxG <= forcolor[1][3]) && (maxB >= forcolor[1][4] && maxB <= forcolor[1][5]))
 				{
 					putText(frame, "GREEN" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
 					return RESULT::GREEN;
+				}
+				else if ((maxR >= forcolor[2][0] && maxR <= forcolor[2][1]) && (maxG >= forcolor[2][2] && maxG <= forcolor[2][3]) && (maxB >= forcolor[2][4] && maxB <= forcolor[2][5]))
+				{
+					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
+					return RESULT::YELLOW;
 				}
 
 			}
