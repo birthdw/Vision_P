@@ -25,6 +25,7 @@ ServerForm::~ServerForm()
 {
 	m_awsinfo = AWSINFO::AWSEXIT;
 	m_ThreadColor = COLORTHREAD::THREADEXIT;	
+	if (m_aws != nullptr) { delete m_aws; m_aws = nullptr; }
 }
 
 void ServerForm::DoDataExchange(CDataExchange* pDX)
