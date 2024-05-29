@@ -47,7 +47,6 @@ public:
 	
 	
 
-	void SetRobotbutton(bool n);
 	void SetCameraButton(bool n);
 	afx_msg void OnBnClickedBcolortest();
 

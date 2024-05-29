@@ -7,6 +7,7 @@
 #include "ToolManager.h"
 #include "ConnectTread.h"
 #include "ResultForm.h"
+#include "CntrlForm.h"
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
@@ -173,7 +174,7 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 
 void ServerForm::ClinetSetting(bool set)
 {
-	ToolManager::GetInstance()->m_Resform->SetRobotbutton(set);	// 로봇 수동 버튼
+	ToolManager::GetInstance()->m_CntrlForm->setbutton(set);	// 로봇 수동 버튼
 	GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
 	m_SocketThreadSWICHT = TRUE;
 
