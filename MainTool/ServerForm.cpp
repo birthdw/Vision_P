@@ -173,8 +173,8 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 
 void ServerForm::ClinetSetting(bool set)
 {
-	ToolManager::GetInstance()->m_Resform->SetRobotbutton(set);
-	GetDlgItem(IDC_TCP_BUT)->EnableWindow(!set);
+	ToolManager::GetInstance()->m_Resform->SetRobotbutton(set);	// 로봇 수동 버튼
+	GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
 	m_SocketThreadSWICHT = TRUE;
 
 	if (set) 
