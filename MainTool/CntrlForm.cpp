@@ -278,16 +278,17 @@ void CntrlForm::sendCntrl(CString set)
 
 void CntrlForm::setbutton(bool n)
 {
-	GetDlgItem(IDC_BUTTON2)->EnableWindow(n);
-	GetDlgItem(IDC_BUTTON1)->EnableWindow(n);
-	GetDlgItem(IDC_b2)->EnableWindow(n);
-	GetDlgItem(IDC_b1)->EnableWindow(n);
-	GetDlgItem(IDC_b4)->EnableWindow(n);
-	GetDlgItem(IDC_b3)->EnableWindow(n);
-	GetDlgItem(IDC_b5)->EnableWindow(n);
-	GetDlgItem(IDC_b6)->EnableWindow(n);
-	GetDlgItem(IDC_b7)->EnableWindow(n);
-	GetDlgItem(IDC_b8)->EnableWindow(n);
+	int DlgGet[] = { IDC_BUTTON2, IDC_BUTTON1, IDC_b2,
+					IDC_b1, IDC_b4, IDC_b3, IDC_b5,
+					IDC_b6, IDC_b7, IDC_b8, IDC_EDIT1,
+					IDC_SPINRobot};
+
+	int DlgSize = sizeof(DlgGet) / sizeof(DlgGet[0]);
+
+
+	for (int i = 0; i < DlgSize; i++) {
+		GetDlgItem(DlgGet[i])->EnableWindow(n);
+	}
 }
 
 
