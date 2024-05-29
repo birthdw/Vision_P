@@ -201,7 +201,10 @@ vector<AWSLIST> AWS::RDSjoinData()
             // 실제 가져온 각각의 열을 저장
             row.id = PQgetvalue(res, i, 0);
             row.color = PQgetvalue(res, i, 1);
-            row.faulty = PQgetvalue(res, i, 2);
+
+            if (PQgetvalue(res, i, 2) == "t") row.faulty = "Faulty";
+            else row.faulty = "OK";
+
             row.date = PQgetvalue(res, i, 3);
             row.url = PQgetvalue(res, i, 4);
 

@@ -55,7 +55,7 @@ BOOL DetectTab::OnInitDialog()
 	Column.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
 	Column.fmt = LVCFMT_LEFT;
 
-	LPWSTR Column_list[5] = { _T("ID"), _T("Url") , _T("Color"),_T("Faulty"),_T("Date") };
+	LPWSTR Column_list[5] = { _T("ID"), _T("Url") , _T("Color"),_T("Fine"),_T("Date") };
 	int cx[5] = { 50,600,100,100,350 };
 
 	int Column_size = sizeof(Column_list) / sizeof(Column_list[0]);
