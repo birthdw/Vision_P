@@ -19,8 +19,7 @@ public:
 	// 실행될 명령 
 	void CSocketClient::ProcessString(const CString& str);
 
-	// 소켓 닫기
-	void socketend();
+	void SocketEXIT();
 	// 닫는 명령 확인
 	void recvinfo(CString strMessage);
 };

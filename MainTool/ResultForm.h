@@ -44,12 +44,11 @@ public:
 	CStatic m_Color;
 
 	int cnt = 0;
-	bool camera = false;
-	bool buttoncheck = true;
 	
 	
 
-	void Setbutton(bool n);
+	void SetRobotbutton(bool n);
+	void SetCameraButton(bool n);
 	afx_msg void OnBnClickedBcolortest();
 
 

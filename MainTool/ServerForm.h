@@ -101,10 +101,12 @@ public:
 	const CString IPAddress() const;							// IP Address를 호출합니다.
 	void ClientTCP(CString strMessage);							// 서버로 정보를 전송할때 사용합니다.
 	void SetList(CString str, CString strMessage);				// 리스트 컨트롤에 로그 추가
+	void ClinetSetting(bool set);
 
 	// 서버 동작 함수
 	void exit_s3();												// 서버 종료 함수
 	void initaws();												// 서버 연결 함수
+	void ServerState(STATUCOLOR set);
 
 public:
 	AWSINFO GetAwsInfo();										// 서버 동작 상태

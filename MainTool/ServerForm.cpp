@@ -151,37 +151,46 @@ LRESULT ServerForm::OnSocketThreadFinished(WPARAM wParam, LPARAM lParam)
 			m_Client.Create();
 			if (m_Client.Connect(IPAddress(), m_Port) == FALSE) {
 				AfxMessageBox(_T("ERROR : Failed to connect Server"));
-				m_SocketThreadSWICHT = TRUE;
-				m_TCP_BUTTON.SetWindowText(L"연결");
-				GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
-				m_Client.Close();
+				ClinetSetting(false);
 				return 0;
 			}
-			m_TCP_BUTTON.SetWindowText(L"연결끊기");
-			m_TCPConnect = FALSE;
-			m_ControlColor = STATUCOLOR::SOCKETGREEN;
-			ToolManager::GetInstance()->m_Resform->Setbutton(true);
+			ClinetSetting(true);
 		}
 		else if (!m_TCPConnect) {
-			ClientTCP(_T("END"));
-			m_Client.Close();
-			m_TCP_BUTTON.SetWindowText(L"연결");
-			m_TCPConnect = TRUE;
-			m_ControlColor = STATUCOLOR::SOCKETRED;
-			ToolManager::GetInstance()->m_Resform->Setbutton(false);
+			ClinetSetting(false);
 		}
 	}
 	else
 	{
 		AfxMessageBox(_T("Failed to connect socket."));
-		m_ControlColor = STATUCOLOR::SOCKETRED;
-		ToolManager::GetInstance()->m_Resform->Setbutton(false);
+		ClinetSetting(false);
 	}
 
 	m_SocketThreadSWICHT = TRUE;
-	GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
-
 	return 0;
+}
+
+
+void ServerForm::ClinetSetting(bool set)
+{
+	ToolManager::GetInstance()->m_Resform->SetRobotbutton(set);
+	GetDlgItem(IDC_TCP_BUT)->EnableWindow(!set);
+	m_SocketThreadSWICHT = TRUE;
+
+	if (set) 
+	{
+		m_TCP_BUTTON.SetWindowText(L"연결끊기");
+		SETTCPConnect(FALSE);
+		SetControlColor(STATUCOLOR::SOCKETGREEN);
+	}
+	else
+	{
+		m_TCP_BUTTON.SetWindowText(L"연결");
+		SETTCPConnect(TRUE);
+		SetControlColor(STATUCOLOR::SOCKETRED);
+		ClientTCP(_T("END"));
+		SetClientClose();
+	}
 }
 
 
@@ -247,8 +256,10 @@ void ServerForm::OnPaint()
 	ToolManager::GetInstance()->RenderImg(&m_StateColor, SOCKETCOLOR);
 }
 
+
 void ServerForm::initaws()
 {
+	ServerState(STATUCOLOR::SERVERYELLOW);
 	InitAPI(m_options);
 	if (m_aws == nullptr) {
 		m_aws = new AWS();
@@ -258,8 +269,13 @@ void ServerForm::initaws()
 		delete m_aws;
 		m_aws = new AWS();
 	}
-	SetControlColor(STATUCOLOR::SERVERGREEN);
-	SetServerSwitch(STATUCOLOR::SERVERGREEN);
+	ServerState(STATUCOLOR::SERVERGREEN);
+}
+
+void ServerForm::ServerState(STATUCOLOR set)
+{
+	SetControlColor(set);
+	SetServerSwitch(set);
 }
 
 vector<CString> ServerForm::SplitCString(const CString& str, const CString& delimiter)

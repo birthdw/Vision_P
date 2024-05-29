@@ -22,7 +22,7 @@ ResultForm::ResultForm()
 
 ResultForm::~ResultForm()
 {
-	buttoncheck = false;
+
 }
 
 void ResultForm::DoDataExchange(CDataExchange* pDX)
@@ -119,9 +119,9 @@ void ResultForm::OnInitialUpdate()
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
-	AfxBeginThread(ThreadCameraButton, this);
 	m_btempdetect.EnableWindow(false);
 	ToolManager::GetInstance()->m_Resform = this;
+	SetCameraButton(false);
 }
 
 
@@ -178,7 +178,7 @@ void ResultForm::OnBnClickedBstart()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (ToolManager::GetInstance()->m_Serverform->GetTCPConnect() == false)
 	{
-		Setbutton(false);
+		SetRobotbutton(false);
 		ToolManager::GetInstance()->SetKillFrm(false);
 		ToolManager::GetInstance()->SetSpecialOn(false);
 		m_btempdetect.EnableWindow(FALSE);
@@ -196,7 +196,7 @@ void ResultForm::OnBnClickedBstop()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (ToolManager::GetInstance()->m_Serverform->GetTCPConnect() == false)
 	{
-		Setbutton(true);
+		SetRobotbutton(true);
 		CString str = _T("STOP");
 		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 		ToolManager::GetInstance()->SetKillFrm(true);
@@ -207,7 +207,7 @@ void ResultForm::OnBnClickedBstop()
 	ToolManager::GetInstance()->SetReady(false);
 }
 
-void ResultForm::Setbutton(bool n)
+void ResultForm::SetRobotbutton(bool n)
 {
 	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_BUTTON2)->EnableWindow(n);
 	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_BUTTON1)->EnableWindow(n);
@@ -219,6 +219,14 @@ void ResultForm::Setbutton(bool n)
 	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b6)->EnableWindow(n);
 	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b7)->EnableWindow(n);
 	ToolManager::GetInstance()->m_CntrlForm->GetDlgItem(IDC_b8)->EnableWindow(n);
+}
+
+void ResultForm::SetCameraButton(bool n)
+{
+	GetDlgItem(IDC_BStart)->EnableWindow(n);
+	GetDlgItem(IDC_BStop)->EnableWindow(n);
+	GetDlgItem(IDC_BUTTON1)->EnableWindow(n);
+	GetDlgItem(IDC_BUTTON2)->EnableWindow(n);
 }
 
 

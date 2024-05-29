@@ -36,9 +36,8 @@ UINT initawsT(LPVOID pParam)//서버
 				// 서버 리트라이
 				if (thisObj->GetAWS() == nullptr) 
 				{
-					thisObj->SetAwsInfo(AWSINFO::SEVERSTART);
-					thisObj->SetControlColor(STATUCOLOR::SERVERRED);
-					thisObj->SetServerSwitch(STATUCOLOR::SERVERRED);
+					thisObj->ServerState(STATUCOLOR::SERVERRED);
+					thisObj->SetAwsInfo(AWSINFO::SEVERSTART);			
 				}
 				else thisObj->SetAwsInfo(AWSINFO::STAY);
 				break;
@@ -210,31 +209,8 @@ UINT ThreadCamera(LPVOID pParam) {
 	}
 	
 	vector<Detection> output = thisObj->inf->runInference(thisObj->frame);
-	thisObj->m_Resform->camera = true;
+	thisObj->m_Resform->SetCameraButton(true);
 	
-	return 0;
-}
-
-// 기계 자동 실행 시 수동 버튼 비활성화
-UINT ThreadCameraButton(LPVOID pParam) {
-	ResultForm* thisObj;
-	thisObj = (ResultForm*)pParam;
-
-	while (thisObj->buttoncheck) {
-		if (!thisObj->camera) {
-			thisObj->GetDlgItem(IDC_BStart)->EnableWindow(false);
-			thisObj->GetDlgItem(IDC_BStop)->EnableWindow(false);
-			thisObj->GetDlgItem(IDC_BUTTON1)->EnableWindow(false);
-			thisObj->GetDlgItem(IDC_BUTTON2)->EnableWindow(false);
-		}
-		else {
-			thisObj->GetDlgItem(IDC_BStart)->EnableWindow(true);
-			thisObj->GetDlgItem(IDC_BStop)->EnableWindow(true);
-			thisObj->GetDlgItem(IDC_BUTTON1)->EnableWindow(true);
-			thisObj->GetDlgItem(IDC_BUTTON2)->EnableWindow(true);
-		}
-		Sleep(500);
-	}
 	return 0;
 }
 

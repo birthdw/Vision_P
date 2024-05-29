@@ -25,9 +25,7 @@ void CSocketClient::OnClose(int nErrorCode)
 {
 	// 서버 연결이 끊길 때를 정의합니다.
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-    socketend();
-	ShutDown();
-	Close();
+    SocketEXIT();
 
 	CSocket::OnClose(nErrorCode);
 }
@@ -54,23 +52,12 @@ void CSocketClient::OnReceive(int nErrorCode)
 	CSocket::OnReceive(nErrorCode);
 }
 
-
-// 소켓 끝나면 실행되는 함수
-void CSocketClient::socketend()
-{
-    ToolManager::GetInstance()->m_Serverform->SetClientClose();
-	ToolManager::GetInstance()->m_Serverform->m_TCP_BUTTON.SetWindowText(L"연결");
-	ToolManager::GetInstance()->m_Serverform->SETTCPConnect(TRUE);
-    ToolManager::GetInstance()->m_Serverform->SetControlColor(STATUCOLOR::SOCKETRED);
-    ToolManager::GetInstance()->m_Resform->Setbutton(false);
-}
-
 // 데이터가 들어오면 문자를 받습니다.
 void CSocketClient::recvinfo(CString strMessage)
 {
     if (strMessage == _T("END"))
     {
-        socketend();
+        SocketEXIT();
     }
     else
     {
@@ -210,4 +197,9 @@ void CSocketClient::ProcessString(const CString& str)
         CString str_ar = _T("올바른 명령이 아닙니다");
         ToolManager::GetInstance()->m_Serverform->ClientTCP(str_ar);
     }
+}
+
+void CSocketClient::SocketEXIT()
+{
+    ToolManager::GetInstance()->m_Serverform->ClinetSetting(false);
 }
