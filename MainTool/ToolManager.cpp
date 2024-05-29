@@ -443,6 +443,7 @@ void ToolManager::SendResult(RESULT res)
 	t = localtime(&timer);
 	string time_s = std::to_string(t->tm_year + 1900) + "/" +
 		std::to_string(t->tm_mon + 1) + "/" +
+		std::to_string(t->tm_mday) + "/" +
 		std::to_string(t->tm_hour) + "/" +
 		std::to_string(t->tm_min) + "/" +
 		std::to_string(t->tm_sec);
