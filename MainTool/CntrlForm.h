@@ -5,6 +5,8 @@
 //GOD GOD GOD
 // CntrlForm 폼 보기
 
+#include "RobotForm.h"
+
 class CntrlForm : public CFormView
 {
 	DECLARE_DYNCREATE(CntrlForm)
@@ -58,7 +60,9 @@ public:
 
 	void sendCntrl(CString str);
 	int m_morter;
+	RobotForm* m_robosetting;
 	afx_msg void OnDeltaposSpinrobot(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedButton3();
 };
 
 
