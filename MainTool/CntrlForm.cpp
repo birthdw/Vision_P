@@ -13,7 +13,7 @@ IMPLEMENT_DYNCREATE(CntrlForm, CFormView)
 
 CntrlForm::CntrlForm()
 	: CFormView(IDD_CntrlForm)
-	, m_morter(_T(""))
+	, m_morter(10)
 {
 }
 
@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CntrlForm, CFormView)
 	ON_BN_CLICKED(IDC_b7, &CntrlForm::OnBnClickedb7)
 	ON_BN_CLICKED(IDC_BUTTON1, &CntrlForm::OnBnClickedButton1)
 	ON_WM_PAINT()
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPINRobot, &CntrlForm::OnDeltaposSpinrobot)
 END_MESSAGE_MAP()
 
 
@@ -259,17 +260,16 @@ void CntrlForm::sendCntrl(CString set)
 {
 	UpdateData(true);
 
-	if (!_ttoi(m_morter))
-	{
-		AfxMessageBox(_T("잘못됨"));
-		return;
-	}
-	int num = _ttoi(m_morter);
+	int num = m_morter;
 	if (num < 0)
-		m_morter = _T("0");
+		m_morter = 0;
 	else if (num > 180)
-		m_morter = _T("180");
-	CString str = set + m_morter;
+		m_morter = 180;
+
+	CString str, strnum;
+	string numstring = to_string(num);
+	strnum = CString(numstring.c_str());
+	str = set + strnum;
 	//TRACE("%s\r\n", str); 
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 
@@ -288,4 +288,29 @@ void CntrlForm::setbutton(bool n)
 	GetDlgItem(IDC_b6)->EnableWindow(n);
 	GetDlgItem(IDC_b7)->EnableWindow(n);
 	GetDlgItem(IDC_b8)->EnableWindow(n);
+}
+
+
+void CntrlForm::OnDeltaposSpinrobot(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(true);
+
+	if (pNMUpDown->iDelta < 0)
+	{
+		m_morter = m_morter + 10;
+	}
+	else
+	{
+		m_morter = m_morter - 10;
+	}
+
+	if (m_morter < 0)
+		m_morter = 0;
+	else if (m_morter > 180)
+		m_morter = 180;
+
+	UpdateData(false);
+	*pResult = 0;
 }

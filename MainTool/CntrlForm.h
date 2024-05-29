@@ -57,7 +57,8 @@ public:
 public:
 
 	void sendCntrl(CString str);
-	CString m_morter;
+	int m_morter;
+	afx_msg void OnDeltaposSpinrobot(NMHDR* pNMHDR, LRESULT* pResult);
 };
 
 

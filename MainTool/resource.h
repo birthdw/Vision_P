@@ -73,6 +73,7 @@
 #define IDC_EDIT3                       1036
 #define IDC_EDIT4                       1037
 #define IDC_EDIT7                       1038
+#define IDC_SPINRobot                   1038
 #define IDC_EDIT8                       1039
 #define IDC_EDIT5                       1040
 #define IDC_EDIT6                       1041
@@ -93,7 +94,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        322
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1035
+#define _APS_NEXT_CONTROL_VALUE         1039
 #define _APS_NEXT_SYMED_VALUE           318
 #endif
 #endif
