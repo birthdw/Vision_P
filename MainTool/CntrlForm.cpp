@@ -6,7 +6,7 @@
 #include "CntrlForm.h"
 #include "ToolManager.h"
 #include "ServerForm.h"
-#include "RobotForm.h"
+
 
 // CntrlForm
 
@@ -21,7 +21,7 @@ CntrlForm::CntrlForm()
 CntrlForm::~CntrlForm()
 {
 	int a = 0;
-	if (m_robosetting != nullptr) { delete m_robosetting;  m_robosetting = nullptr; }
+
 }
 
 void CntrlForm::DoDataExchange(CDataExchange* pDX)
@@ -43,7 +43,7 @@ BEGIN_MESSAGE_MAP(CntrlForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON1, &CntrlForm::OnBnClickedButton1)
 	ON_WM_PAINT()
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPINRobot, &CntrlForm::OnDeltaposSpinrobot)
-	ON_BN_CLICKED(IDC_BUTTON3, &CntrlForm::OnBnClickedButton3)
+	
 END_MESSAGE_MAP()
 
 
@@ -320,10 +320,3 @@ void CntrlForm::OnDeltaposSpinrobot(NMHDR* pNMHDR, LRESULT* pResult)
 }
 
 
-void CntrlForm::OnBnClickedButton3()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_robosetting = new RobotForm;
-	m_robosetting->Create(IDD_RobotFrom, this);
-	m_robosetting->ShowWindow(SW_SHOW);
-}

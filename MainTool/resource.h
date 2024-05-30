@@ -2,7 +2,6 @@
 // Microsoft Visual C++에서 생성한 포함 파일입니다.
 // MainTool.rc에서 사용되고 있습니다.
 //
-#define IDCANCEL                        2
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define IDR_MAINFRAME                   128
@@ -14,7 +13,6 @@
 #define IDD_DetectTab                   316
 #define IDD_TestTab                     317
 #define IDD_COLORTEST                   320
-#define IDD_RobotFrom                   322
 #define IDC_BUTTON3                     1002
 #define IDC_BUTTON4                     1003
 #define IDC_IPADDRESS1                  1006
