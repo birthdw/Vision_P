@@ -162,12 +162,19 @@ void TestTab::OnBnClickedButton2()
 void TestTab::OnBnClickedButton5()
 {
 	//삭제
+	while (!ToolManager::GetInstance()->ServerSwitch) {
+		GetButtonState(false);
+	}
+	DeleteSwitch = false;
+	ToolManager::GetInstance()->m_Serverform->GetAWS()->test(CurId);
 	ToolManager::GetInstance()->m_Serverform->GetAWS()->AlldeleteData(CurId.c_str());
 
 
 	ToolManager::GetInstance()->m_tab->SetCurSel(0);
 	ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_SHOW);
 	ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_HIDE);
+	GetButtonState(true);
+	DeleteSwitch = true;
 
 }
 

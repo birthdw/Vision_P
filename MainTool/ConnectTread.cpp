@@ -85,31 +85,37 @@ UINT initawsT(LPVOID pParam)//서버
 			// 저장된 정보 수정
 			case AWSINFO::AWSMODIFY:
 			{
-				ToolManager::GetInstance()->m_Testtab->GetButtonState(false);
+				ToolManager::GetInstance()->ServerSwitch = false;
 				thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
 				thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
 				thisObj->SetAwsInfo(AWSINFO::STAY);
-				ToolManager::GetInstance()->m_Testtab->GetButtonState(true);
+				ToolManager::GetInstance()->ServerSwitch = true;
 				break;
 			}
 				
 			case AWSINFO::STAY:
 			{
-				thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
-				//TRACE("%d\r\n", thisObj->GetBoxlist());
+				
+				if (ToolManager::GetInstance()->m_Testtab->DeleteSwitch) 
+				{
+					ToolManager::GetInstance()->ServerSwitch = false;
+					thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
+					//TRACE("%d\r\n", thisObj->GetBoxlist());
+					ToolManager::GetInstance()->ServerSwitch = true;
+				}
+				
 				break;
 			}
 
 			// 서버 리스트 불러오기
 			default:	
 			{
-				thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
-				//TRACE("%d\r\n", thisObj->GetBoxlist());
+				int a = 0;
 				break;
 			}
 		
 		}
-		Sleep(100);
+		Sleep(500);
 	}
 
 	return 0;

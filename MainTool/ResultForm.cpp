@@ -41,6 +41,7 @@ BEGIN_MESSAGE_MAP(ResultForm, CFormView)
 	ON_BN_CLICKED(IDC_BStart, &ResultForm::OnBnClickedBstart)
 	ON_BN_CLICKED(IDC_BStop, &ResultForm::OnBnClickedBstop)
 	ON_BN_CLICKED(IDC_Bcolortest, &ResultForm::OnBnClickedBcolortest)
+	ON_BN_CLICKED(IDC_testinput, &ResultForm::OnBnClickedtestinput)
 END_MESSAGE_MAP()
 
 
@@ -221,4 +222,16 @@ void ResultForm::OnBnClickedBcolortest()
 	m_Colortest = new ColortTestDlg;
 	m_Colortest->Create(IDD_COLORTEST, this);
 	m_Colortest->ShowWindow(SW_SHOW);
+}
+
+
+void ResultForm::OnBnClickedtestinput()
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		string color = "yellow";
+		string fault = "false";
+		string info = "('" + color + "', '" + fault + "')";
+		ToolManager::GetInstance()->m_Serverform->GetAWS()->testinput("1", info.c_str(), "BOX.jpg");
+	}
 }

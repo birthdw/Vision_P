@@ -45,7 +45,7 @@ public:
 
 	int cnt = 0;
 	
-	
+	int testcnt;
 
 	void SetCameraButton(bool n);
 	afx_msg void OnBnClickedBcolortest();
@@ -55,6 +55,7 @@ public:
 
 	ColortTestDlg* m_Colortest;
 
+	afx_msg void OnBnClickedtestinput();
 };
 
 

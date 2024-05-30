@@ -56,4 +56,6 @@ public:
 	CEdit UrlEdit;
 	CEdit DateEdit;
 	CStatic idinsert;
+
+	bool DeleteSwitch = true;
 };

@@ -26,6 +26,7 @@
 #define IDC_TCP_PORT                    1010
 #define IDC_BUTTON6                     1011
 #define IDC_STATIC_TCP_CON              1011
+#define IDC_testinput                   1011
 #define IDC_BUTTON7                     1012
 #define IDC_TCP_BUT                     1012
 #define IDC_b4                          1012

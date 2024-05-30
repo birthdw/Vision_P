@@ -118,6 +118,11 @@ bool AWS::RDSdeleteData(const char* columnname, const char* deleteline, const ch
     // 쿼리 실행
     PGresult* res = PQexec(conn, delete_query.c_str());
     
+    if (res == NULL)
+    {
+        return false;
+    }
+
     // 쿼리 실행 결과 확인
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
         // 실패 시 에러 메시지 출력
@@ -419,11 +424,73 @@ void AWS::Allinput(
 
 }
 
+void AWS::test(string testid)
+{
+
+    vector<AWSLIST> listvector;
+
+    // JOIN 쿼리 생성
+    string join_query = "SELECT a.id, a.color, a.faulty, b.date, b.url FROM thing AS a LEFT OUTER JOIN s3data AS b ON a.id = b.id ORDER BY id DESC";
+
+    // 쿼리 실행
+    PGresult* res = PQexec(conn, join_query.c_str());
+
+    // 쿼리 실행 결과 확인
+    if (PQresultStatus(res) == PGRES_TUPLES_OK) {
+        int rows = PQntuples(res);// 가져온 행의 수
+        int columns = PQnfields(res); // 가져온 열의 수
+        for (int i = 0; i < rows; ++i) {
+            AWSLIST row; // 각 행을 저장할 벡터
+
+            // 실제 가져온 각각의 열을 저장
+            row.id = PQgetvalue(res, i, 0);
+
+            if (row.id == testid)
+            {
+                row.color = PQgetvalue(res, i, 1);
+                row.faulty = PQgetvalue(res, i, 2);
+                if (row.faulty == "t") {
+                    row.faulty = "Faulty";
+                }
+                else if (row.faulty == "f") {
+                    row.faulty = "OK";
+                }
+                row.date = PQgetvalue(res, i, 3);
+                row.url = PQgetvalue(res, i, 4);
+
+
+                TRACE("%s\r\n", row.id.c_str());
+                TRACE("%s\r\n", row.color.c_str());
+                TRACE("%s\r\n", row.faulty.c_str());
+                TRACE("%s\r\n", row.date.c_str());
+                TRACE("%s\r\n", row.url.c_str());
+                return;
+
+            }
+        }
+
+        PQclear(res);// 결과 클리어
+    }
+    else {
+        // 실패 시 에러 메시지 출력
+        cerr << "Selection failed: " << PQerrorMessage(conn) << endl;
+        PQclear(res);// 결과 클리어
+    }
+
+
+}
+
+void AWS::testinput(string date, const char* inputData, const String& fileName, const char* columnname , const char* tablename )
+{
+    RDSinsertData(columnname, inputData, tablename);
+    PutObject(fileName.c_str(), date);
+}
+
 //한번에 모든 테이블의 원하는 행 데이터 지우기
 void AWS::AlldeleteData(const char* deleteline, const char* columnname, const char* tablename, const char* tablename2)
 {
-    RDSdeleteData(columnname, deleteline, tablename);
     RDSdeleteData(columnname, deleteline, tablename2);
+    RDSdeleteData(columnname, deleteline, tablename);
     DeleteObjects({ string(deleteline) + ".jpg" });
     //truncate table tableName restart identity//tabelName 테이블의 시퀀스를 자동으로 재시작하며 테이블 데이터를 모두 삭제한다
 }

@@ -130,6 +130,7 @@ CString DetectTab::Update(bool set)
 	vector<AWSLIST> vecInfo;
 	vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();
 
+	
 
 	if (set) {
 		m_List.DeleteAllItems();
@@ -150,6 +151,11 @@ CString DetectTab::Update(bool set)
 		{
 			oldid += CString(vecInfo[i].id.c_str()) + CString(vecInfo[i].color.c_str()) + CString(vecInfo[i].faulty.c_str());
 		}
+	}
+
+	if (vecInfo.empty())
+	{
+		m_List.DeleteAllItems();
 	}
 
 	return oldid;
