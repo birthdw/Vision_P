@@ -34,6 +34,7 @@ public:
 public:
 	void Setcnt(int cnt);
 	int Getcnt();
+	void GetButtonState(bool n);
 
 
 

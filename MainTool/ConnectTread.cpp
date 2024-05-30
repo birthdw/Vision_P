@@ -4,6 +4,7 @@
 #include "ToolManager.h"
 #include "ResultForm.h"
 #include "DetectTab.h"
+#include "TestTab.h"
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
@@ -16,7 +17,6 @@ UINT initawsT(LPVOID pParam)//서버
 
 	while (1) 
 	{
-		
 		switch (thisObj->GetAwsInfo()) 
 		{
 
@@ -85,12 +85,20 @@ UINT initawsT(LPVOID pParam)//서버
 			// 저장된 정보 수정
 			case AWSINFO::AWSMODIFY:
 			{
+				ToolManager::GetInstance()->m_Testtab->GetButtonState(false);
 				thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
 				thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
 				thisObj->SetAwsInfo(AWSINFO::STAY);
+				ToolManager::GetInstance()->m_Testtab->GetButtonState(true);
 				break;
 			}
 				
+			case AWSINFO::STAY:
+			{
+				thisObj->SETBoxlist(thisObj->GetAWS()->RDSjoinData());
+				//TRACE("%d\r\n", thisObj->GetBoxlist());
+				break;
+			}
 
 			// 서버 리스트 불러오기
 			default:	

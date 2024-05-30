@@ -169,8 +169,6 @@ void TestTab::OnBnClickedButton5()
 	ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_SHOW);
 	ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_HIDE);
 
-
-
 }
 
 CString TestTab::GetLast(CString url)
@@ -205,4 +203,9 @@ void TestTab::Setcnt(int cnt)
 int TestTab::Getcnt()
 {
 	return Curcnt;
+}
+
+void TestTab::GetButtonState(bool n)
+{
+	GetDlgItem(IDC_BUTTON5)->EnableWindow(n);
 }

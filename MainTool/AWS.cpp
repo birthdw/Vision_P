@@ -202,8 +202,13 @@ vector<AWSLIST> AWS::RDSjoinData()
             row.id = PQgetvalue(res, i, 0);
             row.color = PQgetvalue(res, i, 1);
 
-            if (PQgetvalue(res, i, 2) == "t") row.faulty = "Faulty";
-            else row.faulty = "OK";
+            row.faulty = PQgetvalue(res, i, 2);
+            if (row.faulty == "t") {
+                row.faulty = "Faulty";
+            }
+            else if(row.faulty == "f") {
+                row.faulty = "OK";
+            }
 
             row.date = PQgetvalue(res, i, 3);
             row.url = PQgetvalue(res, i, 4);
@@ -418,8 +423,8 @@ void AWS::Allinput(
 void AWS::AlldeleteData(const char* deleteline, const char* columnname, const char* tablename, const char* tablename2)
 {
     RDSdeleteData(columnname, deleteline, tablename);
-    DeleteObjects({ string(deleteline) + ".jpg" });
     RDSdeleteData(columnname, deleteline, tablename2);
+    DeleteObjects({ string(deleteline) + ".jpg" });
     //truncate table tableName restart identity//tabelName 테이블의 시퀀스를 자동으로 재시작하며 테이블 데이터를 모두 삭제한다
 }
 
