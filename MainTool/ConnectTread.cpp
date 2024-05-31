@@ -10,7 +10,7 @@
 
 
 // AWS 서버 쓰레드
-UINT initawsT(LPVOID pParam)//서버
+UINT initawsT(LPVOID pParam)
 {
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
