@@ -14,108 +14,116 @@ UINT initawsT(LPVOID pParam)//서버
 {
 	ServerForm* thisObj;
 	thisObj = (ServerForm*)pParam;
+	queue<AWSINFO>& infoALL = thisObj->GetAwsInfo();
 
 	while (1) 
 	{
-		if (thisObj->GetAwsInfo().empty()) {
-			continue;
+		
+		AWSINFO info = AWSINFO::STAY;
+		if (!infoALL.empty()) {
+			info = infoALL.front();
+			infoALL.pop();
 		}
-		AWSINFO info = thisObj->GetAwsInfo()[0];
 
 		switch (info)
 		{
 
 			// AWS 서버 쓰레드 종료
-		case AWSINFO::AWSEXIT:
-		{
-			return 0;
-		}
-
-
-		// AWS 서버 시작
-		case AWSINFO::SEVERSTART:
-		{
-			TRACE(_T("Thread Index "));
-			thisObj->initaws();
-
-			// 서버 리트라이
-			if (thisObj->GetAWS() == nullptr)
+			case AWSINFO::AWSEXIT:
 			{
-				thisObj->ServerState(STATUCOLOR::SERVERRED);
-				thisObj->SetAwsInfo(AWSINFO::SEVERSTART);
+				return 0;
 			}
-			else
+
+
+			// AWS 서버 시작
+			case AWSINFO::SEVERSTART:
 			{
+				TRACE(_T("Thread Index "));
+				thisObj->initaws();
+
+				// 서버 리트라이
+				if (thisObj->GetAWS() == nullptr)
+				{
+					thisObj->ServerState(STATUCOLOR::SERVERRED);
+					thisObj->SetAwsInfo(AWSINFO::SEVERSTART);
+				}
+				else
+				{
+					thisObj->GetServerList();
+				}
+				break;
+			}
+
+
+			// AWS 서버 저장
+			case AWSINFO::AWSSEND:
+			{
+				string info = "('" + thisObj->GetAwsColor() + "', '" + thisObj->GetAwsFaulty() + "')";
+				thisObj->SetAwsColor("");
+				thisObj->SetAwsFaulty("");
+
+				thisObj->GetAWS()->Allinput(thisObj->GetDate(), info.c_str(), thisObj->GetAwsFilename());
 				thisObj->GetServerList();
+				break;
 			}
-			break;
-		}
 
 
-		// AWS 서버 저장
-		case AWSINFO::AWSSEND:
-		{
-			string info = "('" + thisObj->GetAwsColor() + "', '" + thisObj->GetAwsFaulty() + "')";
-			thisObj->SetAwsColor("");
-			thisObj->SetAwsFaulty("");
-
-			thisObj->GetAWS()->Allinput(thisObj->GetDate(), info.c_str(), thisObj->GetAwsFilename());
-			thisObj->GetServerList();
-			break;
-		}
-
-
-		// 로컬때 저장된 정보 서버에 저장
-		case AWSINFO::AWSTEMPLIST:
-		{
-			ToolManager* pInstance = ToolManager::GetInstance();
-			for (int i = 0; i < pInstance->m_TempVec.size(); ++i)
+			// 로컬때 저장된 정보 서버에 저장
+			case AWSINFO::AWSTEMPLIST:
 			{
-				string info = "('" + pInstance->m_TempVec[i].color + "', '" + pInstance->m_TempVec[i].faulty + "')";
-				thisObj->GetAWS()->Allinput(pInstance->m_TempVec[i].date, info.c_str(), pInstance->m_TempVec[i].filename);
+				ToolManager* pInstance = ToolManager::GetInstance();
+				for (int i = 0; i < pInstance->m_TempVec.size(); ++i)
+				{
+					string info = "('" + pInstance->m_TempVec[i].color + "', '" + pInstance->m_TempVec[i].faulty + "')";
+					thisObj->GetAWS()->Allinput(pInstance->m_TempVec[i].date, info.c_str(), pInstance->m_TempVec[i].filename);
+				}
+				pInstance->m_TempVec.clear();
+				thisObj->GetServerList();
+				break;
 			}
-			pInstance->m_TempVec.clear();
-			thisObj->GetServerList();
-			break;
+
+
+			// 서버 연결 체크
+			case AWSINFO::AWSCHEAK:
+			{
+				thisObj->GetAWS()->RDSckeckConnection();
+				thisObj->GetServerList();
+				break;
+			}
+
+
+			// 저장된 정보 수정
+			case AWSINFO::AWSMODIFY:
+			{
+				thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
+				thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
+				thisObj->GetServerList();
+				ToolManager::GetInstance()->m_Testtab->GetButtonState(true);
+
+				ToolManager::GetInstance()->m_tab->SetCurSel(0);
+				ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_SHOW);
+				ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_HIDE);
+				break;
+			}
+
+			case AWSINFO::AWSDELETE:
+			{
+				ToolManager::GetInstance()->m_Serverform->GetAWS()->AlldeleteData(ToolManager::GetInstance()->m_Testtab->CurId.c_str());
+				ToolManager::GetInstance()->m_Serverform->GetServerList();
+				ToolManager::GetInstance()->m_Testtab->GetButtonState(true);
+
+				ToolManager::GetInstance()->m_tab->SetCurSel(0);
+				ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_SHOW);
+				ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_HIDE);
+			}
+
+			// 서버 리스트 불러오기
+			default:
+			{
+				int a = 0;
+				break;
+			}
 		}
-
-
-		// 서버 연결 체크
-		case AWSINFO::AWSCHEAK:
-		{
-			thisObj->GetAWS()->RDSckeckConnection();
-			thisObj->GetServerList();
-			break;
-		}
-
-
-		// 저장된 정보 수정
-		case AWSINFO::AWSMODIFY:
-		{
-			thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
-			thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
-			thisObj->GetServerList();
-			break;
-		}
-
-		case AWSINFO::AWSDELETE:
-		{
-			ToolManager::GetInstance()->m_Serverform->GetAWS()->AlldeleteData(ToolManager::GetInstance()->m_Testtab->CurId.c_str());
-			ToolManager::GetInstance()->m_Serverform->GetServerList();
-
-			ToolManager::GetInstance()->m_tab->SetCurSel(0);
-			ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_SHOW);
-			ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_HIDE);
-		}
-
-		// 서버 리스트 불러오기
-		default:
-		{
-			int a = 0;
-			break;
-		}
-		}
-		thisObj->GetAwsInfo().erase(thisObj->GetAwsInfo().begin());
 
 		Sleep(100);
 	}

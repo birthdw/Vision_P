@@ -5,7 +5,7 @@
 // ServerForm 폼 보기
 #include "CSocketClient.h"
 #include "AWS.h"
-
+#include<queue>
 
 class ServerForm : public CFormView
 {
@@ -84,7 +84,7 @@ private:
 	string m_modifyCurId;
 	string m_awsdate;
 	string m_awsfilename;
-	vector<AWSINFO> m_AwsAllList;
+	queue<AWSINFO> m_AwsAllList;
 
 	// 소켓 저장 자료형
 	CString SocketMessage = _T("");
@@ -109,7 +109,7 @@ public:
 	void GetServerList();
 
 public:
-	vector<AWSINFO>& GetAwsInfo();										// 서버 동작 상태
+	queue<AWSINFO>& GetAwsInfo();										// 서버 동작 상태
 	BOOL GetTCPConnect();										// 소켓 통신 연결 상태
 	AWS* GetAWS();												// 서버 연결 동작
 	string GetAwsColor();										// 서버 저장 상자 색깔 상태

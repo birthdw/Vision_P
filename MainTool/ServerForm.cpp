@@ -11,6 +11,8 @@
 #include "TestTab.h"
 #include "DetectTab.h"
 
+
+
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
 // ServerForm
@@ -314,7 +316,7 @@ vector<CString> ServerForm::SplitCString(const CString& str, const CString& deli
 }
 
 
-vector<AWSINFO>& ServerForm::GetAwsInfo()
+queue<AWSINFO>& ServerForm::GetAwsInfo()
 {
 	return m_AwsAllList;
 }
@@ -322,7 +324,7 @@ vector<AWSINFO>& ServerForm::GetAwsInfo()
 
 void ServerForm::SetAwsInfo(AWSINFO pAWS)
 {
-	m_AwsAllList.push_back(pAWS);
+	m_AwsAllList.push(pAWS);
 }
 
 void ServerForm::SetModify(string color, string faulty, string curId)

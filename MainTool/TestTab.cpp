@@ -155,7 +155,6 @@ void TestTab::OnBnClickedButton2()
 	string co = CT2CA(c);
 	string fa = CT2CA(f);
 	ToolManager::GetInstance()->m_Serverform->SetModify(co, fa, CurId);
-	GetButtonState(true);
 
 	UpdateData(TRUE);
 }
@@ -166,7 +165,6 @@ void TestTab::OnBnClickedButton5()
 	//삭제
 	GetButtonState(false);
 	ToolManager::GetInstance()->m_Serverform->SetAwsInfo(AWSINFO::AWSDELETE);
-	GetButtonState(true);
 }
 
 CString TestTab::GetLast(CString url)
