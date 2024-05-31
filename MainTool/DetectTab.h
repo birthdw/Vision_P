@@ -27,7 +27,7 @@ public:
 
 
 public:
-	CString Update(bool set = false);
+	void Update();
 
 public:
 	void Set_Text(int curidx, int idx, CString cstr);

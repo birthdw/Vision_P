@@ -84,8 +84,7 @@ private:
 	string m_modifyCurId;
 	string m_awsdate;
 	string m_awsfilename;
-
-	AWSINFO m_awsinfo;											// 서버 스위치
+	vector<AWSINFO> m_AwsAllList;
 
 	// 소켓 저장 자료형
 	CString SocketMessage = _T("");
@@ -107,9 +106,10 @@ public:
 	void exit_s3();												// 서버 종료 함수
 	void initaws();												// 서버 연결 함수
 	void ServerState(STATUCOLOR set);
+	void GetServerList();
 
 public:
-	AWSINFO GetAwsInfo();										// 서버 동작 상태
+	vector<AWSINFO>& GetAwsInfo();										// 서버 동작 상태
 	BOOL GetTCPConnect();										// 소켓 통신 연결 상태
 	AWS* GetAWS();												// 서버 연결 동작
 	string GetAwsColor();										// 서버 저장 상자 색깔 상태

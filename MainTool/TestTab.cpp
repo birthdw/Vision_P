@@ -147,6 +147,7 @@ void TestTab::OnBnClickedButton2()
 {
 	UpdateData(FALSE);
 	//수정
+	GetButtonState(false);
 	CString c;
 	CString f;
 	GetDlgItemText(IDC_ColorEdit, c);
@@ -154,6 +155,7 @@ void TestTab::OnBnClickedButton2()
 	string co = CT2CA(c);
 	string fa = CT2CA(f);
 	ToolManager::GetInstance()->m_Serverform->SetModify(co, fa, CurId);
+	GetButtonState(true);
 
 	UpdateData(TRUE);
 }
@@ -162,20 +164,9 @@ void TestTab::OnBnClickedButton2()
 void TestTab::OnBnClickedButton5()
 {
 	//삭제
-	while (!ToolManager::GetInstance()->ServerSwitch) {
-		GetButtonState(false);
-	}
-	DeleteSwitch = false;
-	ToolManager::GetInstance()->m_Serverform->GetAWS()->test(CurId);
-	ToolManager::GetInstance()->m_Serverform->GetAWS()->AlldeleteData(CurId.c_str());
-
-
-	ToolManager::GetInstance()->m_tab->SetCurSel(0);
-	ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_SHOW);
-	ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_HIDE);
+	GetButtonState(false);
+	ToolManager::GetInstance()->m_Serverform->SetAwsInfo(AWSINFO::AWSDELETE);
 	GetButtonState(true);
-	DeleteSwitch = true;
-
 }
 
 CString TestTab::GetLast(CString url)
@@ -215,4 +206,5 @@ int TestTab::Getcnt()
 void TestTab::GetButtonState(bool n)
 {
 	GetDlgItem(IDC_BUTTON5)->EnableWindow(n);
+	GetDlgItem(IDC_BUTTON2)->EnableWindow(n);
 }

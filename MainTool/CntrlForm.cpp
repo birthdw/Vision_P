@@ -93,7 +93,7 @@ void CntrlForm::OnBnClickedb1()
 	//모터1 +
 	//앞+
 
-	sendCntrl(_T("RBT:M1_P"));
+	sendCntrl(_T("RBT:M1_P:"));
 	Grab_on = true;
 	Invalidate(false);
 }
@@ -103,7 +103,7 @@ void CntrlForm::OnBnClickedb2()
 {
 	//모터 1
 	//앞- 
-	sendCntrl(_T("RBT:M1_M"));
+	sendCntrl(_T("RBT:M1_M:"));
 
 	Grab_on = true;
 	Invalidate(false);
@@ -114,7 +114,7 @@ void CntrlForm::OnBnClickedb3()
 {
 	//모터 2 +
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	sendCntrl(_T("RBT:M2_P"));
+	sendCntrl(_T("RBT:M2_P:"));
 
 	Morter_on = true;
 	Invalidate(false);
@@ -125,7 +125,7 @@ void CntrlForm::OnBnClickedb4()
 {
 	//모터2 -
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	sendCntrl(_T("RBT:M2_M"));
+	sendCntrl(_T("RBT:M2_M:"));
 	Morter_on = true;
 	Invalidate(false);
 }
@@ -135,7 +135,7 @@ void CntrlForm::OnBnClickedb5()
 {
 	//모터3 +
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	sendCntrl(_T("RBT:M3_P"));
+	sendCntrl(_T("RBT:M3_P:"));
 
 	Morter2_on = true;
 	Invalidate(false);
@@ -146,7 +146,7 @@ void CntrlForm::OnBnClickedb6()
 {
 	//모터3 -
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	sendCntrl(_T("RBT:M3_M"));
+	sendCntrl(_T("RBT:M3_M:"));
 
 	Morter2_on = true;
 	Invalidate(false);
@@ -158,7 +158,7 @@ void CntrlForm::OnBnClickedb8()
 	//모터4 -
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	sendCntrl(_T("RBT:M4_M"));
+	sendCntrl(_T("RBT:M4_M:"));
 
 	Morter3_on = true;
 	Invalidate(false);
@@ -169,7 +169,7 @@ void CntrlForm::OnBnClickedb7()
 {
 	//모터4 +
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	sendCntrl(_T("RBT:M4_P"));
+	sendCntrl(_T("RBT:M4_P:"));
 
 	Morter3_on = true;
 	Invalidate(false);

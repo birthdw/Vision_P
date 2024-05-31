@@ -8,6 +8,8 @@
 #include "ConnectTread.h"
 #include "ResultForm.h"
 #include "CntrlForm.h"
+#include "TestTab.h"
+#include "DetectTab.h"
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
@@ -24,7 +26,7 @@ ServerForm::ServerForm()
 
 ServerForm::~ServerForm()
 {
-	m_awsinfo = AWSINFO::AWSEXIT;
+	SetAwsInfo(AWSINFO::AWSEXIT);
 	m_ThreadColor = COLORTHREAD::THREADEXIT;	
 	if (m_aws != nullptr) { delete m_aws; m_aws = nullptr; }
 }
@@ -96,7 +98,7 @@ void ServerForm::OnInitialUpdate()
 	m_Port = 6667;
 	
 	UpdateData(FALSE);
-	m_awsinfo = AWSINFO::SEVERSTART;
+	SetAwsInfo(AWSINFO::SEVERSTART);
 	AfxBeginThread(COLORRODING, this);
 
 	AfxBeginThread(initawsT, this);
@@ -271,12 +273,20 @@ void ServerForm::initaws()
 		m_aws = new AWS();
 	}
 	ServerState(STATUCOLOR::SERVERGREEN);
+	ToolManager::GetInstance()->TempVecSendAll();
 }
 
 void ServerForm::ServerState(STATUCOLOR set)
 {
 	SetControlColor(set);
 	SetServerSwitch(set);
+}
+
+void ServerForm::GetServerList()
+{
+	SETBoxlist(GetAWS()->RDSjoinData());
+	ToolManager::GetInstance()->m_detecttab->Update();
+	//TRACE("%d\r\n", thisObj->GetBoxlist());
 }
 
 vector<CString> ServerForm::SplitCString(const CString& str, const CString& delimiter)
@@ -304,15 +314,15 @@ vector<CString> ServerForm::SplitCString(const CString& str, const CString& deli
 }
 
 
-AWSINFO ServerForm::GetAwsInfo()
+vector<AWSINFO>& ServerForm::GetAwsInfo()
 {
-	return m_awsinfo;
+	return m_AwsAllList;
 }
 
 
 void ServerForm::SetAwsInfo(AWSINFO pAWS)
 {
-	m_awsinfo = pAWS;
+	m_AwsAllList.push_back(pAWS);
 }
 
 void ServerForm::SetModify(string color, string faulty, string curId)
@@ -320,7 +330,7 @@ void ServerForm::SetModify(string color, string faulty, string curId)
 	m_modifyColor = color;
 	m_modifyFaulty = faulty;
 	m_modifyCurId = curId;
-	m_awsinfo = AWSINFO::AWSMODIFY;
+	SetAwsInfo(AWSINFO::AWSMODIFY);
 }
 
 void ServerForm::SetAwsColor(string set)

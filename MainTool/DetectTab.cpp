@@ -64,10 +64,7 @@ BOOL DetectTab::OnInitDialog()
 		Column.pszText = Column_list[i];
 		m_List.InsertColumn(i, &Column);
 	}
-
-	AfxBeginThread(ThreadUpdate, this);
 	UpdateData(FALSE);
-
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -106,59 +103,28 @@ void DetectTab::OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-CString DetectTab::Update(bool set)
+void DetectTab::Update()
 {
-	if (ToolManager::GetInstance()->m_Serverform->GetServerSwitch() != STATUCOLOR::SERVERGREEN)
-	{
-		m_List.DeleteAllItems();
-		if (ToolManager::GetInstance()->GetVec().size() > 0)
-		{
-			for (int i = 0; i < ToolManager::GetInstance()->GetVec().size(); ++i)
-			{
-				m_List.InsertItem(i, CString(to_string(i + 1).c_str()));
-				m_List.SetItemText(i, 1, CString(ToolManager::GetInstance()->GetVec()[i].filename.c_str()));
-				m_List.SetItemText(i, 2, CString(ToolManager::GetInstance()->GetVec()[i].color.c_str()));
-				m_List.SetItemText(i, 3, CString(ToolManager::GetInstance()->GetVec()[i].faulty.c_str()));
-				m_List.SetItemText(i, 4, CString(ToolManager::GetInstance()->GetVec()[i].date.c_str()));
-			}
-		}
-	}
-	else
-		ToolManager::GetInstance()->TempVecSendAll();
-
-
 	vector<AWSLIST> vecInfo;
 	vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();
 
-	
+	m_List.DeleteAllItems();
 
-	if (set) {
-		m_List.DeleteAllItems();
-
-		for (int i = 0; i < vecInfo.size(); ++i)
-		{
-			m_List.InsertItem(i, CString(vecInfo[i].id.c_str()));
-			m_List.SetItemText(i, 1, CString(vecInfo[i].url.c_str()));
-			m_List.SetItemText(i, 2, CString(vecInfo[i].color.c_str()));
-			m_List.SetItemText(i, 3, CString(vecInfo[i].faulty.c_str()));
-			m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
-		}
+	for (int i = 0; i < vecInfo.size(); ++i)
+	{
+		m_List.InsertItem(i, CString(vecInfo[i].id.c_str()));
+		m_List.SetItemText(i, 1, CString(vecInfo[i].url.c_str()));
+		m_List.SetItemText(i, 2, CString(vecInfo[i].color.c_str()));
+		m_List.SetItemText(i, 3, CString(vecInfo[i].faulty.c_str()));
+		m_List.SetItemText(i, 4, CString(vecInfo[i].date.c_str()));
 	}
 
-	CString oldid = _T("");
-	if (!vecInfo.empty()) {
-		for (int i = 0; i < vecInfo.size(); ++i)
-		{
-			oldid += CString(vecInfo[i].id.c_str()) + CString(vecInfo[i].color.c_str()) + CString(vecInfo[i].faulty.c_str());
-		}
-	}
 
 	if (vecInfo.empty())
 	{
 		m_List.DeleteAllItems();
 	}
 
-	return oldid;
 }
 
 void DetectTab::Set_Text(int curidx, int idx, CString cstr)
