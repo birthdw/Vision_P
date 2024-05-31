@@ -50,6 +50,7 @@ UINT initawsT(LPVOID pParam)
 				else
 				{
 					thisObj->GetServerList();
+					thisObj->InvalidateRect(NULL, FALSE);
 				}
 				break;
 			}
@@ -171,37 +172,6 @@ UINT ThreadSocket(LPVOID pParam)
 	::PostMessage(thisObj->GetSafeHwnd(), WM_SOCKET_THREAD_FINISHED, (WPARAM)success, 0);
 
 	return 0;
-}
-
-
-//MFC 연결 상태 체크 쓰레드
-UINT COLORRODING(LPVOID pParam) 
-{
-	ServerForm* thisObj;
-	thisObj = (ServerForm*)pParam;
-
-	while (1) 
-	{
-		
-		// 쓰레드 자원 해제
-		if (thisObj->GetThreadColor() == COLORTHREAD::THREADEXIT) {
-			return 0;
-		}
-
-		// paint 체크
-		else if (thisObj->GetThreadColor() == COLORTHREAD::THREADRUN) {
-			thisObj->InvalidateRect(NULL, FALSE);
-
-			// 로그 비우기 버튼 활성화 유무
-			if (thisObj->m_ListTcp.GetItemCount() > 0) {
-				thisObj->GetDlgItem(IDC_LOG_BUT)->EnableWindow(true);
-			}
-			else {
-				thisObj->GetDlgItem(IDC_LOG_BUT)->EnableWindow(false);
-			}
-		}
-		Sleep(500);
-	}
 }
 
 UINT ThreadCamera(LPVOID pParam) {

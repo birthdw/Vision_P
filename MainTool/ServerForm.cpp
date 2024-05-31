@@ -80,7 +80,10 @@ void ServerForm::OnInitialUpdate()
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	LVCOLUMN Column;
-	
+
+	SetAwsInfo(AWSINFO::SEVERSTART);
+	AfxBeginThread(initawsT, this);
+	GetDlgItem(IDC_LOG_BUT)->EnableWindow(false);
 	UpdateData();
 
 	Column.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
@@ -100,10 +103,7 @@ void ServerForm::OnInitialUpdate()
 	m_Port = 6667;
 	
 	UpdateData(FALSE);
-	SetAwsInfo(AWSINFO::SEVERSTART);
-	AfxBeginThread(COLORRODING, this);
 
-	AfxBeginThread(initawsT, this);
 }
 
 
@@ -118,6 +118,7 @@ void ServerForm::OnBnClickedTcpBut()
 		m_SocketThreadSWICHT = FALSE;
 		UpdateData(TRUE);
 		AfxBeginThread(ThreadSocket, this);
+		InvalidateRect(NULL, FALSE);
 	}
 }
 
@@ -196,6 +197,7 @@ void ServerForm::ClinetSetting(bool set)
 		ClientTCP(_T("END"));
 		SetClientClose();
 	}
+	InvalidateRect(NULL, FALSE);
 }
 
 
@@ -222,6 +224,8 @@ void ServerForm::SetList(CString str,CString strMessage)
 	m_ListTcp.SetItemText(0, 2, strMessage);
 	m_ListTcp.SetItemText(0, 3, static_cast<LPCTSTR>(time_s));
 	Count++;
+	GetDlgItem(IDC_LOG_BUT)->EnableWindow(true);
+	InvalidateRect(NULL, FALSE);
 }
 
 
@@ -477,6 +481,7 @@ void ServerForm::OnLvnItemchangedListTcp(NMHDR* pNMHDR, LRESULT* pResult)
 void ServerForm::OnBnClickedLogBut()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	GetDlgItem(IDC_LOG_BUT)->EnableWindow(false);
 	Count = 0;
 	m_ListTcp.DeleteAllItems();
 
