@@ -111,6 +111,7 @@ bool ToolManager::Update(double t)
 				}
 				break;
 			case PROCESSSTATE::INSPECT:
+				bDone = false;
 				m_Res = Detect();
 
 				if (m_Res == RES_END)

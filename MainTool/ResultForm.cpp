@@ -132,27 +132,33 @@ void ResultForm::OnPaint()
 
 	CImage image;
 
-	switch (ToolManager::GetInstance()->m_Res)
+	if (ToolManager::GetInstance()->bDone == false)
 	{
-	case RESULT::RES_NONE:
-		image.Load(_T("white.bmp"));//기본
-		break;
-	case RESULT::RED:
-		image.Load(_T("red.bmp"));//레드
-		break;
-	case RESULT::YELLOW:
-		image.Load(_T("yellow.bmp"));//노랑
-		break;
-	case RESULT::GREEN:
-		image.Load(_T("green.bmp"));//초록
-		break;
-	case RESULT::FAIL:
-		image.Load(_T("black.bmp"));//불량 -> 검정
-		break;
-	default:
-		image.Load(_T("white.bmp"));//예외 기본
-		break;
+		switch (ToolManager::GetInstance()->m_Res)
+		{
+		case RESULT::RES_NONE:
+			image.Load(_T("white.bmp"));//기본
+			break;
+		case RESULT::RED:
+			image.Load(_T("red.bmp"));//레드
+			break;
+		case RESULT::YELLOW:
+			image.Load(_T("yellow.bmp"));//노랑
+			break;
+		case RESULT::GREEN:
+			image.Load(_T("green.bmp"));//초록
+			break;
+		case RESULT::FAIL:
+			image.Load(_T("black.bmp"));//불량 -> 검정
+			break;
+		default:
+			image.Load(_T("white.bmp"));//예외 기본
+			break;
+		}
 	}
+	else
+		image.Load(_T("white.bmp"));//기본
+
 
 	CRect rect;
 	m_Color.GetWindowRect(rect);

@@ -120,6 +120,10 @@ void CSocketClient::ProcessString(const CString& str)
                     // "DONE을 포함하면 전달
                     CString str = _T("START");
                     ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
+
+                    ToolManager::GetInstance()->bDone = true;
+
+
                 }
 
                 else if (betweenColonAndSlash.Find(_T("HOME")) != -1)
