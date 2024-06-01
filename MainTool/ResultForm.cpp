@@ -233,11 +233,5 @@ void ResultForm::OnBnClickedBcolortest()
 
 void ResultForm::OnBnClickedtestinput()
 {
-	for (int i = 0; i < 100; ++i)
-	{
-		string color = "yellow";
-		string fault = "false";
-		string info = "('" + color + "', '" + fault + "')";
-		ToolManager::GetInstance()->m_Serverform->GetAWS()->testinput("1", info.c_str(), "BOX.jpg");
-	}
+	
 }
