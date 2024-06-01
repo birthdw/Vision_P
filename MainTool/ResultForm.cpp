@@ -9,6 +9,7 @@
 #include "CntrlForm.h"
 #include "ConnectTread.h"
 #include "ColortTestDlg.h"
+#include "DataInquiryDlg.h"
 
 // ResultForm
 
@@ -233,5 +234,12 @@ void ResultForm::OnBnClickedBcolortest()
 
 void ResultForm::OnBnClickedtestinput()
 {
-	
+
+	m_DataInquiry = new DataInquiryDlg;
+	m_DataInquiry->Create(IDD_DataInquiry, this);
+	m_DataInquiry->ShowWindow(SW_SHOW);
 }
+
+
+
+

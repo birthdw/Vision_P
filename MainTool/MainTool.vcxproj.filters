@@ -65,6 +65,9 @@
     <Filter Include="08.Tread">
       <UniqueIdentifier>{f77cb4f9-164e-4bfc-9651-d96c9c03e5da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Dlg\Colortest">
+      <UniqueIdentifier>{6469705d-fb23-403c-bec1-925e614e67e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrm.h">
@@ -137,9 +140,11 @@
       <Filter>08.Tread</Filter>
     </ClInclude>
     <ClInclude Include="ColortTestDlg.h">
+      <Filter>04.Dlg\Colortest</Filter>
+    </ClInclude>
+    <ClInclude Include="DataInquiryDlg.h">
       <Filter>04.Dlg</Filter>
     </ClInclude>
-    <ClInclude Include="DataInquiryDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -194,9 +199,11 @@
       <Filter>08.Tread</Filter>
     </ClCompile>
     <ClCompile Include="ColortTestDlg.cpp">
+      <Filter>04.Dlg\Colortest</Filter>
+    </ClCompile>
+    <ClCompile Include="DataInquiryDlg.cpp">
       <Filter>04.Dlg</Filter>
     </ClCompile>
-    <ClCompile Include="DataInquiryDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MainTool.rc">

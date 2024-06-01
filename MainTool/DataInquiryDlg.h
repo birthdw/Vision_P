@@ -21,4 +21,10 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CDateTimeCtrl StartTime;
+	CDateTimeCtrl EndTime;
+	CComboBox m_ColorBox;
+	CComboBox m_FaultyBox;
+	afx_msg void OnBnClickedButton1();
 };

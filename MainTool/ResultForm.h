@@ -2,6 +2,7 @@
 
 
 class ColortTestDlg;
+class DataInquiryDlg;
 // ResultForm 폼 보기
 
 class ResultForm : public CFormView
@@ -54,6 +55,7 @@ public:
 public:
 
 	ColortTestDlg* m_Colortest;
+	DataInquiryDlg* m_DataInquiry;
 
 	afx_msg void OnBnClickedtestinput();
 };
