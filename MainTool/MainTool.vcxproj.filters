@@ -139,6 +139,7 @@
     <ClInclude Include="ColortTestDlg.h">
       <Filter>04.Dlg</Filter>
     </ClInclude>
+    <ClInclude Include="DataInquiryDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -195,6 +196,7 @@
     <ClCompile Include="ColortTestDlg.cpp">
       <Filter>04.Dlg</Filter>
     </ClCompile>
+    <ClCompile Include="DataInquiryDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MainTool.rc">

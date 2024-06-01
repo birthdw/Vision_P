@@ -196,6 +196,7 @@
     <ClInclude Include="ColortTestDlg.h" />
     <ClInclude Include="ConnectTread.h" />
     <ClInclude Include="CSocketClient.h" />
+    <ClInclude Include="DataInquiryDlg.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="DetectTab.h" />
     <ClInclude Include="FrameMgr.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="ColortTestDlg.cpp" />
     <ClCompile Include="ConnectTread.cpp" />
     <ClCompile Include="CSocketClient.cpp" />
+    <ClCompile Include="DataInquiryDlg.cpp" />
     <ClCompile Include="DetectTab.cpp" />
     <ClCompile Include="FrameMgr.cpp" />
     <ClCompile Include="inference.cpp" />

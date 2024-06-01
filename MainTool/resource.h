@@ -13,6 +13,7 @@
 #define IDD_DetectTab                   316
 #define IDD_TestTab                     317
 #define IDD_COLORTEST                   320
+#define IDD_DataInquiry                 324
 #define IDC_BUTTON3                     1002
 #define IDC_BUTTON4                     1003
 #define IDC_IPADDRESS1                  1006
@@ -76,8 +77,11 @@
 #define IDC_EDIT7                       1038
 #define IDC_SPINRobot                   1038
 #define IDC_EDIT8                       1039
+#define IDC_COMBO1                      1039
 #define IDC_EDIT5                       1040
+#define IDC_DATETIMEPICKER1             1040
 #define IDC_EDIT6                       1041
+#define IDC_DATETIMEPICKER2             1041
 #define IDC_EDIT9                       1042
 #define IDC_EDIT10                      1043
 #define IDC_EDIT11                      1044
@@ -93,9 +97,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        324
+#define _APS_NEXT_RESOURCE_VALUE        326
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1039
+#define _APS_NEXT_CONTROL_VALUE         1041
 #define _APS_NEXT_SYMED_VALUE           318
 #endif
 #endif
