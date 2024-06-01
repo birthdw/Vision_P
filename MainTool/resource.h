@@ -87,6 +87,7 @@
 #define IDC_EDIT10                      1043
 #define IDC_COMBO3                      1043
 #define IDC_EDIT11                      1044
+#define IDC_StaticId                    1044
 #define IDC_EDIT12                      1045
 #define IDC_EDIT13                      1046
 #define IDC_EDIT14                      1047
@@ -101,7 +102,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        326
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1044
+#define _APS_NEXT_CONTROL_VALUE         1045
 #define _APS_NEXT_SYMED_VALUE           318
 #endif
 #endif

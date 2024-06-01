@@ -8,6 +8,7 @@
 #include "CntrlForm.h"
 #include "ConnectTread.h"
 #include "struct.h"
+#include "DataInquiryDlg.h"
 
 ToolManager* ToolManager::m_pInstance = nullptr;
 
@@ -359,6 +360,11 @@ void ToolManager::SetTab(DetectTab* d, TestTab* t)
 {
 	m_detecttab = d;
 	m_Testtab = t;
+}
+
+void ToolManager::SetDataDlg(DataInquiryDlg* d)
+{
+	m_DataInquiryDlg = d;
 }
 
 void ToolManager::SetForceQuit(bool set)

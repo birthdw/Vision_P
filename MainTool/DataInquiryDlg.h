@@ -22,9 +22,47 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+
+	afx_msg void OnBnClickedButton1();
+
+	virtual BOOL OnInitDialog();
+	afx_msg void OnPaint();
+	afx_msg void OnBnClickedButton4();
+
+
+
+
+public:
 	CDateTimeCtrl StartTime;
 	CDateTimeCtrl EndTime;
 	CComboBox m_ColorBox;
 	CComboBox m_FaultyBox;
-	afx_msg void OnBnClickedButton1();
+
+	CListCtrl m_DataList;
+	CEdit m_Url;
+	CEdit m_Color;
+	CEdit m_Faulty;
+	CEdit m_Date;
+	CButton m_Id;
+
+public:
+	bool Update();
+	void Reset();
+
+	vector<AWSLIST> OptionDate(CString eday, CString sday, CString emon, CString smon, CString ey, CString sy);
+	vector<AWSLIST> OptionColor();
+	vector<AWSLIST> OptionFaulty();
+
+	CString GetLast(CString url);
+
+	void LoadOnlineImage(LPCTSTR url, CPaintDC& dc);
+
+
+	afx_msg void OnNMClickList1(NMHDR* pNMHDR, LRESULT* pResult);
+	CStatic m_staticId;
+
+	vector<AWSLIST> Updatevec;
+
+	afx_msg void OnBnClickedButton3();
+	afx_msg void OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult);
 };

@@ -6,6 +6,8 @@ class DetectTab;
 class TestTab;
 class ResultForm;
 class CntrlForm;
+class DataInquiryDlg;
+
 
 enum class PROCESSSTATE;
 
@@ -53,6 +55,7 @@ public:
 	void SetToolviewhdl(HWND tvhd);
 	void SetListFormHndle(HWND tvhd);
 	void SetTab(DetectTab* d, TestTab* t);
+	void SetDataDlg(DataInquiryDlg* d);
 	void SetForceQuit(bool set);
 	void SetKillFrm(bool set);
 	void SetSpecialOn(bool set);
@@ -108,7 +111,7 @@ public:
 	TestTab* m_Testtab;
 	ResultForm* m_Resform;
 	CntrlForm* m_CntrlForm;
-
+	DataInquiryDlg* m_DataInquiryDlg=nullptr;
 public:
 	int maxR, maxG, maxB;      //검사된 rgb값
 	RESULT m_Res;				//검사 결과

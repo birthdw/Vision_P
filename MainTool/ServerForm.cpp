@@ -10,6 +10,7 @@
 #include "CntrlForm.h"
 #include "TestTab.h"
 #include "DetectTab.h"
+#include "DataInquiryDlg.h"
 
 
 
@@ -29,7 +30,7 @@ ServerForm::ServerForm()
 ServerForm::~ServerForm()
 {
 	SetAwsInfo(AWSINFO::AWSEXIT);
-	m_ThreadColor = COLORTHREAD::THREADEXIT;	
+	m_ThreadColor = COLORTHREAD::THREADEXIT;
 	if (m_aws != nullptr) { delete m_aws; m_aws = nullptr; }
 }
 
@@ -89,7 +90,7 @@ void ServerForm::OnInitialUpdate()
 	Column.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
 	Column.fmt = LVCFMT_LEFT;
 
-	LPWSTR Column_list[4] = { _T("번호"),_T("송수신"), _T("로그"), _T("시간")};
+	LPWSTR Column_list[4] = { _T("번호"),_T("송수신"), _T("로그"), _T("시간") };
 	int cx[4] = { 100, 100, 400, 200 };
 
 	int Column_size = sizeof(Column_list) / sizeof(Column_list[0]);
@@ -101,7 +102,7 @@ void ServerForm::OnInitialUpdate()
 
 	m_IP.SetAddress(192, 168, 0, 215);
 	m_Port = 6667;
-	
+
 	UpdateData(FALSE);
 
 }
@@ -111,7 +112,7 @@ void ServerForm::OnBnClickedTcpBut()
 {
 	// 소켓 통신 연결, 연결끊기를 정의합니다.
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (m_SocketThreadSWICHT) 
+	if (m_SocketThreadSWICHT)
 	{
 		GetDlgItem(IDC_TCP_BUT)->EnableWindow(false);
 		m_ControlColor = STATUCOLOR::SOCKETYELLOW;
@@ -140,8 +141,8 @@ void ServerForm::ClientTCP(CString strMessage) {
 	int nLength = strMessage.GetLength() * sizeof(TCHAR);
 
 	m_Client.Send((LPCTSTR)strMessage, nLength);
-	SetList(_T("송신"),strMessage);
-	
+	SetList(_T("송신"), strMessage);
+
 }
 
 
@@ -183,7 +184,7 @@ void ServerForm::ClinetSetting(bool set)
 	GetDlgItem(IDC_TCP_BUT)->EnableWindow(true);
 	m_SocketThreadSWICHT = TRUE;
 
-	if (set) 
+	if (set)
 	{
 		m_TCP_BUTTON.SetWindowText(L"연결끊기");
 		SETTCPConnect(FALSE);
@@ -208,7 +209,7 @@ void ServerForm::exit_s3()
 
 
 // 소켓통신 로그
-void ServerForm::SetList(CString str,CString strMessage) 
+void ServerForm::SetList(CString str, CString strMessage)
 {
 	time_t timer;
 	struct tm* t;
@@ -295,6 +296,8 @@ void ServerForm::GetServerList()
 {
 	SETBoxlist(GetAWS()->RDSjoinData());
 	ToolManager::GetInstance()->m_detecttab->Update();
+	if (ToolManager::GetInstance()->m_DataInquiryDlg != nullptr)
+		ToolManager::GetInstance()->m_DataInquiryDlg->Update();
 	//TRACE("%d\r\n", thisObj->GetBoxlist());
 }
 
