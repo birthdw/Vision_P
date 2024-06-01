@@ -237,24 +237,27 @@ void ServerForm::OnPaint()
 	{
 	case STATUCOLOR::SERVERRED:
 		m_SColor = L"red";
-		m_ControlColor = STATUCOLOR::STAY;
+		SetControlColor(STATUCOLOR::STAY);
 		break;
 	case STATUCOLOR::SERVERYELLOW:
 		m_SColor = L"yellow";
-		m_ControlColor = STATUCOLOR::STAY;
+		SetControlColor(STATUCOLOR::STAY);
 		break;
 	case STATUCOLOR::SERVERGREEN:
 		m_SColor = L"green";
-		m_ControlColor = STATUCOLOR::STAY;
+		SetControlColor(STATUCOLOR::STAY);
 		break;
 	case STATUCOLOR::SOCKETRED:
 		m_KColor = L"red";
+		SetControlColor(STATUCOLOR::STAY);
 		break;
 	case STATUCOLOR::SOCKETYELLOW:
 		m_KColor = L"yellow";
+		SetControlColor(STATUCOLOR::STAY);
 		break;
 	case STATUCOLOR::SOCKETGREEN:
 		m_KColor = L"green";
+		SetControlColor(STATUCOLOR::STAY);
 		break;
 	}
 

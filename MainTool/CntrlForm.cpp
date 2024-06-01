@@ -252,10 +252,10 @@ void CntrlForm::OnPaint()
 
 
 	// 이미지를 지정된 크기로 그리기
-	png_grab.StretchBlt(dc, 340, 160, 130, 130);
-	morter.StretchBlt(dc, 340, 320, 130, 130);
-	morter2.StretchBlt(dc, 340, 480, 130, 130);
-	morter3.StretchBlt(dc, 340, 640, 130, 130);
+	png_grab.StretchBlt(dc, 250, 100, 120, 120);
+	morter.StretchBlt(dc, 250, 200, 120, 120);
+	morter2.StretchBlt(dc, 250, 300, 120, 120);
+	morter3.StretchBlt(dc, 250, 400, 120, 120);
 
 }
 
