@@ -65,4 +65,5 @@ public:
 
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult);
+	CStatic m_Downloadck;
 };

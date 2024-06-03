@@ -37,6 +37,7 @@ void DataInquiryDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT4, m_Date);
 	DDX_Control(pDX, IDC_BUTTON1, m_Id);
 	DDX_Control(pDX, IDC_StaticId, m_staticId);
+	DDX_Control(pDX, IDC_Downloadck, m_Downloadck);
 }
 
 
@@ -94,6 +95,8 @@ BOOL DataInquiryDlg::OnInitDialog()
 	m_FaultyBox.InsertString(0, L"OK");
 	m_FaultyBox.InsertString(0, L"Faulty");
 
+	m_Downloadck.SetWindowText(_T(""));
+	UpdateData(false);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -145,9 +148,14 @@ void DataInquiryDlg::OnBnClickedButton1()
 
 		file.close();
 		cout << "CSV file created successfully!" << endl;
+		m_Downloadck.SetWindowText(_T("Download successfully!"));
+		UpdateData(false);
 	}
 	else {
 		cerr << "Could not open the file!" << endl;
+		m_Downloadck.SetWindowText(_T("download  fail!"));
+		UpdateData(false);
+
 	}
 }
 
