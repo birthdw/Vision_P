@@ -225,14 +225,6 @@ void ResultForm::OnBnClickedBstart()
 		ToolManager::GetInstance()->SetReady(true);
 
 	}
-
-
-	ToolManager::GetInstance()->Allcount(RESULT::GREEN);
-	ToolManager::GetInstance()->Allcount(RESULT::YELLOW);
-	ToolManager::GetInstance()->Allcount(RESULT::RED);
-	ToolManager::GetInstance()->Allcount(RESULT::FAIL);
-
-
 }
 
 

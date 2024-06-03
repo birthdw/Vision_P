@@ -136,27 +136,37 @@ void DataInquiryDlg::OnPaint()
 void DataInquiryDlg::OnBnClickedButton1()
 {
 	//다운로드 
-	ofstream file("output.csv");
 
-	if (file.is_open()) {
-		// Header
-		file << "ID,Color,Faulty,Date,URL\n";
+	if (ToolManager::GetInstance()->m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN) 
+	{
+		ofstream file("output.csv");
 
-		for (const auto& row : Updatevec) {
-			file << row.id << "," << row.color << "," << row.faulty << "," << row.date << "," << row.url << "\n";
+		if (file.is_open()) {
+			// Header
+			file << "ID,Color,Faulty,Date,URL\n";
+
+			for (const auto& row : Updatevec) {
+				file << row.id << "," << row.color << "," << row.faulty << "," << row.date << "," << row.url << "\n";
+			}
+
+			file.close();
+			cout << "CSV file created successfully!" << endl;
+			m_Downloadck.SetWindowText(_T("Download successfully!"));
+			UpdateData(false);
 		}
+		else {
+			cerr << "Could not open the file!" << endl;
+			m_Downloadck.SetWindowText(_T("download  fail!"));
+			UpdateData(false);
 
-		file.close();
-		cout << "CSV file created successfully!" << endl;
-		m_Downloadck.SetWindowText(_T("Download successfully!"));
+		}
+	}
+	else
+	{
+		m_Downloadck.SetWindowText(_T("Server not connected"));
 		UpdateData(false);
 	}
-	else {
-		cerr << "Could not open the file!" << endl;
-		m_Downloadck.SetWindowText(_T("download  fail!"));
-		UpdateData(false);
-
-	}
+	
 }
 
 void DataInquiryDlg::OnBnClickedButton4()

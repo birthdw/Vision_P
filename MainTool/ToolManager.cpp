@@ -455,7 +455,7 @@ void ToolManager::SendResult(RESULT res)
 		std::to_string(t->tm_min) + "/" +
 		std::to_string(t->tm_sec);
 
-
+	
 	if (res == RESULT::YELLOW) {
 		if (m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN)
 		{
@@ -475,6 +475,7 @@ void ToolManager::SendResult(RESULT res)
 			m_TempVec.emplace_back(res);
 			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
+		Allcount(RESULT::YELLOW);
 		m_Serverform->SetList(_T(""), _T("PROC:YELLOW"));
 		m_Serverform->ClientTCP(_T("ST/PROC:YELLOW/END"));
 	}
@@ -497,7 +498,7 @@ void ToolManager::SendResult(RESULT res)
 			m_TempVec.emplace_back(res);
 			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
-
+		Allcount(RESULT::RED);
 		m_Serverform->SetList(_T(""), _T("PROC:RED"));
 		m_Serverform->ClientTCP(_T("ST/PROC:RED/END"));
 	}
@@ -520,6 +521,7 @@ void ToolManager::SendResult(RESULT res)
 			m_TempVec.emplace_back(res);
 			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
+		Allcount(RESULT::GREEN);
 		m_Serverform->SetList(_T(""), _T("PROC:GREEN"));
 		m_Serverform->ClientTCP(_T("ST/PROC:GREEN/END"));
 	}
@@ -542,6 +544,7 @@ void ToolManager::SendResult(RESULT res)
 			m_TempVec.emplace_back(res);
 			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
+		Allcount(RESULT::FAIL);
 		m_Serverform->SetList(_T(""), _T("PROC:FAIL"));
 		m_Serverform->ClientTCP(_T("ST/PROC:FAIL/END"));
 	}
