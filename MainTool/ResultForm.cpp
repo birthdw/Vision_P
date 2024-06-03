@@ -38,7 +38,7 @@ BEGIN_MESSAGE_MAP(ResultForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON2, &ResultForm::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &ResultForm::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &ResultForm::OnBnClickedButton4)
-	//ON_WM_PAINT()
+	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BStart, &ResultForm::OnBnClickedBstart)
 	ON_BN_CLICKED(IDC_BStop, &ResultForm::OnBnClickedBstop)
 	ON_BN_CLICKED(IDC_Bcolortest, &ResultForm::OnBnClickedBcolortest)
@@ -170,11 +170,40 @@ void ResultForm::OnPaint()
 
 
 
-	CImage Logo;
-	Logo.Load(_T("title.png"));
-	Logo.StretchBlt(dc, 47, 40, 483, 69);
+	//CImage Logo;
+	//Logo.Load(_T("title.png"));
+	//Logo.StretchBlt(dc, 47, 40, 483, 69);
 
 
+	// 사각형 그리기
+	CBrush* pOldBrush = (CBrush*)dc.SelectStockObject(NULL_BRUSH);
+
+
+	CRect g_rect;
+	g_rect.SetRect(275, 25, 400, 140);
+
+	CRect y_rect;
+	y_rect.SetRect(410, 25, 535, 140);
+
+	CRect r_rect;
+	r_rect.SetRect(275, 150, 400, 265);
+
+	CRect f_rect;
+	f_rect.SetRect(410, 150, 535, 265);
+
+	dc.Rectangle(g_rect);
+	dc.Rectangle(y_rect);
+	dc.Rectangle(r_rect);
+	dc.Rectangle(f_rect);
+
+	DeleteObject(pOldBrush);
+
+
+	I_draw(&dc, _T("green"), ToolManager::GetInstance()->g_count, 285, 40);
+	I_draw(&dc, _T("yellow"), ToolManager::GetInstance()->y_count, 420, 40);
+	I_draw(&dc, _T("red"), ToolManager::GetInstance()->r_count, 285, 165);
+	I_draw(&dc, _T("black"), ToolManager::GetInstance()->f_count, 420, 165);
+	
 }
 
 
@@ -194,7 +223,15 @@ void ResultForm::OnBnClickedBstart()
 		ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 
 		ToolManager::GetInstance()->SetReady(true);
+
 	}
+
+
+	ToolManager::GetInstance()->Allcount(RESULT::GREEN);
+	ToolManager::GetInstance()->Allcount(RESULT::YELLOW);
+	ToolManager::GetInstance()->Allcount(RESULT::RED);
+	ToolManager::GetInstance()->Allcount(RESULT::FAIL);
+
 
 }
 
@@ -238,6 +275,53 @@ void ResultForm::OnBnClickedtestinput()
 	m_DataInquiry = new DataInquiryDlg;
 	m_DataInquiry->Create(IDD_DataInquiry, this);
 	m_DataInquiry->ShowWindow(SW_SHOW);
+}
+
+void ResultForm::I_draw(CDC* pDC, CString s, int val, int x, int y)
+{
+	CImage image;
+	CString imagePath = s + _T(".bmp");
+
+	if (val > 0 && val < 4)
+	{
+		if (image.Load(imagePath) == S_OK)
+		{
+			for (int i = 0; i < val; i++)
+			{
+				image.StretchBlt(pDC->m_hDC, x + (22 * i), y, 20, 20, SRCCOPY);
+			}
+		}
+
+	}
+
+	else if (val > 3)
+	{
+		imagePath = _T("gray.bmp");
+		if (image.Load(imagePath) == S_OK)
+		{
+			for (int i = 0; i < val; i++)
+			{
+				image.StretchBlt(pDC->m_hDC, x + (22 * (i + 1)), y, 20, 20, SRCCOPY);
+			}
+		}
+
+		if (s == _T("green"))
+		{
+			ToolManager::GetInstance()->g_count = 1;
+		}
+		else if (s == _T("yellow"))
+		{
+			ToolManager::GetInstance()->y_count = 1;
+		}
+		else if (s == _T("red"))
+		{
+			ToolManager::GetInstance()->r_count = 1;
+		}
+		else if (s == _T("black"))
+		{
+			ToolManager::GetInstance()->f_count = 1;
+		}
+	}
 }
 
 

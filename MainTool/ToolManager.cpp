@@ -579,6 +579,41 @@ void ToolManager::SetInference()
 	inf = new Inference("C:\\C\\github\\Vision_P\\MainTool\\block.onnx", cv::Size(640, 480), "C:\\C\\github\\Vision_P\\MainTool\\block.txt", true);
 }
 
+void ToolManager::Allcount(RESULT Color)
+{
+	switch (Color)
+	{
+	case RESULT::FAIL:
+		if (f_count < 4)
+		{
+			f_count++;
+		}
+	
+		break;
+	case RESULT::RED:
+		if (r_count < 4)
+			r_count++;
+	
+		break;
+	case RESULT::YELLOW:
+		if (y_count < 4)
+			y_count++;
+
+		break;
+	case RESULT::GREEN:
+		if (g_count < 4)
+		{
+			g_count++;
+
+		}
+		break;
+	default:
+		break;
+	}
+
+	m_Resform->Invalidate(false);
+}
+
 bool ToolManager::SetCap(int set)
 {
 	return cap.open(set, cv::CAP_DSHOW);

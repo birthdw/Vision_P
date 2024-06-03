@@ -146,6 +146,14 @@ public:
 	int forcolor[3][6];
 
 
+	int g_count = 0;
+	int y_count = 0;
+	int r_count = 0;
+	int f_count = 0;
+
+	void Allcount(RESULT Color); // Å½ÁöÇÑ °´Ã¼ °¹¼ö
+
+
 	
 
 

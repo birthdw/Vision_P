@@ -58,6 +58,17 @@ public:
 	DataInquiryDlg* m_DataInquiry;
 
 	afx_msg void OnBnClickedtestinput();
+
+
+public:
+
+	
+	CImage* I_green;
+	CImage* I_yellow;	
+	CImage* I_red;
+	CImage* I_gray;
+
+	void I_draw(CDC* pDC, CString s, int val, int x, int y);
 };
 
 
