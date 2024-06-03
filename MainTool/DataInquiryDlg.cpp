@@ -133,8 +133,22 @@ void DataInquiryDlg::OnPaint()
 void DataInquiryDlg::OnBnClickedButton1()
 {
 	//다운로드 
+	ofstream file("output.csv");
 
+	if (file.is_open()) {
+		// Header
+		file << "ID,Color,Faulty,Date,URL\n";
 
+		for (const auto& row : Updatevec) {
+			file << row.id << "," << row.color << "," << row.faulty << "," << row.date << "," << row.url << "\n";
+		}
+
+		file.close();
+		cout << "CSV file created successfully!" << endl;
+	}
+	else {
+		cerr << "Could not open the file!" << endl;
+	}
 }
 
 void DataInquiryDlg::OnBnClickedButton4()
