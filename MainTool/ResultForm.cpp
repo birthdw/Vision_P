@@ -264,9 +264,9 @@ void ResultForm::OnBnClickedBcolortest()
 void ResultForm::OnBnClickedtestinput()
 {
 
-	m_DataInquiry = new DataInquiryDlg;
-	m_DataInquiry->Create(IDD_DataInquiry, this);
-	m_DataInquiry->ShowWindow(SW_SHOW);
+	//m_DataInquiry = new DataInquiryDlg;
+	//m_DataInquiry->Create(IDD_DataInquiry, this);
+	//m_DataInquiry->ShowWindow(SW_SHOW);
 }
 
 void ResultForm::I_draw(CDC* pDC, CString s, int val, int x, int y)

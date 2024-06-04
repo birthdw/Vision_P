@@ -140,6 +140,7 @@ public:
 	void SETTCPConnect(BOOL set);								// 소켓통신 연결 상태 확인
 	void SETBoxlist(vector<AWSLIST> set);						// 서버 리스트 저장
 
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
 
 

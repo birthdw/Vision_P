@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(ServerForm, CFormView)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_TCP, &ServerForm::OnLvnItemchangedListTcp)
 	ON_MESSAGE(WM_SOCKET_THREAD_FINISHED, &ServerForm::OnSocketThreadFinished)
 	ON_BN_CLICKED(IDC_LOG_BUT, &ServerForm::OnBnClickedLogBut)
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 
@@ -76,7 +77,6 @@ void ServerForm::Dump(CDumpContext& dc) const
 void ServerForm::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
-	ToolManager::GetInstance()->Setserverform(this);
 
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
@@ -295,10 +295,8 @@ void ServerForm::ServerState(STATUCOLOR set)
 void ServerForm::GetServerList()
 {
 	SETBoxlist(GetAWS()->RDSjoinData());
-	ToolManager::GetInstance()->m_detecttab->Update();
 	if (ToolManager::GetInstance()->m_DataInquiryDlg != nullptr)
 		ToolManager::GetInstance()->m_DataInquiryDlg->Update();
-	//TRACE("%d\r\n", thisObj->GetBoxlist());
 }
 
 vector<CString> ServerForm::SplitCString(const CString& str, const CString& delimiter)
@@ -491,4 +489,16 @@ void ServerForm::OnBnClickedLogBut()
 	Count = 0;
 	m_ListTcp.DeleteAllItems();
 
+}
+
+
+int ServerForm::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CFormView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	ToolManager::GetInstance()->Setserverform(this);
+
+
+	return 0;
 }

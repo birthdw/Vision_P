@@ -47,12 +47,6 @@
     <Filter Include="03.View\serform">
       <UniqueIdentifier>{23a79584-e693-4e95-978c-e404f49fff59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Dlg\detecttab">
-      <UniqueIdentifier>{fa520399-efc9-430b-8f91-ea4412f5ca12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04.Dlg\testtab">
-      <UniqueIdentifier>{7ab291e3-1dcb-4f16-9c7c-cb1e908a1973}</UniqueIdentifier>
-    </Filter>
     <Filter Include="06.PJH">
       <UniqueIdentifier>{7b99c7e9-14f6-4992-b8ed-a13fb331686c}</UniqueIdentifier>
     </Filter>
@@ -118,12 +112,6 @@
     <ClInclude Include="ServerForm.h">
       <Filter>03.View\serform</Filter>
     </ClInclude>
-    <ClInclude Include="DetectTab.h">
-      <Filter>04.Dlg\detecttab</Filter>
-    </ClInclude>
-    <ClInclude Include="TestTab.h">
-      <Filter>04.Dlg\testtab</Filter>
-    </ClInclude>
     <ClInclude Include="CSocketClient.h">
       <Filter>06.PJH\Socket</Filter>
     </ClInclude>
@@ -182,12 +170,6 @@
     </ClCompile>
     <ClCompile Include="ServerForm.cpp">
       <Filter>03.View\serform</Filter>
-    </ClCompile>
-    <ClCompile Include="DetectTab.cpp">
-      <Filter>04.Dlg\detecttab</Filter>
-    </ClCompile>
-    <ClCompile Include="TestTab.cpp">
-      <Filter>04.Dlg\testtab</Filter>
     </ClCompile>
     <ClCompile Include="CSocketClient.cpp">
       <Filter>06.PJH\Socket</Filter>

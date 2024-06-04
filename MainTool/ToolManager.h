@@ -2,11 +2,10 @@
 
 class Infernece;
 class ServerForm;
-class DetectTab;
-class TestTab;
 class ResultForm;
 class CntrlForm;
 class DataInquiryDlg;
+class ListForm;
 
 
 enum class PROCESSSTATE;
@@ -54,7 +53,6 @@ public:
 	void SetMainHndl(HWND mhd);
 	void SetToolviewhdl(HWND tvhd);
 	void SetListFormHndle(HWND tvhd);
-	void SetTab(DetectTab* d, TestTab* t);
 	void SetDataDlg(DataInquiryDlg* d);
 	void SetForceQuit(bool set);
 	void SetKillFrm(bool set);
@@ -107,8 +105,6 @@ public:
 public:
 	ServerForm* m_Serverform;
 	CTabCtrl* m_tab;
-	DetectTab* m_detecttab;
-	TestTab* m_Testtab;
 	ResultForm* m_Resform;
 	CntrlForm* m_CntrlForm;
 	DataInquiryDlg* m_DataInquiryDlg=nullptr;

@@ -48,6 +48,8 @@ BEGIN_MESSAGE_MAP(DataInquiryDlg, CDialogEx)
 	ON_NOTIFY(NM_CLICK, IDC_LIST1, &DataInquiryDlg::OnNMClickList1)
 	ON_BN_CLICKED(IDC_BUTTON3, &DataInquiryDlg::OnBnClickedButton3)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, &DataInquiryDlg::OnNMDblclkList1)
+	ON_BN_CLICKED(IDC_BUTTON5, &DataInquiryDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &DataInquiryDlg::OnBnClickedButton6)
 END_MESSAGE_MAP()
 
 
@@ -83,8 +85,6 @@ BOOL DataInquiryDlg::OnInitDialog()
 		m_DataList.InsertColumn(i, &Column);
 	}
 
-
-
 	Update();
 
 	m_ColorBox.InsertString(0, L"red");
@@ -100,9 +100,6 @@ BOOL DataInquiryDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 }
-
-
-
 
 
 
@@ -123,7 +120,7 @@ void DataInquiryDlg::OnPaint()
 	{
 		CImage png;
 		png.Load(L"ns.png");
-		png.StretchBlt(dc, 40, 20, 400, 300);
+		png.StretchBlt(dc, 60, 10, 340, 220);
 	}
 
 	UpdateData(FALSE);
@@ -145,9 +142,22 @@ void DataInquiryDlg::OnBnClickedButton1()
 			// Header
 			file << "ID,Color,Faulty,Date,URL\n";
 
-			for (const auto& row : Updatevec) {
-				file << row.id << "," << row.color << "," << row.faulty << "," << row.date << "," << row.url << "\n";
+			
+			if (!Updatevec.empty())
+			{
+				for (const auto& row : Updatevec) {
+					file << row.id << "," << row.color << "," << row.faulty << "," << row.date << "," << row.url << "\n";
+				}
 			}
+			else
+			{
+				vector<AWSLIST> vecInfo;
+				vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();
+				for (const auto& row : vecInfo) {
+					file << row.id << "," << row.color << "," << row.faulty << "," << row.date << "," << row.url << "\n";
+				}
+			}
+
 
 			file.close();
 			cout << "CSV file created successfully!" << endl;
@@ -454,7 +464,7 @@ void DataInquiryDlg::LoadOnlineImage(LPCTSTR url,CPaintDC & dc)
 
 			SetStretchBltMode(dc, HALFTONE);
 
-			image.StretchBlt(dc, 0, 0, 400, 300);
+			image.StretchBlt(dc, 60, 10, 340, 220);
 
 
 		}
@@ -515,8 +525,53 @@ void DataInquiryDlg::OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 	SetDlgItemText(IDC_EDIT3, Faulty);
 	SetDlgItemText(IDC_EDIT4, Date);
 
+
+	CurId = id;
+
+
+
 	Invalidate(true);
 
-
 	*pResult = 0;
+}
+
+
+void DataInquiryDlg::GetButtonState(bool n)
+{
+	GetDlgItem(IDC_BUTTON6)->EnableWindow(n);
+	GetDlgItem(IDC_BUTTON5)->EnableWindow(n);
+}
+
+void DataInquiryDlg::OnBnClickedButton5()
+{
+	//삭제
+	GetButtonState(false);
+	ToolManager::GetInstance()->m_Serverform->SetAwsInfo(AWSINFO::AWSDELETE);
+
+}
+
+
+void DataInquiryDlg::OnBnClickedButton6()
+{
+	//수정 
+
+	UpdateData(FALSE);
+	GetButtonState(false);
+	CString c;
+	CString f;
+	GetDlgItemText(IDC_EDIT2, c);
+	GetDlgItemText(IDC_EDIT3, f);
+	string co = CT2CA(c);
+	string fa = CT2CA(f);
+	string id = CT2CA(CurId);
+	ToolManager::GetInstance()->m_Serverform->SetModify(co, fa, id);
+
+	UpdateData(TRUE);
+}
+
+void DataInquiryDlg::Set_Text(int curidx, int idx, CString cstr)
+{
+	UpdateData(FALSE);
+	m_DataList.SetItemText(curidx, idx, cstr);
+	UpdateData(TRUE);
 }

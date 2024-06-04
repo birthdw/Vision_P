@@ -3,8 +3,7 @@
 #include "ServerForm.h"
 #include "ToolManager.h"
 #include "ResultForm.h"
-#include "DetectTab.h"
-#include "TestTab.h"
+#include "DataInquiryDlg.h"
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
 
@@ -99,23 +98,18 @@ UINT initawsT(LPVOID pParam)
 				thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
 				thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
 				thisObj->GetServerList();
-				ToolManager::GetInstance()->m_Testtab->GetButtonState(true);
+				ToolManager::GetInstance()->m_DataInquiryDlg->GetButtonState(true);
 
-				ToolManager::GetInstance()->m_tab->SetCurSel(0);
-				ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_SHOW);
-				ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_HIDE);
 				break;
 			}
 
 			case AWSINFO::AWSDELETE:
 			{
-				ToolManager::GetInstance()->m_Serverform->GetAWS()->AlldeleteData(ToolManager::GetInstance()->m_Testtab->CurId.c_str());
+				string id = CT2CA(ToolManager::GetInstance()->m_DataInquiryDlg->CurId);
+				ToolManager::GetInstance()->m_Serverform->GetAWS()->AlldeleteData(id.c_str());
 				ToolManager::GetInstance()->m_Serverform->GetServerList();
-				ToolManager::GetInstance()->m_Testtab->GetButtonState(true);
+				ToolManager::GetInstance()->m_DataInquiryDlg->GetButtonState(true);
 
-				ToolManager::GetInstance()->m_tab->SetCurSel(0);
-				ToolManager::GetInstance()->m_detecttab->ShowWindow(SW_SHOW);
-				ToolManager::GetInstance()->m_Testtab->ShowWindow(SW_HIDE);
 			}
 
 			// 서버 리스트 불러오기

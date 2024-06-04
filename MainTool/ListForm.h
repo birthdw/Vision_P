@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#include "TestTab.h"
-#include "DetectTab.h"
+#include "DataInquiryDlg.h"
+
+
 
 class ListForm : public CFormView
 {
@@ -30,10 +31,12 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CTabCtrl m_TabCtrl;
-	TestTab m_TestTab;
-	DetectTab m_Detecttab;
-	afx_msg void OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+
+	DataInquiryDlg *m_dlg;
+
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 

@@ -198,7 +198,6 @@
     <ClInclude Include="CSocketClient.h" />
     <ClInclude Include="DataInquiryDlg.h" />
     <ClInclude Include="define.h" />
-    <ClInclude Include="DetectTab.h" />
     <ClInclude Include="FrameMgr.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="inference.h" />
@@ -214,7 +213,6 @@
     <ClInclude Include="ServerForm.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestTab.h" />
     <ClInclude Include="ToolManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -226,7 +224,6 @@
     <ClCompile Include="ConnectTread.cpp" />
     <ClCompile Include="CSocketClient.cpp" />
     <ClCompile Include="DataInquiryDlg.cpp" />
-    <ClCompile Include="DetectTab.cpp" />
     <ClCompile Include="FrameMgr.cpp" />
     <ClCompile Include="inference.cpp" />
     <ClCompile Include="ListForm.cpp" />
@@ -242,7 +239,6 @@
     </ClCompile>
     <ClCompile Include="ResultForm.cpp" />
     <ClCompile Include="ServerForm.cpp" />
-    <ClCompile Include="TestTab.cpp" />
     <ClCompile Include="ToolManager.cpp" />
   </ItemGroup>
   <ItemGroup>

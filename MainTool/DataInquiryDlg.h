@@ -65,5 +65,15 @@ public:
 
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult);
+	void GetButtonState(bool n);
 	CStatic m_Downloadck;
+	CString CurId;
+	afx_msg void OnBnClickedButton5();
+	afx_msg void OnBnClickedButton6();
+
+
+
+
+	void Set_Text(int curidx, int idx, CString cstr);
+
 };

@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "ToolManager.h"
 
-#include "DetectTab.h"
-#include "TestTab.h"
 #include "ResultForm.h"
 #include "ServerForm.h"
 #include "CntrlForm.h"
@@ -356,11 +354,7 @@ void ToolManager::SetListFormHndle(HWND lhd)
 	ListFormHndle = lhd;
 }
 
-void ToolManager::SetTab(DetectTab* d, TestTab* t)
-{
-	m_detecttab = d;
-	m_Testtab = t;
-}
+
 
 void ToolManager::SetDataDlg(DataInquiryDlg* d)
 {
@@ -399,7 +393,7 @@ bool ToolManager::GetFramekill()
 
 void ToolManager::Mod_Txt(int cur, int idx, CString cstr)
 {
-	m_detecttab->Set_Text(cur, idx, cstr);
+	m_DataInquiryDlg->Set_Text(cur, idx, cstr);
 }
 
 
@@ -442,8 +436,6 @@ void ToolManager::findMostFrequentColor(const Mat& roi, int& maxR, int& maxG, in
 
 void ToolManager::SendResult(RESULT res)
 {
-
-
 	time_t timer;
 	struct tm* t;
 	timer = time(NULL);

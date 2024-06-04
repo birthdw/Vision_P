@@ -6,7 +6,6 @@
 #include "ListForm.h"
 #include "ToolManager.h"
 
-
 // ListForm
 
 IMPLEMENT_DYNCREATE(ListForm, CFormView)
@@ -19,39 +18,26 @@ ListForm::ListForm()
 
 ListForm::~ListForm()
 {
+	delete m_dlg;
 }
 
 void ListForm::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TAB1, m_TabCtrl);
 }
 
 void ListForm::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
-	m_TabCtrl.InsertItem(0, L"detect tab");
-	m_TabCtrl.InsertItem(1, L"test tab");
 
-	CRect rt;
-	m_TabCtrl.GetWindowRect(&rt);
 
-	m_Detecttab.Create(IDD_DetectTab, &m_TabCtrl);
-	m_Detecttab.MoveWindow(0, 0, rt.Width(), rt.Height());
-	m_Detecttab.SetWindowPos(NULL, 5, 25, rt.Width() - 10, rt.Height() - 30, SWP_SHOWWINDOW | SWP_NOZORDER);
-
-	m_TestTab.Create(IDD_TestTab, &m_TabCtrl);
-	m_TestTab.MoveWindow(0, 0, rt.Width(), rt.Height());
-	m_TestTab.SetWindowPos(NULL, 5, 25, rt.Width() - 10, rt.Height() - 30, SWP_NOZORDER);
-
-	ToolManager::GetInstance()->m_tab = &m_TabCtrl;
-	ToolManager::GetInstance()->SetTab(&m_Detecttab, &m_TestTab);
 
 }
 
 BEGIN_MESSAGE_MAP(ListForm, CFormView)
-	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB1, &ListForm::OnTcnSelchangeTab1)
+	ON_WM_CREATE()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -75,30 +61,31 @@ void ListForm::Dump(CDumpContext& dc) const
 // ListForm 메시지 처리기
 
 
-void ListForm::OnTcnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult)
+
+
+
+
+int ListForm::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	int tabIndex = m_TabCtrl.GetCurSel();
+	if (CFormView::OnCreate(lpCreateStruct) == -1)
+		return -1;
 
-	switch (tabIndex)
-	{
-	case 0:
-		ToolManager::GetInstance()->m_strPickinLst = L"";
-		m_Detecttab.ShowWindow(SW_SHOW);
-		m_TestTab.ShowWindow(SW_HIDE);
-		m_Detecttab.Update();
-		break;
-	case 1:
-		m_Detecttab.ShowWindow(SW_HIDE);
-		m_TestTab.ShowWindow(SW_SHOW);
-
-		m_Detecttab.m_List.DeleteAllItems();
-		m_Detecttab.Update();
+	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+	m_dlg = new DataInquiryDlg;
+	m_dlg->Create(IDD_DataInquiry, this);
+	m_dlg->ShowWindow(SW_SHOW);
 
 
-		break;
-	}
 
-	*pResult = 0;
+
+
+	return 0;
 }
 
 
+void ListForm::OnSize(UINT nType, int cx, int cy)
+{
+	CFormView::OnSize(nType, cx, cy);
+
+	m_dlg->SetWindowPos(NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOZORDER);
+}
