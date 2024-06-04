@@ -224,6 +224,7 @@ void ResultForm::OnBnClickedBstart()
 
 		ToolManager::GetInstance()->SetReady(true);
 
+
 	}
 }
 
@@ -241,6 +242,8 @@ void ResultForm::OnBnClickedBstop()
 		m_btempdetect.EnableWindow(TRUE);
 	}
 
+
+	
 	ToolManager::GetInstance()->SetReady(false);
 }
 
@@ -285,17 +288,9 @@ void ResultForm::I_draw(CDC* pDC, CString s, int val, int x, int y)
 		}
 
 	}
-
 	else if (val > 3)
 	{
 		imagePath = _T("gray.bmp");
-		if (image.Load(imagePath) == S_OK)
-		{
-			for (int i = 0; i < val; i++)
-			{
-				image.StretchBlt(pDC->m_hDC, x + (22 * (i + 1)), y, 20, 20, SRCCOPY);
-			}
-		}
 
 		if (s == _T("green"))
 		{
@@ -313,7 +308,19 @@ void ResultForm::I_draw(CDC* pDC, CString s, int val, int x, int y)
 		{
 			ToolManager::GetInstance()->f_count = 1;
 		}
+
+		if (image.Load(imagePath) == S_OK)
+		{
+			for (int i = 0; i < val; i++)
+			{
+				image.StretchBlt(pDC->m_hDC, x + (22 * (i + 1)), y, 20, 20, SRCCOPY);
+				Invalidate(true);
+			}
+		}
 	}
+
+
+
 }
 
 

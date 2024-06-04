@@ -213,17 +213,17 @@ RESULT ToolManager::Detect()
 			}
 			else
 			{
-				if ((maxR >= 150 && maxR <= 255) && (maxG >= 150 && maxG <= 255) && (maxB >= 0 && maxB <= 100))
+				if ((maxR >= 150 && maxR <= 255) && (maxG >= 150 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
 				{
 					putText(frame, "YELLOW" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
 					return RESULT::YELLOW;
 				}
-				else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 90) && (maxB >= 0 && maxB <= 90))
+				else if ((maxR >= 130 && maxR <= 255) && (maxG >= 0 && maxG <= 140) && (maxB >= 0 && maxB <= 140))
 				{
 					putText(frame, "RED" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
 					return RESULT::RED;
 				}
-				else if ((maxR >= 0 && maxR <= 120) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
+				else if ((maxR >= 0 && maxR <= 140) && (maxG >= 100 && maxG <= 255) && (maxB >= 0 && maxB <= 140))
 				{
 					putText(frame, "GREEN" + std::to_string(detection.confidence).substr(0, 4), cv::Point(box.x + 5, box.y - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0), 2);
 					return RESULT::GREEN;
@@ -467,9 +467,9 @@ void ToolManager::SendResult(RESULT res)
 			m_TempVec.emplace_back(res);
 			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
-		Allcount(RESULT::YELLOW);
 		m_Serverform->SetList(_T(""), _T("PROC:YELLOW"));
 		m_Serverform->ClientTCP(_T("ST/PROC:YELLOW/END"));
+		Allcount(RESULT::YELLOW);
 	}
 	else if (res == RESULT::RED) {
 		if (m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN)
@@ -490,9 +490,9 @@ void ToolManager::SendResult(RESULT res)
 			m_TempVec.emplace_back(res);
 			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
-		Allcount(RESULT::RED);
 		m_Serverform->SetList(_T(""), _T("PROC:RED"));
 		m_Serverform->ClientTCP(_T("ST/PROC:RED/END"));
+		Allcount(RESULT::RED);
 	}
 	else if (res == RESULT::GREEN) {
 		if (m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN)
@@ -513,9 +513,9 @@ void ToolManager::SendResult(RESULT res)
 			m_TempVec.emplace_back(res);
 			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
-		Allcount(RESULT::GREEN);
 		m_Serverform->SetList(_T(""), _T("PROC:GREEN"));
 		m_Serverform->ClientTCP(_T("ST/PROC:GREEN/END"));
+		Allcount(RESULT::GREEN);
 	}
 	else if (res == RESULT::FAIL) {
 		if (m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN)
@@ -536,9 +536,9 @@ void ToolManager::SendResult(RESULT res)
 			m_TempVec.emplace_back(res);
 			imwrite("BOX" + to_string(tempboxcnt) + ".jpg", frame);
 		}
-		Allcount(RESULT::FAIL);
 		m_Serverform->SetList(_T(""), _T("PROC:FAIL"));
 		m_Serverform->ClientTCP(_T("ST/PROC:FAIL/END"));
+		Allcount(RESULT::FAIL);
 	}
 
 
@@ -599,7 +599,6 @@ void ToolManager::Allcount(RESULT Color)
 		if (g_count < 4)
 		{
 			g_count++;
-
 		}
 		break;
 	default:
