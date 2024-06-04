@@ -48,6 +48,7 @@ public:
 public:
 	bool Update();
 	void Reset();
+	void ResetAndUpdate();
 
 	vector<AWSLIST> OptionDate(CString eday, CString sday, CString emon, CString smon, CString ey, CString sy);
 	vector<AWSLIST> OptionColor();
@@ -75,5 +76,7 @@ public:
 
 
 	void Set_Text(int curidx, int idx, CString cstr);
+
+	
 
 };

@@ -97,8 +97,9 @@ UINT initawsT(LPVOID pParam)
 			{
 				thisObj->GetAWS()->RDSupdateData("color", thisObj->GetModifyColor().c_str(), thisObj->GetModifyCurId().c_str());
 				thisObj->GetAWS()->RDSupdateData("faulty", thisObj->GetModifyFaulty().c_str(), thisObj->GetModifyCurId().c_str());
-				thisObj->GetServerList();
 				ToolManager::GetInstance()->m_DataInquiryDlg->GetButtonState(true);
+				thisObj->SetData();
+				ToolManager::GetInstance()->m_DataInquiryDlg->ResetAndUpdate();
 
 				break;
 			}
@@ -107,9 +108,9 @@ UINT initawsT(LPVOID pParam)
 			{
 				string id = CT2CA(ToolManager::GetInstance()->m_DataInquiryDlg->CurId);
 				ToolManager::GetInstance()->m_Serverform->GetAWS()->AlldeleteData(id.c_str());
-				ToolManager::GetInstance()->m_Serverform->GetServerList();
 				ToolManager::GetInstance()->m_DataInquiryDlg->GetButtonState(true);
-
+				thisObj->SetData();
+				ToolManager::GetInstance()->m_DataInquiryDlg->ResetAndUpdate();
 			}
 
 			// 서버 리스트 불러오기

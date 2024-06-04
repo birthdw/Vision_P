@@ -263,6 +263,7 @@ void DataInquiryDlg::Reset()
 	vecInfo = ToolManager::GetInstance()->m_Serverform->GetBoxlist();
 
 	m_DataList.DeleteAllItems();
+	Updatevec.clear();
 
 	for (int i = 0; i < vecInfo.size(); ++i)
 	{
@@ -281,6 +282,44 @@ void DataInquiryDlg::Reset()
 	m_FaultyBox.SetCurSel(-1);
 
 
+
+}
+
+void DataInquiryDlg::ResetAndUpdate()
+{
+	Updatevec.clear();
+
+	CString starttime;
+	CString endtime;
+	CString Color;
+	CString Faulty;
+
+	GetDlgItemText(IDC_DATETIMEPICKER1, starttime);
+	GetDlgItemText(IDC_DATETIMEPICKER2, endtime);
+	GetDlgItemText(IDC_COMBO2, Color);
+	GetDlgItemText(IDC_COMBO3, Faulty);
+
+	CString syear;
+	CString smonth;
+	CString sday;
+
+	CString eyear;
+	CString emonth;
+	CString eday;
+
+	AfxExtractSubString(syear, starttime, 0, '-');
+	AfxExtractSubString(smonth, starttime, 1, '-');
+	AfxExtractSubString(sday, starttime, 2, '-');
+
+	AfxExtractSubString(eyear, endtime, 0, '-');
+	AfxExtractSubString(emonth, endtime, 1, '-');
+	AfxExtractSubString(eday, endtime, 2, '-');
+
+	Updatevec = OptionDate(eday, sday, emonth, smonth, eyear, syear);
+	Updatevec = OptionColor();
+	Updatevec = OptionFaulty();
+
+	Update();
 
 }
 
@@ -373,7 +412,6 @@ vector<AWSLIST> DataInquiryDlg::OptionColor()
 	if (retvec.empty())
 		return Updatevec;
 
-	m_ColorBox.SetCurSel(-1);
 
 	return retvec;
 }
@@ -399,7 +437,6 @@ vector<AWSLIST> DataInquiryDlg::OptionFaulty()
 		}
 	}
 
-	m_FaultyBox.SetCurSel(-1);
 
 	if (retvec.empty())
 		return Updatevec;
@@ -555,7 +592,7 @@ void DataInquiryDlg::OnBnClickedButton6()
 {
 	//수정 
 
-	UpdateData(FALSE);
+	UpdateData(TRUE);
 	GetButtonState(false);
 	CString c;
 	CString f;
@@ -566,12 +603,12 @@ void DataInquiryDlg::OnBnClickedButton6()
 	string id = CT2CA(CurId);
 	ToolManager::GetInstance()->m_Serverform->SetModify(co, fa, id);
 
-	UpdateData(TRUE);
+	UpdateData(FALSE);
 }
 
 void DataInquiryDlg::Set_Text(int curidx, int idx, CString cstr)
 {
-	UpdateData(FALSE);
-	m_DataList.SetItemText(curidx, idx, cstr);
 	UpdateData(TRUE);
+	m_DataList.SetItemText(curidx, idx, cstr);
+	UpdateData(FALSE);
 }

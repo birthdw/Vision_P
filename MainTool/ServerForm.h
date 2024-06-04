@@ -141,6 +141,9 @@ public:
 	void SETBoxlist(vector<AWSLIST> set);						// 서버 리스트 저장
 
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+
+	void SetData();
 };
 
 

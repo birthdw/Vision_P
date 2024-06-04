@@ -502,3 +502,8 @@ int ServerForm::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	return 0;
 }
+
+void ServerForm::SetData()
+{
+	SETBoxlist(GetAWS()->RDSjoinData());
+}
