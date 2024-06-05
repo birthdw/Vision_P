@@ -109,7 +109,7 @@ public:
 	void GetServerList();
 
 public:
-	queue<AWSINFO>& GetAwsInfo();										// 서버 동작 상태
+	queue<AWSINFO>& GetAwsInfo();								// 서버 동작 상태
 	BOOL GetTCPConnect();										// 소켓 통신 연결 상태
 	AWS* GetAWS();												// 서버 연결 동작
 	string GetAwsColor();										// 서버 저장 상자 색깔 상태
