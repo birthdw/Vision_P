@@ -115,7 +115,7 @@ void DataInquiryDlg::OnPaint()
 
 
 	if (url != L"")
-		LoadOnlineImage(url,dc);
+		LoadOnlineImage(url, dc);
 	else
 	{
 		CImage png;
@@ -134,7 +134,7 @@ void DataInquiryDlg::OnBnClickedButton1()
 {
 	//다운로드 
 
-	if (ToolManager::GetInstance()->m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN) 
+	if (ToolManager::GetInstance()->m_Serverform->GetServerSwitch() == STATUCOLOR::SERVERGREEN)
 	{
 		ofstream file("output.csv");
 
@@ -142,7 +142,7 @@ void DataInquiryDlg::OnBnClickedButton1()
 			// Header
 			file << "ID,Color,Faulty,Date,URL\n";
 
-			
+
 			if (!Updatevec.empty())
 			{
 				for (const auto& row : Updatevec) {
@@ -176,7 +176,7 @@ void DataInquiryDlg::OnBnClickedButton1()
 		m_Downloadck.SetWindowText(_T("Server not connected"));
 		UpdateData(false);
 	}
-	
+
 }
 
 void DataInquiryDlg::OnBnClickedButton4()
@@ -346,6 +346,30 @@ vector<AWSLIST> DataInquiryDlg::OptionDate(CString eday, CString sday, CString e
 	int Lastidx = 0;
 	int cnt = 0;
 
+
+
+	int eyy = _ttoi(ey);
+	int emm = _ttoi(emon);
+	int edd = _ttoi(eday);
+
+
+
+
+	CString date = CString(vecInfo[0].date.c_str());
+	AfxExtractSubString(Y, date, 0, '/');
+	AfxExtractSubString(M, date, 1, '/');
+	AfxExtractSubString(D, date, 2, '/');
+
+
+	if (edd > _ttoi(D))
+	{
+		while (!(edd == _ttoi(D)))
+			--edd;
+	}
+
+
+	int LasttoStart = 0;
+
 	//같은날
 	for (int i = 0; i < vecInfo.size(); ++i)
 	{
@@ -354,17 +378,16 @@ vector<AWSLIST> DataInquiryDlg::OptionDate(CString eday, CString sday, CString e
 		AfxExtractSubString(M, date, 1, '/');
 		AfxExtractSubString(D, date, 2, '/');
 		int t = _ttoi(emon);
-		if (_ttoi(Y) == _ttoi(ey) && _ttoi(M) == _ttoi(emon) && _ttoi(D) == _ttoi(eday) && Last == false)
+
+		if (_ttoi(Y) == eyy && _ttoi(M) == emm && _ttoi(D) == edd && Last == false)
 		{
 			//가장 최근데이터가 같을때 즉 넣을인자의 마지막 
 			Lastidx = i;
 			Last = true;
 		}
-
 		if (_ttoi(Y) == _ttoi(sy) && _ttoi(M) == _ttoi(smon) && _ttoi(D) == _ttoi(sday) && Start == false)
 		{
 			//가장 최근데이터가 같을때 즉 넣을인자의 마지막 
-			Startidx = i;
 			Start = true;
 		}
 		if (_ttoi(Y) == _ttoi(sy) && _ttoi(M) == _ttoi(smon) && _ttoi(D) == _ttoi(sday) && Start == true)
@@ -374,13 +397,27 @@ vector<AWSLIST> DataInquiryDlg::OptionDate(CString eday, CString sday, CString e
 		if (Start == true && !(_ttoi(Y) == _ttoi(sy) && _ttoi(M) == _ttoi(smon) && _ttoi(D) == _ttoi(sday)))
 		{
 			Start = false;
+			break;
 		}
 
+		if (Last == true && Start == false)
+		{
+			++LasttoStart;
+		}
 	}
+
+
+	if (Start == true)
+		cnt += Lastidx;
+
+
+	if(Lastidx!=0 && Start==false)
+		cnt += Lastidx;
+
 
 	vector<AWSLIST> retvec;
 
-	for (int i = Lastidx; i < Startidx + cnt; ++i)
+	for (int i = Lastidx; i < cnt + LasttoStart; ++i)
 	{
 		retvec.emplace_back(vecInfo[i]);
 	}
@@ -471,7 +508,7 @@ CString DataInquiryDlg::GetLast(CString url)
 	return CString(vec[vec.size() - 1]);
 }
 
-void DataInquiryDlg::LoadOnlineImage(LPCTSTR url,CPaintDC & dc)
+void DataInquiryDlg::LoadOnlineImage(LPCTSTR url, CPaintDC& dc)
 {
 	CInternetSession session;
 	CHttpFile* pFile = NULL;
