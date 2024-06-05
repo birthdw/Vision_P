@@ -352,9 +352,6 @@ vector<AWSLIST> DataInquiryDlg::OptionDate(CString eday, CString sday, CString e
 	int emm = _ttoi(emon);
 	int edd = _ttoi(eday);
 
-
-
-
 	CString date = CString(vecInfo[0].date.c_str());
 	AfxExtractSubString(Y, date, 0, '/');
 	AfxExtractSubString(M, date, 1, '/');

@@ -74,9 +74,6 @@ void CntrlForm::OnBnClickedButton2()
 	CString str = _T("RBT:HOME");
 	ToolManager::GetInstance()->m_Serverform->ClientTCP(str);
 	
-	
-	
-	
 	Morter_on = true;
 	Morter2_on = true;
 	Morter3_on = true;

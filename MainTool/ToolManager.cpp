@@ -171,14 +171,17 @@ void ToolManager::LateUpdate()
 
 void ToolManager::Render()
 {
-	putText(frame, "R:" + to_string(maxR), Point(0, 70), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
-	putText(frame, "G:" + to_string(maxG), Point(0, 110), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
-	putText(frame, "B:" + to_string(maxB), Point(0, 150), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
-	putText(frame, "fps: " + to_string(dfps), Point(10, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
-	cv::imshow("TEST", frame);
-	int key = cv::waitKey(1);
-	if (key == 27)
-		::PostQuitMessage(WM_QUIT);
+	if (ForceQuit == false)
+	{
+		putText(frame, "R:" + to_string(maxR), Point(0, 70), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+		putText(frame, "G:" + to_string(maxG), Point(0, 110), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+		putText(frame, "B:" + to_string(maxB), Point(0, 150), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+		putText(frame, "fps: " + to_string(dfps), Point(10, 30), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 0, 0), 1);
+		cv::imshow("FINAL", frame);
+		int key = cv::waitKey(1);
+		if (key == 27)
+			::PostQuitMessage(WM_QUIT);
+	}
 }
 
 RESULT ToolManager::Detect()
@@ -341,8 +344,8 @@ void ToolManager::SetToolviewhdl(HWND tvhd)
 	//툴뷰에 cv로생성한 윈도우창 자식으로 넣기 
 
 	Toolviewhandle = tvhd;
-	cv::namedWindow("TEST", 0);
-	HWND hWnd = FindWindowA(NULL, "TEST");
+	cv::namedWindow("FINAL", 0);
+	HWND hWnd = FindWindowA(NULL, "FINAL");
 	::SetParent(hWnd, Toolviewhandle);
 	::SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_CAPTION);
 	::SetWindowPos(hWnd, NULL, 0, 0, 640, 480, SWP_NOZORDER | SWP_FRAMECHANGED);

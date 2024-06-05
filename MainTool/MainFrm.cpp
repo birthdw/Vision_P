@@ -46,6 +46,7 @@ CMainFrame::~CMainFrame()
 {
 	ToolManager::GetInstance()->SetKillFrm(true);
 	ToolManager::GetInstance()->SetForceQuit(true);
+
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
