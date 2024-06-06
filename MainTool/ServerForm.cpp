@@ -12,6 +12,9 @@
 #include "DetectTab.h"
 #include "DataInquiryDlg.h"
 
+#include <fstream>
+#include <io.h>
+
 
 
 #define WM_SOCKET_THREAD_FINISHED (WM_USER + 1)
@@ -102,9 +105,7 @@ void ServerForm::OnInitialUpdate()
 
 	m_IP.SetAddress(192, 168, 0, 215);
 	m_Port = 6667;
-
 	UpdateData(FALSE);
-
 }
 
 
@@ -224,6 +225,7 @@ void ServerForm::SetList(CString str, CString strMessage)
 	m_ListTcp.SetItemText(0, 1, str);
 	m_ListTcp.SetItemText(0, 2, strMessage);
 	m_ListTcp.SetItemText(0, 3, static_cast<LPCTSTR>(time_s));
+	SetLog(strMessage);
 	Count++;
 	GetDlgItem(IDC_LOG_BUT)->EnableWindow(true);
 	InvalidateRect(NULL, FALSE);
@@ -323,6 +325,87 @@ vector<CString> ServerForm::SplitCString(const CString& str, const CString& deli
 	return tokens;
 }
 
+bool ServerForm::SetLog(CString Log)
+{
+
+	CString strFilePath;
+	strFilePath = "./Log/";
+	if (GetFileAttributes((LPCTSTR)strFilePath) == -1)
+	{
+		// 디렉토리가 없으면 생성
+		CreateDirectory(strFilePath, NULL);
+	}
+
+	time_t timer;
+	struct tm* t;
+	timer = time(NULL);
+	t = localtime(&timer);
+	string time_s = std::to_string(t->tm_year + 1900) + "_" +
+					std::to_string(t->tm_mon + 1) + "_" +
+					std::to_string(t->tm_mday);
+
+	string filenameF = string(CT2CA(strFilePath)) + time_s + ".txt";
+	ofstream Setfile(filenameF, ios::app);
+
+	if (!Setfile.is_open()) {
+		cout << "fail file open" << endl;
+		return false;
+	}
+
+	string time_r = std::to_string(t->tm_hour) + "hour" +
+					std::to_string(t->tm_min) + "min" +
+					std::to_string(t->tm_sec) + "sec";
+
+	Setfile << time_r << "\t" << string(CT2CA(Log)) << "\n";
+	Setfile.close();
+
+	return true;
+}
+
+vector<string> ServerForm::GetLogList()
+{
+	string path = ".\\Log\\*.txt";
+	LogList.clear();
+
+	struct _finddata_t fd;
+	intptr_t handle;
+
+	if ((handle = _findfirst(path.c_str(), &fd)) == -1L)
+	{
+		cout << "NO Log" << endl;
+		return LogList;
+	}
+
+	do
+	{
+		LogList.push_back(fd.name);
+	}
+	while (_findnext(handle, &fd) == 0);
+
+	_findclose(handle);
+
+	return LogList;
+}
+
+vector<string> ServerForm::GetLog()
+{
+	LogName = "./Log/" + LogList.at(0);
+	ifstream LogRead(LogName);
+
+	if (!LogRead.is_open())
+	{
+		return LogList;
+	}
+
+	string line;
+	LogList.clear();
+	while (getline(LogRead, line))
+	{
+		LogList.push_back(line);
+	}
+
+	return LogList;
+}
 
 queue<AWSINFO>& ServerForm::GetAwsInfo()
 {

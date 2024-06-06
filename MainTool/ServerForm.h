@@ -69,6 +69,8 @@ private:
 private:
 	// DB 리스트 불러오면 여기에 저장
 	vector<AWSLIST> m_boxlist;
+	vector<string> LogList;				// 로그 파일 이름 저장
+	string LogName;						// 선택한 파일 이름 저장
 	
 private:
 	//서버 기동 자료형
@@ -122,6 +124,8 @@ public:
 	COLORTHREAD GetThreadColor();								// 상태 그리기 쓰레드 스위치
 	STATUCOLOR GetControlColor();								// 서버 모든 상태 스위치
 	STATUCOLOR GetServerSwitch();								// 서버만 상태 확인 스위치
+	vector<string> GetLog();									// 저장된 로그 얻어오기
+	vector<string> GetLogList();								// 로그 파일 이름 얻어오기
 	
 public:
 	void SetAwsInfo(AWSINFO pAWS);								// 서버 동작 
@@ -139,6 +143,8 @@ public:
 	void SetServerSwitch(STATUCOLOR set);						// 서버만 상태 확인 스위치
 	void SETTCPConnect(BOOL set);								// 소켓통신 연결 상태 확인
 	void SETBoxlist(vector<AWSLIST> set);						// 서버 리스트 저장
+	bool SetLog(CString Log);									// 로그 저장
+
 
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 
